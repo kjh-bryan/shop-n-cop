@@ -1,16 +1,18 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { registerRootComponent } from "expo";
+import { SearchScreen } from "./screens/SearchScreen";
 
 const App = () => {
 
     // this is just the boilerplate that is generated. remove this when you start frontending
     return (
-        <View style={styles.container}>
-            <Text>Open up App.tsx to start working on your app!</Text>
-            <StatusBar style="auto" />
-        </View>
+      // <View style={styles.container}>
+      //     <Text>Open up App.tsx to start working on your app!</Text>
+      //     <StatusBar style="auto" />
+      // </View>
+        <SearchScreen />
     );
 };
 
