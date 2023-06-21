@@ -1,15 +1,19 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { registerRootComponent } from "expo";
+import ResultsPageScreen from "./screens/ResultsPageScreen";
 
 const App = () => {
 
+    const [showingResultsPage, isShowingResultsPage] = useState(true)
     // this is just the boilerplate that is generated. remove this when you start frontending
     return (
         <View style={styles.container}>
-            <Text>Open up App.tsx to start working on your app!</Text>
+            {!showingResultsPage && <Text>Open up App.tsx to start working on your app!</Text>}
+            {showingResultsPage && <ResultsPageScreen/>}
             <StatusBar style="auto" />
+
         </View>
     );
 };
@@ -18,7 +22,7 @@ const App = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: "#F7FFE5",
         alignItems: "center",
         justifyContent: "center",
     },
