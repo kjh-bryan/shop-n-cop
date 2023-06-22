@@ -6,7 +6,7 @@ import { StyleSheet, StyleSheetProperties, Text, TextProps } from 'react-native'
 
 
 
-export const StyledText = ({title, style,isBold} : {title:string, style:any,isBold:boolean}) => {
+export const StyledText = ({title, style,isBold} : {title:string, style?:any,isBold:boolean}) => {
 
      let [fontsLoaded] = useFonts({
        "OpenSans-Regular": require("../../assets/fonts/OpenSans-Regular.ttf"),
