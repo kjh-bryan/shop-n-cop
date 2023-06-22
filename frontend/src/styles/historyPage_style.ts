@@ -3,6 +3,7 @@ import { StyleSheet, TextStyle } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#F7FFE5'
   },
   header: {
     flexDirection: "row",
