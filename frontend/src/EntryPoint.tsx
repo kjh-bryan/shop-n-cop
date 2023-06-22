@@ -1,27 +1,10 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import SignInScreen from "./screens/SignInScreen";
 import { registerRootComponent } from "expo";
 
-const App = () => {
-
-    // this is just the boilerplate that is generated. remove this when you start frontending
+const EntryPoint = () => {
     return (
-        <View style={styles.container}>
-            <Text>Open up App.tsx to start working on your app!</Text>
-            <StatusBar style="auto" />
-        </View>
+        <SignInScreen/>
     );
 };
 
-// remember when yall do styling to put it in the style folder keke
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-});
-
-export default registerRootComponent(App);
+export default registerRootComponent(EntryPoint);
