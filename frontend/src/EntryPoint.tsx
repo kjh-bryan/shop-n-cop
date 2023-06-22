@@ -1,7 +1,8 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { registerRootComponent } from "expo";
+import { SearchScreen } from "./screens/SearchScreen";
 import ResultsPageScreen from "./screens/ResultsPageScreen";
 import HistoryPageScreen from "./screens/HistoryPageScreen";
 
@@ -10,14 +11,15 @@ const App = () => {
   const [showingHistoryPage, isShowingHistoryPage] = useState(true);
   // this is just the boilerplate that is generated. remove this when you start frontending
   return (
-    <View style={styles.container}>
+  // <View style={styles.container}>
       {!showingResultsPage && !showingHistoryPage && (
-        <Text>Open up App.tsx to start working on your app!</Text>
+  //     <Text>Open up App.tsx to start working on your app!</Text>
       )}
       {showingResultsPage && <ResultsPageScreen />}
       {showingHistoryPage && <HistoryPageScreen />}
-      <StatusBar style="auto" />
-    </View>
+//     <StatusBar style="auto" />
+  // </View>
+        // <SearchScreen />
   );
 };
 
