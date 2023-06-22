@@ -11,15 +11,15 @@ const App = () => {
   const [showingHistoryPage, isShowingHistoryPage] = useState(true);
   // this is just the boilerplate that is generated. remove this when you start frontending
   return (
-  // <View style={styles.container}>
+    <View style={styles.container}>
       {!showingResultsPage && !showingHistoryPage && (
-  //     <Text>Open up App.tsx to start working on your app!</Text>
+        <Text>Open up App.tsx to start working on your app!</Text>
       )}
       {showingResultsPage && <ResultsPageScreen />}
       {showingHistoryPage && <HistoryPageScreen />}
-//     <StatusBar style="auto" />
-  // </View>
-        // <SearchScreen />
+      <StatusBar style="auto" />
+    </View>
+    // <SearchScreen />
   );
 };
 
