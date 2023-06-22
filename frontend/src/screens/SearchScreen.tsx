@@ -33,17 +33,20 @@ export const SearchScreen =()=> {
                   title="What are you"
                   style={styles.smallFont}
                   isBold={false}
+                  isLight={true}
                 />
                 <Text>
                   <StyledText
                     title="Shopping "
                     style={styles.mediumFont}
                     isBold={true}
+                    isLight={false}
                   />
                   <StyledText
                     title="for today?"
                     style={styles.mediumFont}
                     isBold={false}
+                    isLight={true}
                   />
                 </Text>
               </View>
@@ -62,6 +65,7 @@ export const SearchScreen =()=> {
                 <StyledText
                   title="or"
                   isBold={true}
+                  isLight={false}
                   style={styles.dividerText}
                 />
                 <View style={styles.divider} />
@@ -79,23 +83,26 @@ export const SearchScreen =()=> {
               </View>
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                  onPress={()=> {
-                    console.log("Open Gallery")
+                  onPress={() => {
+                    console.log("Open Gallery");
                   }}
-                style={styles.button}>
+                  style={styles.button}
+                >
                   <StyledText
                     title="Search"
                     isBold={false}
+                    isLight={false}
                     style={styles.buttonText}
                   />
                 </TouchableOpacity>
               </View>
               <View style={styles.imageContainer}>
-                 <TouchableOpacity
-                  onPress={()=> {
-                    console.log("Go to History")
-                  }}>
-                <MaterialIcons name="history" size={80} color="#A0C49D" />
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log("Go to History");
+                  }}
+                >
+                  <MaterialIcons name="history" size={80} color="#A0C49D" />
                 </TouchableOpacity>
               </View>
             </View>
@@ -156,15 +163,15 @@ const styles = StyleSheet.create({
     width: 80,
     textAlign: "center",
     color: "#A0C49D",
-    fontSize:16,
+    fontSize: 16,
   },
   bottomBody: {
     flex: 0.6,
   },
   buttonContainer: {
-    flex: 0.6,
+    flex: 0.7,
     flexDirection: "row",
-    marginVertical:20,
+    marginVertical: 20,
   },
   button: {
     width: "100%",
@@ -172,21 +179,23 @@ const styles = StyleSheet.create({
     backgroundColor: "#A0C49D",
     alignItems: "center",
     justifyContent: "center",
-    elevation:5,
+    elevation: 5,
   },
   buttonText: {
     color: "#FFFFFF",
-    letterSpacing:3,
-    fontSize:16,
+    letterSpacing: 3,
+    fontSize: 16,
   },
   fontBold: {
     fontWeight: "bold",
   },
   smallFont: {
     fontSize: 20,
+    color: "#A0C49D",
   },
   mediumFont: {
     fontSize: 24,
+    color: "#A0C49D",
   },
   footerContainer: {
     flex: 1,
