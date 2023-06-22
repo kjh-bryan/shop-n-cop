@@ -4,12 +4,12 @@
     "slug": "shop-n-cop",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./frontend/assets/icon.png",
+    "icon": "./frontend/assets/images/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./frontend/assets/splash.png",
+      "image": "./frontend/assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#F7FFE5"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -19,12 +19,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./frontend/assets/adaptive-icon.png",
+        "foregroundImage": "./frontend/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.kjhbryan.shopncop"
     },
     "web": {
-      "favicon": "./frontend/assets/favicon.png"
+      "favicon": "./frontend/assets/images/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "71f9bb6f-d277-4e8c-9600-06bbc3189a81"
+      }
     }
   }
 }
