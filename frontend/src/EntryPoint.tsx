@@ -3,29 +3,32 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { registerRootComponent } from "expo";
 import ResultsPageScreen from "./screens/ResultsPageScreen";
+import HistoryPageScreen from "./screens/HistoryPageScreen";
 
 const App = () => {
-
-    const [showingResultsPage, isShowingResultsPage] = useState(true)
-    // this is just the boilerplate that is generated. remove this when you start frontending
-    return (
-        <View style={styles.container}>
-            {!showingResultsPage && <Text>Open up App.tsx to start working on your app!</Text>}
-            {showingResultsPage && <ResultsPageScreen/>}
-            <StatusBar style="auto" />
-
-        </View>
-    );
+  const [showingResultsPage, isShowingResultsPage] = useState(false);
+  const [showingHistoryPage, isShowingHistoryPage] = useState(true);
+  // this is just the boilerplate that is generated. remove this when you start frontending
+  return (
+    <View style={styles.container}>
+      {!showingResultsPage && !showingHistoryPage && (
+        <Text>Open up App.tsx to start working on your app!</Text>
+      )}
+      {showingResultsPage && <ResultsPageScreen />}
+      {showingHistoryPage && <HistoryPageScreen />}
+      <StatusBar style="auto" />
+    </View>
+  );
 };
 
 // remember when yall do styling to put it in the style folder keke
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#F7FFE5",
-        alignItems: "center",
-        justifyContent: "center",
-    },
+  container: {
+    flex: 1,
+    backgroundColor: "#F7FFE5",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
 
 export default registerRootComponent(App);
