@@ -26,7 +26,7 @@ const SignInScreen = () => {
                 />
                 <TouchableOpacity onPress={() => console.log('sign in button pressed')}>
                     <View style={styles.signInButtonContainer}>
-                    <Text style={styles.signInButtonText}>Sign In</Text>
+                        <Text style={styles.signInButtonText}>Sign In</Text>
                     </View>
                 </TouchableOpacity>
             </KeyboardAvoidingView>
@@ -34,29 +34,29 @@ const SignInScreen = () => {
                 <Text style={styles.signInWithText}>Sign in with</Text>
                 <View style={styles.signInWithAppsContainer}>
                     <TouchableOpacity onPress={() => console.log('apple button pressed')}>
-                    <Image 
+                        <Image 
                     source={require('../../assets/apple-login/apple-login.png')}
                     style={styles.brandImage}
                     />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => console.log('google button pressed')}>
-                    <Image 
+                        <Image 
                     source={require('../../assets/google-login/google-login.png')}
                     style={styles.brandImage}
                     />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => console.log('facebook button pressed')}>
-                    <Image 
+                        <Image 
                     source={require('../../assets/facebook-login/facebook-login.png')}
                     style={styles.brandImage}
                     />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.notMemberContainer}>
-                <Text style={styles.notMemberText}>Not a member?</Text>
-                <TouchableOpacity onPress={() => {console.log('blue text pressed')}}>
-                <Text style={styles.blueText}> Register now</Text>
-                </TouchableOpacity>
+                    <Text style={styles.notMemberText}>Not a member?</Text>
+                        <TouchableOpacity onPress={() => {console.log('blue text pressed')}}>
+                            <Text style={styles.blueText}> Register now</Text>
+                        </TouchableOpacity>
                 </View>
             </View>
         </SafeAreaView>
