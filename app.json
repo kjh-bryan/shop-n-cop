@@ -9,7 +9,7 @@
     "splash": {
       "image": "./frontend/assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#F7FFE5"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./frontend/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.kjhbryan.shopncop"
     },
     "web": {
       "favicon": "./frontend/assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "71f9bb6f-d277-4e8c-9600-06bbc3189a81"
+      }
     }
   }
 }
