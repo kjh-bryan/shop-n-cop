@@ -3,38 +3,44 @@ import { StyleSheet, TextStyle } from "react-native";
 export const styles = StyleSheet.create({
   cardOuter: {
     borderRadius: 20,
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
     shadowColor: "#000",
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.8,
     shadowRadius: 5,
     elevation: 5,
     marginBottom: 20,
     backgroundColor: "#f9ffeb",
+    marginHorizontal: 21,
   },
   card: {
     // Adjust the width to fit two cards in a row with spacing
     alignItems: "flex-start",
     flexDirection: "row",
-    height: 93,
-    width: 300,
+    flexBasis: "auto",
+    width: "100%",
+  },
+  imageContainer: {
+    width: "40%",
   },
   historyImg: {
-    right: 15,
-    bottom: 15,
-    width: 123,
-    height: 123,
+    width: 115,
+    height: 115,
+    resizeMode: "cover",
     alignContent: "center",
   },
   content: {
+    width: "60%",
     flexDirection: "column",
     alignContent: "flex-start",
-    bottom: 8,
-    right: 3,
   },
   historyTitle: {
+    marginTop: 10,
     fontSize: 17,
     fontWeight: "600",
     textAlign: "left",
-    top: 8,
     color: "#C4D7B2",
     alignItems: "flex-start",
     // fontFamily:'OpenSans-Medium'
@@ -43,8 +49,6 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "600",
     textAlign: "left",
-    top: 10,
-    left: 3,
     color: "#C4D7B2",
     paddingBottom: 2,
     // fontFamily:'OpenSans-Medium'
@@ -53,19 +57,15 @@ export const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "bold",
     textAlign: "left",
-    top: 15,
-    left: 3,
     color: "#C4D7B2",
-    paddingBottom: 30,
+    marginBottom: 10,
     // fontFamily:'OpenSans-Medium'
   },
   historyLastViewed: {
     fontSize: 14,
     fontWeight: "600",
     textAlign: "left",
-    left: 5,
     color: "#C4D7B2",
-    top: 5,
     // fontFamily:'OpenSans-Medium'
   },
 });

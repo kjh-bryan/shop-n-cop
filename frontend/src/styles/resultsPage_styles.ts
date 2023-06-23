@@ -1,40 +1,37 @@
-import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { StyleSheet, TextStyle, ViewStyle } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F7FFE5"
+    backgroundColor: "#F7FFE5",
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: 60,
-    paddingBottom: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     backgroundColor: "#F7FFE5",
-    height:98
+    height: 98,
   },
   text: {
     fontSize: 28,
-    fontWeight: '800',
-    textAlign: 'center',
-    color: '#C4D7B2',
-    bottom:6
+    fontWeight: "800",
+    textAlign: "center",
+    color: "#C4D7B2",
     // fontFamily:'OpenSans-Medium'
   },
   search: {
-    bottom: 36,
-    left:330 // Adjust the spacing as needed
+    top: 0,
+    right: 5, // Adjust the spacing as needed
   },
   back: {
-    top: 22,
-    left: 30, // Adjust the spacing as needed
+    top: 0,
+    left: 0, // Adjust the spacing as needed
   },
   body: {
     flex: 1,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
     paddingHorizontal: 16,
     marginTop: 10, // Adjust the spacing as needed
   },

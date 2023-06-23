@@ -2,8 +2,12 @@ import React from "react";
 import { View, Text, Image, ScrollView } from "react-native";
 import { styles } from "../styles/historyPage_style";
 import HistoryCard from "../components/HistoryCard";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const HistoryPageScreen: React.FC = () => {
+export const HistoryPageScreen: React.FC = () => {
+  const navigation = useNavigation();
   const data = [
     {
       title: "Ready Stock Ni*ke Air..",
@@ -56,31 +60,42 @@ const HistoryPageScreen: React.FC = () => {
   ];
 
   return (
-    <ScrollView
-      stickyHeaderIndices={[0]} // Specify the index of the sticky header
-      showsVerticalScrollIndicator={false}
-      style={styles.container}
-    >
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Image
+        {/* <Image
           style={styles.back}
           source={require("../../assets/images/back-arrow.png")}
+        /> */}
+
+        <Ionicons
+          name="chevron-back"
+          size={40}
+          color="#A0C49D"
+          style={styles.back}
+          onPress={() => {
+            navigation.goBack();
+            console.log("click");
+          }}
         />
         <Text style={styles.text}>History</Text>
       </View>
-      <View style={styles.body}>
-        {data.map((item, index) => (
-          <HistoryCard
-            key={index}
-            title={item.title}
-            content={item.content}
-            price={item.price}
-            image={item.image}
-          />
-        ))}
-      </View>
-    </ScrollView>
+      <ScrollView
+      // stickyHeaderIndices={[0]} // Specify the index of the sticky header
+      // showsVerticalScrollIndicator={false}
+      // style={styles.container}
+      >
+        <View style={styles.body}>
+          {data.map((item, index) => (
+            <HistoryCard
+              key={index}
+              title={item.title}
+              content={item.content}
+              price={item.price}
+              image={item.image}
+            />
+          ))}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
-
-export default HistoryPageScreen;
