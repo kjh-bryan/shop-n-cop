@@ -5,6 +5,7 @@ import HistoryCard from "../components/HistoryCard";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StyledText } from "../components";
 
 export const HistoryPageScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -16,7 +17,7 @@ export const HistoryPageScreen: React.FC = () => {
       image: require("../../assets/images/product1.png"),
     },
     {
-      title: "Authentic Nlke_Air Force..",
+      title: "Authentic Nlke_Air.....",
       content: "Amazon",
       price: "$47.03",
       image: require("../../assets/images/product2.png"),
@@ -40,7 +41,7 @@ export const HistoryPageScreen: React.FC = () => {
       image: require("../../assets/images/product1.png"),
     },
     {
-      title: "Authentic Nlke_Air Force..",
+      title: "Authentic Nlke_Air.....",
       content: "Amazon",
       price: "$47.03",
       image: require("../../assets/images/product2.png"),
@@ -77,7 +78,7 @@ export const HistoryPageScreen: React.FC = () => {
             console.log("click");
           }}
         />
-        <Text style={styles.text}>History</Text>
+        <StyledText title="History" isBold style={styles.text} />
       </View>
       <ScrollView
       // stickyHeaderIndices={[0]} // Specify the index of the sticky header

@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Image, ImageSourcePropType } from "react-native";
 import { styles } from "../styles/historyCard_styles";
+import { StyledText } from "./StyledText";
 
 interface ResultsCardProps {
   title: string;
@@ -22,12 +23,13 @@ const HistoryCard: React.FC<ResultsCardProps> = ({
           <Image source={image} style={styles.historyImg} />
         </View>
         <View style={styles.content}>
-          <Text style={styles.historyTitle}>{title}</Text>
-          <Text style={styles.historyShop}>{content}</Text>
-          <Text style={styles.historyPrice}>{price}</Text>
-          <Text style={styles.historyLastViewed}>
-            Last Viewed on 16 June 2023
-          </Text>
+          <StyledText title={title} style={styles.historyTitle} />
+          <StyledText title={content} style={styles.historyShop} />
+          <StyledText title={price} isBold style={styles.historyPrice} />
+          <StyledText
+            title="Last Viewed on 16 June 2023"
+            style={styles.historyLastViewed}
+          />
         </View>
       </View>
     </View>

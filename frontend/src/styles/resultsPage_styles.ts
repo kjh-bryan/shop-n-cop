@@ -14,7 +14,6 @@ export const styles = StyleSheet.create({
   },
   text: {
     fontSize: 28,
-    fontWeight: "800",
     textAlign: "center",
     color: "#C4D7B2",
     // fontFamily:'OpenSans-Medium'
