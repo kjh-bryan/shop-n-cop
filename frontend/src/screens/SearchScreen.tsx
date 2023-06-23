@@ -6,25 +6,46 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  NativeModules,
+  Platform,
 } from "react-native";
 import { StyledText } from "../components/StyledText";
 import { SearchBar } from "../components/SearchBar";
 import { MaterialIcons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { ShopNCopStackNavigation } from "../navigation";
+import { ShopNCopStackNavigation, StackParams } from "../navigation";
+import { SimpleLineIcons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
+import Constants from "expo-constants";
+const { StatusBarManager } = NativeModules;
+const iOSStatusBarHeight = Constants.statusBarHeight;
+type Screen = typeof ShopNCopStackNavigation.search;
+type SearchScreenProps = NativeStackScreenProps<StackParams, Screen>;
 
 const logo = require("../../assets/images/icon.png");
 const screenWidth = Dimensions.get("screen").width;
 const screenHeight = Dimensions.get("screen").height;
 
-export const SearchScreen = () => {
+export const SearchScreen = ({ route }: SearchScreenProps) => {
   const [searchPhrase, setSearchPhrase] = useState("");
   const [clicked, setClicked] = useState(false);
-  const navigation = useNavigation();
-
+  const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
+  const userId = route.params?.userId; // getting user id passed from sign in.
   return (
     <SafeAreaView style={styles.container}>
+      <SimpleLineIcons
+        name="logout"
+        size={30}
+        color="#A0C49D"
+        style={styles.logoutIcon}
+        onPress={() => {
+          navigation.replace(ShopNCopStackNavigation.signIn);
+        }}
+      />
       <View style={styles.imageContainer}>
         <Image source={logo} style={styles.imageStyle}></Image>
       </View>
@@ -122,6 +143,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     minHeight: screenHeight,
+  },
+  logoutIcon: {
+    position: "absolute",
+    left: 10,
+    top:
+      Platform.OS === "android" ? StatusBarManager.HEIGHT : iOSStatusBarHeight,
   },
   imageContainer: {
     flex: 2,

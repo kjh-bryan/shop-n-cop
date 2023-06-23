@@ -13,12 +13,14 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { ShopNCopStackNavigation } from "../navigation";
+import { ShopNCopStackNavigation, StackParams } from "../navigation";
+import { StyledText } from "../components";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export const SignInScreen = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -43,9 +45,9 @@ export const SignInScreen = () => {
           />
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate({
-                name: ShopNCopStackNavigation.search,
-              } as never);
+              navigation.replace(ShopNCopStackNavigation.search, {
+                userId: "test",
+              });
             }}
           >
             <View style={styles.signInButtonContainer}>
