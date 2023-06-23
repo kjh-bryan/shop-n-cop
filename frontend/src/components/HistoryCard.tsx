@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, Image, ImageSourcePropType } from "react-native";
 import { styles } from "../styles/historyCard_styles";
-import { Card } from "react-native-elements";
 
 interface ResultsCardProps {
   title: string;
@@ -17,9 +16,11 @@ const HistoryCard: React.FC<ResultsCardProps> = ({
   price,
 }) => {
   return (
-    <Card containerStyle={styles.cardOuter}>
+    <View style={styles.cardOuter}>
       <View style={styles.card}>
-        <Image source={image} style={styles.historyImg} />
+        <View style={styles.imageContainer}>
+          <Image source={image} style={styles.historyImg} />
+        </View>
         <View style={styles.content}>
           <Text style={styles.historyTitle}>{title}</Text>
           <Text style={styles.historyShop}>{content}</Text>
@@ -29,7 +30,7 @@ const HistoryCard: React.FC<ResultsCardProps> = ({
           </Text>
         </View>
       </View>
-    </Card>
+    </View>
   );
 };
 

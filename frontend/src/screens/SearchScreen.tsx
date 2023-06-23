@@ -1,118 +1,118 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, Image, Dimensions, TouchableOpacity, SafeAreaView, NativeModules, Platform } from 'react-native';
-import { StyledText } from '../components/StyledText';
-import { SearchBar } from '../components/SearchBar';
+import React, { useState } from "react";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
+import { StyledText } from "../components/StyledText";
+import { SearchBar } from "../components/SearchBar";
 import { MaterialIcons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+import { ShopNCopStackNavigation } from "../navigation";
 
-const {StatusBarManager} = NativeModules;
-const logo = require('../../assets/images/icon.png');
-const screenWidth = Dimensions.get('screen').width;
+const logo = require("../../assets/images/icon.png");
+const screenWidth = Dimensions.get("screen").width;
 const screenHeight = Dimensions.get("screen").height;
 
+export const SearchScreen = () => {
+  const [searchPhrase, setSearchPhrase] = useState("");
+  const [clicked, setClicked] = useState(false);
+  const navigation = useNavigation();
 
-
-export const SearchScreen =()=> {
-   const [searchPhrase, setSearchPhrase] = useState("");
-   const [clicked,setClicked] = useState(false);
-
-    return (
-      <SafeAreaView
-        style={{
-          flex: 1,
-          paddingTop: Platform.OS === "android" ? StatusBarManager.HEIGHT : 0,
-        }}
-      >
-        <View style={styles.container}>
-          <View style={styles.imageContainer}>
-            <Image source={logo} style={styles.imageStyle}></Image>
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.imageContainer}>
+        <Image source={logo} style={styles.imageStyle}></Image>
+      </View>
+      <View style={styles.bodyContainer}>
+        <View style={styles.topBody}>
+          <View style={styles.titleContainer}>
+            <StyledText
+              title="What are you"
+              style={styles.smallFont}
+              isBold={false}
+              isLight={true}
+            />
+            <Text>
+              <StyledText
+                title="Shopping "
+                style={styles.mediumFont}
+                isBold={true}
+                isLight={false}
+              />
+              <StyledText
+                title="for today?"
+                style={styles.mediumFont}
+                isBold={false}
+                isLight={true}
+              />
+            </Text>
           </View>
-          <View style={styles.bodyContainer}>
-            <View style={styles.topBody}>
-              <View style={styles.titleContainer}>
-                <StyledText
-                  title="What are you"
-                  style={styles.smallFont}
-                  isBold={false}
-                  isLight={true}
-                />
-                <Text>
-                  <StyledText
-                    title="Shopping "
-                    style={styles.mediumFont}
-                    isBold={true}
-                    isLight={false}
-                  />
-                  <StyledText
-                    title="for today?"
-                    style={styles.mediumFont}
-                    isBold={false}
-                    isLight={true}
-                  />
-                </Text>
-              </View>
-              <View>
-                <SearchBar
-                  searchPhrase={searchPhrase}
-                  setSearchPhrase={setSearchPhrase}
-                  clicked={clicked}
-                  setClicked={setClicked}
-                />
-              </View>
-            </View>
-            <View style={styles.middleBody}>
-              <View style={styles.dividerContainer}>
-                <View style={styles.divider} />
-                <StyledText
-                  title="or"
-                  isBold={true}
-                  isLight={false}
-                  style={styles.dividerText}
-                />
-                <View style={styles.divider} />
-              </View>
-            </View>
-            <View style={styles.bottomBody}>
-              <View style={styles.imageContainer}>
-                <TouchableOpacity>
-                  <MaterialIcons
-                    name="image-search"
-                    size={80}
-                    color="#A0C49D"
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  onPress={() => {
-                    console.log("Open Gallery");
-                  }}
-                  style={styles.button}
-                >
-                  <StyledText
-                    title="Search"
-                    isBold={false}
-                    isLight={false}
-                    style={styles.buttonText}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.imageContainer}>
-                <TouchableOpacity
-                  onPress={() => {
-                    console.log("Go to History");
-                  }}
-                >
-                  <MaterialIcons name="history" size={80} color="#A0C49D" />
-                </TouchableOpacity>
-              </View>
-            </View>
+          <View>
+            <SearchBar
+              searchPhrase={searchPhrase}
+              setSearchPhrase={setSearchPhrase}
+              clicked={clicked}
+              setClicked={setClicked}
+            />
           </View>
-          <View style={styles.footerContainer}></View>
         </View>
-      </SafeAreaView>
-    );
-}
-
+        <View style={styles.middleBody}>
+          <View style={styles.dividerContainer}>
+            <View style={styles.divider} />
+            <StyledText
+              title="or"
+              isBold={true}
+              isLight={false}
+              style={styles.dividerText}
+            />
+            <View style={styles.divider} />
+          </View>
+        </View>
+        <View style={styles.bottomBody}>
+          <View style={styles.imageContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                console.log("Open Gallery");
+              }}
+            >
+              <MaterialIcons name="image-search" size={80} color="#A0C49D" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(ShopNCopStackNavigation.results as never);
+              }}
+              style={styles.button}
+            >
+              <StyledText
+                title="Search"
+                isBold={false}
+                isLight={false}
+                style={styles.buttonText}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.imageContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(ShopNCopStackNavigation.history as never);
+              }}
+            >
+              <MaterialIcons name="history" size={80} color="#A0C49D" />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+      <View style={styles.footerContainer}></View>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
