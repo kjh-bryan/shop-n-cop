@@ -1,15 +1,14 @@
-
 import React from "react";
 import { registerRootComponent } from "expo";
-import SignInScreen from "./screens/SignInScreen";
+import { Navigation } from "./navigation/StackNavigator";
 
 const EntryPoint = () => {
   return (
-    // put whatever screen you wanna see here
-    <SignInScreen/>
+    <>
+      <Navigation />
+    </>
   );
 };
 
 
 export default registerRootComponent(EntryPoint);
-
