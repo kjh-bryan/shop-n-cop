@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
   },
   productTitle: {
     fontSize: 16,
-    fontWeight: "600",
     textAlign: "center",
     top: 8,
     color: "#C4D7B2",
@@ -17,7 +16,6 @@ export const styles = StyleSheet.create({
   },
   productShop: {
     fontSize: 13,
-    fontWeight: "600",
     textAlign: "center",
     top: 7,
     color: "#C4D7B2",
@@ -26,7 +24,6 @@ export const styles = StyleSheet.create({
   },
   productPrice: {
     fontSize: 16,
-    fontWeight: "bold",
     textAlign: "center",
     top: 6,
     color: "#C4D7B2",

@@ -6,6 +6,7 @@ import ResultsCard from "../components/ResultCard";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StyledText } from "../components";
 export const ResultsPageScreen: React.FC = () => {
   const navigation = useNavigation();
 
@@ -77,7 +78,7 @@ export const ResultsPageScreen: React.FC = () => {
             console.log("click");
           }}
         />
-        <Text style={styles.text}>Results Page</Text>
+        <StyledText title="Results Page" isBold style={styles.text} />
         {/* <Image
           style={styles.search}
           source={require("../../assets/images/search.png")}

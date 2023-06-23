@@ -5,11 +5,11 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     shadowOffset: {
       width: 0,
-      height: 5,
+      height: 3,
     },
     shadowColor: "#000",
-    shadowOpacity: 0.8,
-    shadowRadius: 5,
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
     elevation: 5,
     marginBottom: 20,
     backgroundColor: "#f9ffeb",
@@ -39,7 +39,6 @@ export const styles = StyleSheet.create({
   historyTitle: {
     marginTop: 10,
     fontSize: 17,
-    fontWeight: "600",
     textAlign: "left",
     color: "#C4D7B2",
     alignItems: "flex-start",
@@ -47,7 +46,6 @@ export const styles = StyleSheet.create({
   },
   historyShop: {
     fontSize: 13,
-    fontWeight: "600",
     textAlign: "left",
     color: "#C4D7B2",
     paddingBottom: 2,
@@ -55,7 +53,6 @@ export const styles = StyleSheet.create({
   },
   historyPrice: {
     fontSize: 17,
-    fontWeight: "bold",
     textAlign: "left",
     color: "#C4D7B2",
     marginBottom: 10,
@@ -63,7 +60,6 @@ export const styles = StyleSheet.create({
   },
   historyLastViewed: {
     fontSize: 14,
-    fontWeight: "600",
     textAlign: "left",
     color: "#C4D7B2",
     // fontFamily:'OpenSans-Medium'

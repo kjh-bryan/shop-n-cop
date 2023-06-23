@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Image, ImageSourcePropType } from "react-native";
 import { styles } from "../styles/resultsCard_styles";
+import { StyledText } from "./StyledText";
 
 interface ResultsCardProps {
   title: string;
@@ -20,9 +21,9 @@ const ResultsCard: React.FC<ResultsCardProps> = ({
       {/* for image url purpose */}
       {/* <Image source={{ uri: image }} /> */}
       <Image source={image} />
-      <Text style={styles.productTitle}>{title}</Text>
-      <Text style={styles.productShop}>{content}</Text>
-      <Text style={styles.productPrice}>{price}</Text>
+      <StyledText title={title} style={styles.productTitle} />
+      <StyledText title={content} style={styles.productShop} />
+      <StyledText title={price} isBold style={styles.productPrice} />
     </View>
   );
 };
