@@ -8,14 +8,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   blueText: {
-    fontFamily: "Roboto",
     color: "#4285F4",
-    fontWeight: "normal",
   },
   signInWithText: {
-    fontFamily: "Open Sans",
     color: "#A0C49D",
-    fontWeight: "bold",
     marginVertical: 20,
   },
   signInWithAppsContainer: {
@@ -30,10 +26,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   notMemberText: {
-    fontFamily: "Roboto",
     color: "#A0C49D",
     fontSize: 14,
-    fontWeight: "bold",
   },
   signInButtonContainer: {
     width: 330,
@@ -45,14 +39,12 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   signInButtonText: {
-    fontFamily: "Open Sans",
     color: "#FFFFFF",
     fontSize: 20,
   },
   signInHeaderText: {
     color: "#A0C49D",
     fontSize: 24,
-    fontWeight: "bold",
   },
   topHalf: {
     flex: 0.75,
