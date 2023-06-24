@@ -10,54 +10,63 @@ import { darkGreen } from "../constants";
 
 export const HistoryPageScreen: React.FC = () => {
   const navigation = useNavigation();
+
   const data = [
     {
       title: "Ready Stock Ni*ke Air..",
       content: "Shopee",
       price: "$22.81",
       image: require("../../assets/images/product1.png"),
+      date: "2023-06-16T09:30:00Z",
     },
     {
       title: "Authentic Nlke_Air.....",
       content: "Amazon",
       price: "$47.03",
       image: require("../../assets/images/product2.png"),
+      date: "2023-06-16T09:30:00Z",
     },
     {
       title: "Special Offer NIK-E AIR..",
       content: "Shopee",
       price: "$64",
       image: require("../../assets/images/product3.png"),
+      date: "2023-06-16T09:30:00Z",
     },
     {
       title: "NIke Air Max Fusion Air",
       content: "Lazada",
       price: "$75",
       image: require("../../assets/images/product4.png"),
+      date: "2023-06-16T09:30:00Z",
     },
     {
       title: "Ready Stock Ni*ke Air..",
       content: "Shopee",
       price: "$22.81",
       image: require("../../assets/images/product1.png"),
+      date: "2023-06-16T09:30:00Z",
     },
     {
       title: "Authentic Nlke_Air.....",
       content: "Amazon",
       price: "$47.03",
       image: require("../../assets/images/product2.png"),
+      date: "2023-06-16T09:30:00Z",
     },
     {
       title: "Special Offer NIK-E AIR..",
       content: "Shopee",
       price: "$64",
       image: require("../../assets/images/product3.png"),
+      date: "2023-06-16T09:30:00Z",
     },
     {
       title: "NIke Air Max Fusion Air",
       content: "Lazada",
       price: "$75",
       image: require("../../assets/images/product4.png"),
+      date: "2023-06-16T09:30:00Z",
     },
   ];
 
@@ -94,6 +103,7 @@ export const HistoryPageScreen: React.FC = () => {
               content={item.content}
               price={item.price}
               image={item.image}
+              date={item.date}
             />
           ))}
         </View>

@@ -58,6 +58,7 @@ export const styles = StyleSheet.create({
   historyLastViewed: {
     fontSize: 14,
     textAlign: "left",
+    color: historyText,
   },
 });
 
