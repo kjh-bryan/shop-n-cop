@@ -17,6 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 import { StyledText } from "../components";
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
+import { darkGreen } from "../constants";
 
 export const RegisterScreen = () => {
   const [email, setEmail] = useState<string>("");
@@ -43,7 +44,7 @@ export const RegisterScreen = () => {
           <Ionicons
             name="chevron-back"
             size={40}
-            color="#A0C49D"
+            color={darkGreen}
             style={styles.backChevron}
             onPress={() => {
               navigation.goBack();
