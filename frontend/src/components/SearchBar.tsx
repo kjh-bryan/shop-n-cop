@@ -15,9 +15,9 @@ export const SearchBar = ({
   setSearchPhrase: any;
   setClicked: any;
 }) => {
-      let [fontsLoaded] = useFonts({
-       "OpenSans-Regular": require("../../assets/fonts/OpenSans-Regular.ttf"),
-       "OpenSans-Bold": require("../../assets/fonts/OpenSans-Bold.ttf"),
+      const [fontsLoaded] = useFonts({
+       "OpenSans-Regular": require("../../assets/fonts/OpenSans/OpenSans-Regular.ttf"),
+       "OpenSans-Bold": require("../../assets/fonts/OpenSans/OpenSans-Bold.ttf"),
      }); 
      if (!fontsLoaded) {
        return <AppLoading />;

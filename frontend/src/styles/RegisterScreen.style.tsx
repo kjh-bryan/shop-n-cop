@@ -8,7 +8,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   registerWithText: {
-    fontFamily: "Open Sans",
     color: "#A0C49D",
     fontWeight: "bold",
     marginVertical: 20,
@@ -49,12 +48,10 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   registerButtonText: {
-    fontFamily: "Open Sans",
     color: "#FFFFFF",
     fontSize: 20,
   },
   registerHeaderText: {
-    fontFamily: "Open Sans",
     color: "#A0C49D",
     fontSize: 24,
     fontWeight: "bold",
