@@ -19,10 +19,10 @@ export const StyledText = ({
   isBold?: boolean;
   isLight?: boolean;
 }) => {
-  let [fontsLoaded] = useFonts({
-    "OpenSans-Regular": require("../../assets/fonts/OpenSans-Regular.ttf"),
-    "OpenSans-Bold": require("../../assets/fonts/OpenSans-Bold.ttf"),
-    "OpenSans-Light": require("../../assets/fonts/OpenSans-Light.ttf"),
+  const [fontsLoaded] = useFonts({
+    "OpenSans-Regular": require("../../assets/fonts/OpenSans/OpenSans-Regular.ttf"),
+    "OpenSans-Bold": require("../../assets/fonts/OpenSans/OpenSans-Bold.ttf"),
+    "OpenSans-Light": require("../../assets/fonts/OpenSans/OpenSans-Light.ttf"),
   });
 
   if (!fontsLoaded) {

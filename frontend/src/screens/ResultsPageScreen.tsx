@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { styles } from "../styles/resultsPage_styles";
 import ResultsCard from "../components/ResultCard";
 
@@ -7,6 +7,7 @@ import { Ionicons, Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StyledText } from "../components";
+import { darkGreen } from "../constants";
 export const ResultsPageScreen: React.FC = () => {
   const navigation = useNavigation();
 
@@ -71,7 +72,7 @@ export const ResultsPageScreen: React.FC = () => {
         <Ionicons
           name="chevron-back"
           size={40}
-          color="#A0C49D"
+          color={darkGreen}
           style={styles.back}
           onPress={() => {
             navigation.goBack();
@@ -86,7 +87,7 @@ export const ResultsPageScreen: React.FC = () => {
         <Feather
           name="search"
           size={30}
-          color="#A0C49D"
+          color={darkGreen}
           nPress={() => {
             console.log("on search click");
           }}

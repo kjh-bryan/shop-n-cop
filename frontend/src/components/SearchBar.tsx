@@ -3,6 +3,7 @@ import { StyleSheet, TextInput, View, Keyboard, Button } from "react-native";
 import { Feather, Entypo } from "@expo/vector-icons";
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
+import { darkGreen, white } from '../constants';
 
 export const SearchBar = ({
   clicked,
@@ -15,9 +16,9 @@ export const SearchBar = ({
   setSearchPhrase: any;
   setClicked: any;
 }) => {
-      let [fontsLoaded] = useFonts({
-       "OpenSans-Regular": require("../../assets/fonts/OpenSans-Regular.ttf"),
-       "OpenSans-Bold": require("../../assets/fonts/OpenSans-Bold.ttf"),
+      const [fontsLoaded] = useFonts({
+       "OpenSans-Regular": require("../../assets/fonts/OpenSans/OpenSans-Regular.ttf"),
+       "OpenSans-Bold": require("../../assets/fonts/OpenSans/OpenSans-Bold.ttf"),
      }); 
      if (!fontsLoaded) {
        return <AppLoading />;
@@ -40,7 +41,7 @@ export const SearchBar = ({
             <Entypo
               name="cross"
               size={20}
-              color="#A0C49D"
+              color={darkGreen}
               style={{ marginLeft: 1,position:'absolute', right:20,}}
               onPress={() => {
                 setSearchPhrase("");
@@ -54,7 +55,7 @@ export const SearchBar = ({
             <Feather
               name="search"
               size={20}
-              color="#A0C49D"
+              color={darkGreen}
               style={{ marginLeft: 1,position:'absolute', right:20, }}
             />
           )}
@@ -74,20 +75,20 @@ const styles = StyleSheet.create({
     width: "100%",
     elevation: 5,
     borderWidth: 1,
-    borderColor: "#A0C49D",
+    borderColor: darkGreen,
     borderRadius:15,
   },
   searchBarClicked: {
     flexDirection: "row",
     width: "100%",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: white,
     borderRadius: 15,
     alignItems: "center",
   },
   searchBarUnClicked: {
     flexDirection: "row",
     width: "100%",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: white,
     borderRadius: 15,
     alignItems: "center",
   },

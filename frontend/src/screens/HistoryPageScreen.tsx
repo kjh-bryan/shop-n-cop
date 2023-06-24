@@ -1,11 +1,12 @@
 import React from "react";
-import { View, Text, Image, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import { styles } from "../styles/historyPage_style";
 import HistoryCard from "../components/HistoryCard";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StyledText } from "../components";
+import { darkGreen } from "../constants";
 
 export const HistoryPageScreen: React.FC = () => {
   const navigation = useNavigation();
@@ -71,7 +72,7 @@ export const HistoryPageScreen: React.FC = () => {
         <Ionicons
           name="chevron-back"
           size={40}
-          color="#A0C49D"
+          color={darkGreen}
           style={styles.back}
           onPress={() => {
             navigation.goBack();
