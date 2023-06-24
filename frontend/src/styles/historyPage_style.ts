@@ -1,9 +1,10 @@
 import { StyleSheet, TextStyle } from "react-native";
+import { lightGreen, historyText } from "../constants";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F7FFE5",
+    backgroundColor: lightGreen,
   },
   header: {
     flexDirection: "row",
@@ -14,8 +15,7 @@ export const styles = StyleSheet.create({
   text: {
     fontSize: 28,
     textAlign: "center",
-    color: "#C4D7B2",
-    // fontFamily:'OpenSans-Medium'
+    color: historyText,
   },
   back: {
     top: 20,

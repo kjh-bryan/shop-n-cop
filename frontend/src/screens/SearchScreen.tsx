@@ -21,6 +21,8 @@ import {
   NativeStackScreenProps,
 } from "@react-navigation/native-stack";
 import Constants from "expo-constants";
+import { darkGreen, lightGreen, white } from "../constants";
+
 const { StatusBarManager } = NativeModules;
 const iOSStatusBarHeight = Constants.statusBarHeight;
 type Screen = typeof ShopNCopStackNavigation.search;
@@ -40,7 +42,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
       <SimpleLineIcons
         name="logout"
         size={30}
-        color="#A0C49D"
+        color={darkGreen}
         style={styles.logoutIcon}
         onPress={() => {
           navigation.replace(ShopNCopStackNavigation.signIn);
@@ -101,7 +103,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
                 console.log("Open Gallery");
               }}
             >
-              <MaterialIcons name="image-search" size={80} color="#A0C49D" />
+              <MaterialIcons name="image-search" size={80} color={darkGreen} />
             </TouchableOpacity>
           </View>
           <View style={styles.buttonContainer}>
@@ -125,7 +127,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
                 navigation.navigate(ShopNCopStackNavigation.history as never);
               }}
             >
-              <MaterialIcons name="history" size={80} color="#A0C49D" />
+              <MaterialIcons name="history" size={80} color={darkGreen} />
             </TouchableOpacity>
           </View>
         </View>
@@ -138,8 +140,8 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F7FFE5",
-    color: "#A0C49D",
+    backgroundColor: lightGreen,
+    color: darkGreen,
     justifyContent: "center",
     alignItems: "center",
     minHeight: screenHeight,
@@ -184,12 +186,12 @@ const styles = StyleSheet.create({
   divider: {
     flex: 1,
     height: 1,
-    backgroundColor: "#A0C49D",
+    backgroundColor: darkGreen,
   },
   dividerText: {
     width: 80,
     textAlign: "center",
-    color: "#A0C49D",
+    color: darkGreen,
     fontSize: 16,
   },
   bottomBody: {
@@ -203,13 +205,13 @@ const styles = StyleSheet.create({
   button: {
     width: "100%",
     borderRadius: 10,
-    backgroundColor: "#A0C49D",
+    backgroundColor: darkGreen,
     alignItems: "center",
     justifyContent: "center",
     elevation: 5,
   },
   buttonText: {
-    color: "#FFFFFF",
+    color: white,
     letterSpacing: 3,
     fontSize: 16,
   },
@@ -218,11 +220,11 @@ const styles = StyleSheet.create({
   },
   smallFont: {
     fontSize: 20,
-    color: "#A0C49D",
+    color: darkGreen,
   },
   mediumFont: {
     fontSize: 24,
-    color: "#A0C49D",
+    color: darkGreen,
   },
   footerContainer: {
     flex: 1,
