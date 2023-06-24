@@ -1,4 +1,3 @@
-import React from "react";
 import { registerRootComponent } from "expo";
 import { Navigation } from "./navigation/StackNavigator";
 

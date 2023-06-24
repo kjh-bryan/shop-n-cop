@@ -14,6 +14,10 @@ import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import { StyledText } from "../components";
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
+import { darkGreen } from "../constants";
 
 export const RegisterScreen = () => {
   const [email, setEmail] = useState<string>("");
@@ -22,6 +26,13 @@ export const RegisterScreen = () => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const navigation = useNavigation();
+
+  const [fontsLoaded] = useFonts({
+    "Roboto-Bold": require("../../assets/fonts/Roboto/Roboto-Bold.ttf"),
+  }); 
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -33,14 +44,18 @@ export const RegisterScreen = () => {
           <Ionicons
             name="chevron-back"
             size={40}
-            color="#A0C49D"
+            color={darkGreen}
             style={styles.backChevron}
             onPress={() => {
               navigation.goBack();
             }}
           />
           <Image source={require("../../assets/logo/logo.png")} />
-          <Text style={styles.registerHeaderText}>Register</Text>
+          <StyledText 
+                 title="Register"
+                 style={styles.registerHeaderText}
+                 isBold={true}
+                 isLight={false}/>
           <View style={styles.nameContainer}>
             <TextInput
               style={styles.nameTextBox}
@@ -53,6 +68,7 @@ export const RegisterScreen = () => {
               onChangeText={setLastName}
               value={lastName}
               placeholder="Last Name"
+            
             />
           </View>
           <TextInput
@@ -79,12 +95,16 @@ export const RegisterScreen = () => {
             onPress={() => console.log("register button pressed")}
           >
             <View style={styles.registerButtonContainer}>
-              <Text style={styles.registerButtonText}>Register</Text>
+              <StyledText
+              title='Register'
+              style={styles.registerButtonText}
+              isBold={false}
+              isLight={false}/>
             </View>
           </TouchableOpacity>
         </KeyboardAvoidingView>
         <View style={styles.bottomHalf}>
-          <Text style={styles.registerWithText}>Register with</Text>
+          <Text style={[styles.registerWithText, {fontFamily: "Roboto-Bold"}]}>Register with</Text>
           <View style={styles.registerWithAppsContainer}>
             <TouchableOpacity
               onPress={() => console.log("apple button pressed")}

@@ -1,4 +1,5 @@
 import { StyleSheet, TextStyle } from "react-native";
+import { historyShadow, historyCardBG, historyText } from "../constants";
 
 export const styles = StyleSheet.create({
   cardOuter: {
@@ -7,12 +8,12 @@ export const styles = StyleSheet.create({
       width: 0,
       height: 3,
     },
-    shadowColor: "#000",
+    shadowColor: historyShadow,
     shadowOpacity: 0.3,
     shadowRadius: 2,
     elevation: 5,
     marginBottom: 20,
-    backgroundColor: "#f9ffeb",
+    backgroundColor: historyCardBG,
     marginHorizontal: 21,
   },
   card: {
@@ -40,29 +41,23 @@ export const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 17,
     textAlign: "left",
-    color: "#C4D7B2",
+    color: historyText,
     alignItems: "flex-start",
-    // fontFamily:'OpenSans-Medium'
   },
   historyShop: {
     fontSize: 13,
     textAlign: "left",
-    color: "#C4D7B2",
+    color: historyText,
     paddingBottom: 2,
-    // fontFamily:'OpenSans-Medium'
   },
   historyPrice: {
     fontSize: 17,
     textAlign: "left",
-    color: "#C4D7B2",
-    marginBottom: 10,
-    // fontFamily:'OpenSans-Medium'
+    color: historyText,
   },
   historyLastViewed: {
     fontSize: 14,
     textAlign: "left",
-    color: "#C4D7B2",
-    // fontFamily:'OpenSans-Medium'
   },
 });
 

@@ -1,15 +1,21 @@
 import { StyleSheet } from "react-native";
+import { 
+  darkGreen, 
+  lightGreen, 
+  textBoxBG,
+  textBoxBorder,
+  white
+ } from "../constants";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F7FFE5",
+    backgroundColor: lightGreen,
     alignItems: "center",
     justifyContent: "space-evenly",
   },
   registerWithText: {
-    fontFamily: "Open Sans",
-    color: "#A0C49D",
+    color: darkGreen,
     fontWeight: "bold",
     marginVertical: 20,
   },
@@ -31,9 +37,9 @@ const styles = StyleSheet.create({
     width: 150,
     borderWidth: 3,
     padding: 10,
-    backgroundColor: "#FFFFFFBF",
+    backgroundColor: textBoxBG,
     borderRadius: 15,
-    borderColor: "#A0C49D7A",
+    borderColor: textBoxBorder,
     shadowOffset: { width: 2, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.15,
@@ -43,19 +49,17 @@ const styles = StyleSheet.create({
     width: 330,
     height: 49,
     alignItems: "center",
-    backgroundColor: "#A0C49D",
+    backgroundColor: darkGreen,
     flexDirection: "column",
     justifyContent: "center",
     borderRadius: 15,
   },
   registerButtonText: {
-    fontFamily: "Open Sans",
-    color: "#FFFFFF",
+    color: white,
     fontSize: 20,
   },
   registerHeaderText: {
-    fontFamily: "Open Sans",
-    color: "#A0C49D",
+    color: darkGreen,
     fontSize: 24,
     fontWeight: "bold",
   },
@@ -74,9 +78,9 @@ const styles = StyleSheet.create({
     width: 330,
     borderWidth: 3,
     padding: 10,
-    backgroundColor: "#FFFFFFBF",
+    backgroundColor: textBoxBG,
     borderRadius: 15,
-    borderColor: "#A0C49D7A",
+    borderColor: textBoxBorder,
     shadowOffset: { width: 2, height: 3 },
     shadowRadius: 3,
     shadowOpacity: 0.15,

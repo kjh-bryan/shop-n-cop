@@ -1,4 +1,5 @@
-import { Dimensions, StyleSheet, TextStyle, ViewStyle } from "react-native";
+import { Dimensions, StyleSheet, TextStyle } from "react-native";
+import { historyText } from "../constants";
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -11,24 +12,21 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     top: 8,
-    color: "#C4D7B2",
-    // fontFamily:'OpenSans-Medium'
+    color: historyText,
   },
   productShop: {
     fontSize: 13,
     textAlign: "center",
     top: 7,
-    color: "#C4D7B2",
+    color: historyText,
     paddingBottom: 2,
-    // fontFamily:'OpenSans-Medium'
   },
   productPrice: {
     fontSize: 16,
     textAlign: "center",
     top: 6,
-    color: "#C4D7B2",
+    color: historyText,
     paddingBottom: 30,
-    // fontFamily:'OpenSans-Medium'
   },
 });
 
