@@ -1,5 +1,3 @@
-import AppLoading from "expo-app-loading";
-import { useFonts } from "expo-font";
 import React from "react";
 import {
   StyleSheet,
@@ -19,15 +17,6 @@ export const StyledText = ({
   isBold?: boolean;
   isLight?: boolean;
 }) => {
-  const [fontsLoaded] = useFonts({
-    "OpenSans-Regular": require("../../assets/fonts/OpenSans/OpenSans-Regular.ttf"),
-    "OpenSans-Bold": require("../../assets/fonts/OpenSans/OpenSans-Bold.ttf"),
-    "OpenSans-Light": require("../../assets/fonts/OpenSans/OpenSans-Light.ttf"),
-  });
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
   return (
     <>
       {isBold && !isLight && <Text style={[styles.bold, style]}>{title}</Text>}

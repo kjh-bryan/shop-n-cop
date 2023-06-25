@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     color: darkGreen,
     fontWeight: "bold",
     marginVertical: 20,
+    fontFamily: "Roboto-Bold"
   },
   registerWithAppsContainer: {
     flex: 1,
