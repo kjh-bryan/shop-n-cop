@@ -15,8 +15,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { StyledText } from "../components";
-import { useFonts } from 'expo-font';
-import AppLoading from 'expo-app-loading';
 import { darkGreen } from "../constants";
 
 export const RegisterScreen = () => {
@@ -26,13 +24,6 @@ export const RegisterScreen = () => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const navigation = useNavigation();
-
-  const [fontsLoaded] = useFonts({
-    "Roboto-Bold": require("../../assets/fonts/Roboto/Roboto-Bold.ttf"),
-  }); 
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -104,7 +95,7 @@ export const RegisterScreen = () => {
           </TouchableOpacity>
         </KeyboardAvoidingView>
         <View style={styles.bottomHalf}>
-          <Text style={[styles.registerWithText, {fontFamily: "Roboto-Bold"}]}>Register with</Text>
+          <Text style={styles.registerWithText}>Register with</Text>
           <View style={styles.registerWithAppsContainer}>
             <TouchableOpacity
               onPress={() => console.log("apple button pressed")}
