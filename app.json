@@ -11,9 +11,16 @@
       "resizeMode": "contain",
       "backgroundColor": "#F7FFE5"
     },
-    "assetBundlePatterns": [
-      "**/*"
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to have access to your camera.",
+          "photosPermission": "Allow $(PRODUCT_NAME) to have access to your photos"
+        }
+      ]
     ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
