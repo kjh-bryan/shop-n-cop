@@ -1,6 +1,6 @@
-import { registerRootComponent } from "expo";
-import { Navigation } from "./navigation/StackNavigator";
-import { loadFonts } from "./utils";
+import { registerRootComponent } from 'expo';
+import { Navigation } from './navigation/StackNavigator';
+import { loadFonts } from './utils';
 import AppLoading from 'expo-app-loading';
 
 const EntryPoint = () => {
@@ -17,6 +17,5 @@ const EntryPoint = () => {
     </>
   );
 };
-
 
 export default registerRootComponent(EntryPoint);
