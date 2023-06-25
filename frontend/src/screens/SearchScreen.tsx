@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -8,39 +8,40 @@ import {
   TouchableOpacity,
   NativeModules,
   Platform,
-} from "react-native";
-import { StyledText } from "../components/StyledText";
-import { SearchBar } from "../components/SearchBar";
-import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { ShopNCopStackNavigation, StackParams } from "../navigation";
-import { SimpleLineIcons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
+} from 'react-native';
+import { StyledText } from '../components/StyledText';
+import { SearchBar } from '../components/SearchBar';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { SimpleLineIcons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   NativeStackNavigationProp,
   NativeStackScreenProps,
-} from "@react-navigation/native-stack";
-import Constants from "expo-constants";
-import { darkGreen, lightGreen, white } from "../constants";
+} from '@react-navigation/native-stack';
+import Constants from 'expo-constants';
+import { darkGreen, lightGreen, white } from '../constants';
+import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
+import { StackParams } from '../navigation/NavigationTypes';
 
 const { StatusBarManager } = NativeModules;
 const iOSStatusBarHeight = Constants.statusBarHeight;
 type Screen = typeof ShopNCopStackNavigation.search;
 type SearchScreenProps = NativeStackScreenProps<StackParams, Screen>;
 
-const logo = require("../../assets/images/icon.png");
-const screenWidth = Dimensions.get("screen").width;
-const screenHeight = Dimensions.get("screen").height;
+const logo = require('../../assets/images/icon.png');
+const screenWidth = Dimensions.get('screen').width;
+const screenHeight = Dimensions.get('screen').height;
 
 export const SearchScreen = ({ route }: SearchScreenProps) => {
-  const [searchPhrase, setSearchPhrase] = useState("");
+  const [searchPhrase, setSearchPhrase] = useState('');
   const [clicked, setClicked] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
   const userId = route.params?.userId; // getting user id passed from sign in.
   return (
     <SafeAreaView style={styles.container}>
       <SimpleLineIcons
-        name="logout"
+        name='logout'
         size={30}
         color={darkGreen}
         style={styles.logoutIcon}
@@ -55,20 +56,20 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         <View style={styles.topBody}>
           <View style={styles.titleContainer}>
             <StyledText
-              title="What are you"
+              title='What are you'
               style={styles.smallFont}
               isBold={false}
               isLight={true}
             />
             <Text>
               <StyledText
-                title="Shopping "
+                title='Shopping '
                 style={styles.mediumFont}
                 isBold={true}
                 isLight={false}
               />
               <StyledText
-                title="for today?"
+                title='for today?'
                 style={styles.mediumFont}
                 isBold={false}
                 isLight={true}
@@ -88,7 +89,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
           <View style={styles.dividerContainer}>
             <View style={styles.divider} />
             <StyledText
-              title="or"
+              title='or'
               isBold={true}
               isLight={false}
               style={styles.dividerText}
@@ -100,10 +101,10 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
           <View style={styles.imageContainer}>
             <TouchableOpacity
               onPress={() => {
-                console.log("Open Gallery");
+                console.log('Open Gallery');
               }}
             >
-              <MaterialIcons name="image-search" size={80} color={darkGreen} />
+              <MaterialIcons name='image-search' size={80} color={darkGreen} />
             </TouchableOpacity>
           </View>
           <View style={styles.buttonContainer}>
@@ -114,7 +115,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
               style={styles.button}
             >
               <StyledText
-                title="Search"
+                title='Search'
                 isBold={false}
                 isLight={false}
                 style={styles.buttonText}
@@ -127,7 +128,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
                 navigation.navigate(ShopNCopStackNavigation.history as never);
               }}
             >
-              <MaterialIcons name="history" size={80} color={darkGreen} />
+              <MaterialIcons name='history' size={80} color={darkGreen} />
             </TouchableOpacity>
           </View>
         </View>
@@ -142,20 +143,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: lightGreen,
     color: darkGreen,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     minHeight: screenHeight,
   },
   logoutIcon: {
-    position: "absolute",
+    position: 'absolute',
     left: 10,
     top:
-      Platform.OS === "android" ? StatusBarManager.HEIGHT : iOSStatusBarHeight,
+      Platform.OS === 'android' ? StatusBarManager.HEIGHT : iOSStatusBarHeight,
   },
   imageContainer: {
     flex: 2,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   imageStyle: {
     width: 120,
@@ -163,25 +164,25 @@ const styles = StyleSheet.create({
   },
   bodyContainer: {
     flex: 9,
-    justifyContent: "space-between",
-    alignItems: "center",
+    justifyContent: 'space-between',
+    alignItems: 'center',
     width: screenWidth - 100,
   },
   topBody: {
     flex: 0.4,
   },
   titleContainer: {
-    justifyContent: "flex-start",
+    justifyContent: 'flex-start',
     paddingVertical: 16,
     paddingHorizontal: 10,
   },
   middleBody: {
     flex: 0.1,
-    alignItems: "center",
+    alignItems: 'center',
   },
   dividerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   divider: {
     flex: 1,
@@ -190,7 +191,7 @@ const styles = StyleSheet.create({
   },
   dividerText: {
     width: 80,
-    textAlign: "center",
+    textAlign: 'center',
     color: darkGreen,
     fontSize: 16,
   },
@@ -199,15 +200,15 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 0.7,
-    flexDirection: "row",
+    flexDirection: 'row',
     marginVertical: 20,
   },
   button: {
-    width: "100%",
+    width: '100%',
     borderRadius: 10,
     backgroundColor: darkGreen,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     elevation: 5,
   },
   buttonText: {
@@ -216,7 +217,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   fontBold: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   smallFont: {
     fontSize: 20,
