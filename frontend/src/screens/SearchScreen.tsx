@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -23,6 +23,7 @@ import Constants from 'expo-constants';
 import { darkGreen, lightGreen, white } from '../constants';
 import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
 import { StackParams } from '../navigation/NavigationTypes';
+import * as ImagePicker from 'expo-image-picker';
 
 const { StatusBarManager } = NativeModules;
 const iOSStatusBarHeight = Constants.statusBarHeight;
@@ -38,6 +39,65 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
   const [clicked, setClicked] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
   const userId = route.params?.userId; // getting user id passed from sign in.
+
+  const [hasCameraPermission, setHasCameraPermission] = useState(false);
+  const [hasGalleryPermission, setHasGalleryPermission] = useState(false);
+  const [image, setImage] = useState<any>();
+
+  useEffect(() => {
+    (async () => {
+      const cameraPermission =
+        await ImagePicker.requestCameraPermissionsAsync();
+      const galleryPermission =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      setHasCameraPermission(cameraPermission.status === 'granted');
+      setHasGalleryPermission(galleryPermission.status === 'granted');
+    })();
+  }, []);
+
+  if (hasCameraPermission === undefined) {
+    return <Text>Requesting permissions..</Text>;
+  } else if (!hasCameraPermission) {
+    return (
+      <Text>
+        Permission for camera not granted. Please change this in settings.
+      </Text>
+    );
+  }
+
+  if (hasGalleryPermission === false) {
+    return <Text>Permission to Internal Storage not granted.</Text>;
+  }
+
+  const takePicture = async () => {
+    console.log('take picture');
+    const cameraResponse = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+    });
+    if (!cameraResponse.canceled) {
+      console.log(
+        'Taking pictuiree from camera : ',
+        cameraResponse.assets[0].uri
+      );
+      setImage(cameraResponse.assets[0].uri);
+    }
+  };
+
+  const pickImage = async () => {
+    console.log('pick picture');
+    const getImage = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
+    if (!getImage.canceled) {
+      console.log('Printing image from gallery : ', getImage.assets[0].uri);
+      setImage(getImage.assets[0].uri);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <SimpleLineIcons
@@ -52,6 +112,15 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
       <View style={styles.imageContainer}>
         <Image source={logo} style={styles.imageStyle}></Image>
       </View>
+      <MaterialIcons
+        name='history'
+        size={30}
+        color={darkGreen}
+        style={styles.historyIcon}
+        onPress={() => {
+          navigation.navigate(ShopNCopStackNavigation.history as never);
+        }}
+      />
       <View style={styles.bodyContainer}>
         <View style={styles.topBody}>
           <View style={styles.titleContainer}>
@@ -98,14 +167,29 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
           </View>
         </View>
         <View style={styles.bottomBody}>
-          <View style={styles.imageContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                console.log('Open Gallery');
-              }}
-            >
-              <MaterialIcons name='image-search' size={80} color={darkGreen} />
-            </TouchableOpacity>
+          <View style={styles.iconRowContainer}>
+            <View style={styles.iconsContainer}>
+              <MaterialIcons
+                name='image-search'
+                size={30}
+                color={darkGreen}
+                style={styles.icons}
+                onPress={pickImage}
+              />
+              <View style={styles.verticleLine} />
+              <MaterialIcons
+                name='camera-alt'
+                size={30}
+                color={darkGreen}
+                style={styles.icons}
+                onPress={takePicture}
+              />
+            </View>
+          </View>
+          <View style={styles.searchImageContainer}>
+            {image && (
+              <Image source={{ uri: image }} style={styles.searchImage} />
+            )}
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
@@ -120,15 +204,6 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
                 isLight={false}
                 style={styles.buttonText}
               />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.imageContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate(ShopNCopStackNavigation.history as never);
-              }}
-            >
-              <MaterialIcons name='history' size={80} color={darkGreen} />
             </TouchableOpacity>
           </View>
         </View>
@@ -153,10 +228,41 @@ const styles = StyleSheet.create({
     top:
       Platform.OS === 'android' ? StatusBarManager.HEIGHT : iOSStatusBarHeight,
   },
+  historyIcon: {
+    position: 'absolute',
+    right: 10,
+    top:
+      Platform.OS === 'android' ? StatusBarManager.HEIGHT : iOSStatusBarHeight,
+  },
   imageContainer: {
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  iconRowContainer: {
+    flex: 0.5,
+    marginBottom: 20,
+  },
+  iconsContainer: {
+    flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  icons: {
+    flex: 2,
+    textAlign: 'center',
+  },
+  verticleLine: {
+    width: 2,
+    backgroundColor: darkGreen,
+  },
+  searchImageContainer: {
+    flex: 3,
+  },
+  searchImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
   },
   imageStyle: {
     width: 120,
@@ -199,7 +305,7 @@ const styles = StyleSheet.create({
     flex: 0.6,
   },
   buttonContainer: {
-    flex: 0.7,
+    flex: 0.5,
     flexDirection: 'row',
     marginVertical: 20,
   },
