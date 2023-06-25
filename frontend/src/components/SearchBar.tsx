@@ -1,8 +1,6 @@
 import React from 'react';
 import { StyleSheet, TextInput, View, Keyboard, Button } from "react-native";
 import { Feather, Entypo } from "@expo/vector-icons";
-import { useFonts } from 'expo-font';
-import AppLoading from 'expo-app-loading';
 import { darkGreen, white } from '../constants';
 
 export const SearchBar = ({
@@ -16,13 +14,6 @@ export const SearchBar = ({
   setSearchPhrase: any;
   setClicked: any;
 }) => {
-      const [fontsLoaded] = useFonts({
-       "OpenSans-Regular": require("../../assets/fonts/OpenSans/OpenSans-Regular.ttf"),
-       "OpenSans-Bold": require("../../assets/fonts/OpenSans/OpenSans-Bold.ttf"),
-     }); 
-     if (!fontsLoaded) {
-       return <AppLoading />;
-     }
     return (
       <View style={styles.container}>
         <View

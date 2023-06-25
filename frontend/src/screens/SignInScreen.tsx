@@ -16,21 +16,11 @@ import { StyledText } from "../components";
 import { useNavigation } from "@react-navigation/native";
 import { ShopNCopStackNavigation, StackParams } from "../navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useFonts } from 'expo-font';
-import AppLoading from 'expo-app-loading';
 
 export const SignInScreen = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
-  const [fontsLoaded] = useFonts({
-    "Roboto-Bold": require("../../assets/fonts/Roboto/Roboto-Bold.ttf"),
-    "Roboto-Medium": require("../../assets/fonts/Roboto/Roboto-Medium.ttf"),
-    "Roboto-Light": require("../../assets/fonts/Roboto/Roboto-Light.ttf"),
-  }); 
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -74,7 +64,7 @@ export const SignInScreen = () => {
           </TouchableOpacity>
         </KeyboardAvoidingView>
         <View style={styles.bottomHalf}>
-          <Text style={[styles.signInWithText, {fontFamily: "Roboto-Bold"}]}>Sign in with</Text>
+          <Text style={styles.signInWithText}>Sign in with</Text>
 
           <View style={styles.signInWithAppsContainer}>
             <TouchableOpacity
@@ -103,7 +93,7 @@ export const SignInScreen = () => {
             </TouchableOpacity>
           </View>
           <View style={styles.notMemberContainer}>
-            <Text style={[styles.notMemberText, {fontFamily: "Roboto-Mediuim"}]}>Not a member?</Text>
+            <Text style={styles.notMemberText}>Not a member?</Text>
         
             <TouchableOpacity
               onPress={() => {
@@ -112,7 +102,7 @@ export const SignInScreen = () => {
                 } as never);
               }}
             >
-              <Text style={[styles.blueText, {fontFamily: "Roboto-Light"}]}> Register now</Text>
+              <Text style={styles.blueText}> Register now</Text>
             </TouchableOpacity>
           </View>
         </View>
