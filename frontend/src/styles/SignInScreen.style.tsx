@@ -17,10 +17,12 @@ const styles = StyleSheet.create({
   },
   blueText: {
     color: blue,
+    fontFamily: "Roboto-Light"
   },
   signInWithText: {
     color: darkGreen,
     marginVertical: 20,
+    fontFamily: "Roboto-Bold"
   },
   signInWithAppsContainer: {
     flex: 1,
@@ -36,6 +38,7 @@ const styles = StyleSheet.create({
   notMemberText: {
     color: darkGreen,
     fontSize: 14,
+    fontFamily: "Roboto-Medium"
   },
   signInButtonContainer: {
     width: 330,
