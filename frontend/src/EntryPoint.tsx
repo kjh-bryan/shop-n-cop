@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { registerRootComponent } from 'expo';
-import { Navigation } from './navigation/StackNavigator';
 import { loadFonts } from './utils';
 import * as SplashScreen from 'expo-splash-screen';
 import { View } from 'react-native';
+import { Navigation } from './navigation/StackNavigator';
 
 SplashScreen.preventAutoHideAsync();
 
