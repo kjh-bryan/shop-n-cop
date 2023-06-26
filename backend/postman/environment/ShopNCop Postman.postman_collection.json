@@ -1,0 +1,29 @@
+{
+	"info": {
+		"_postman_id": "7863cab9-5dbe-4f80-ad82-e9e867f0705e",
+		"name": "ShopNCop Postman",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1928089"
+	},
+	"item": [
+		{
+			"name": "Miscs",
+			"item": [
+				{
+					"name": "Healthcheck",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}{{HEALTHCHECK}}",
+							"host": [
+								"{{BASE_URL}}{{HEALTHCHECK}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
