@@ -1,14 +1,13 @@
 {
-  "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "outDir": "./dist",
-    "target": "ES2015",
-    "module": "ES2015",
+    "target": "es5",
+    "module": "CommonJS",
+    "resolveJsonModule": true,
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "moduleResolution": "node",
-    "jsx": "react-jsx"
   },
   "include": ["src/**/*"]
 }
