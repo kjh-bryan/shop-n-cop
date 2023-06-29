@@ -1,15 +1,21 @@
 import { Express } from 'express';
 import {
-  getSearchResultByText,
-  postLinks,
-} from '../config/controllers/link.controller';
+  getSearchResultByTextController,
+  postLinksController,
+  registerController,
+  signInController,
+} from '../config/controllers';
 
 export const routes = (app: Express) => {
   app.get('/healthcheck', (req, res) =>
     res.status(200).json({ message: 'Routers are working.' })
   );
 
-  app.post('/api/links', postLinks);
+  app.post('/api/links', postLinksController);
 
-  app.get('/api/textsearch', getSearchResultByText);
+  app.get('/api/textsearch', getSearchResultByTextController);
+
+  app.post('/api/register', registerController);
+
+  app.get('/api/sign-in', signInController);
 };
