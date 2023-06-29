@@ -36,7 +36,13 @@ export const registerController = asyncHandler(
       }
 
       const p = await collection.insertOne(userDocument);
-      res.status(200).json({ message: ResponseMessages.SUCCESS });
+      if (p) {
+        res.status(200).json({ message: ResponseMessages.SUCCESS });
+      } else {
+        res
+          .status(503)
+          .json({ message: ResponseMessages.ERROR_INSERTING_RECORD });
+      }
     } catch (error) {
       logger.error('[registerController]', error);
       next(error);
