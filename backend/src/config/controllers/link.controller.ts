@@ -27,7 +27,9 @@ export const postLinksController = asyncHandler(
           .status(200)
           .json({ message: ResponseMessages.SUCCESS, data: { ...result } });
       } else {
-        res.status(503).json({ message: 'Error inserting record' });
+        res
+          .status(503)
+          .json({ message: ResponseMessages.ERROR_INSERTING_RECORD });
       }
     } catch (e) {
       logger.error(e);
