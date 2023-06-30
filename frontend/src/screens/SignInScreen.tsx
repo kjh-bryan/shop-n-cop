@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
-  TouchableWithoutFeedback,
+  TouchableWithoutFeedback, Alert
 } from 'react-native';
 import React, { useState } from 'react';
 import { StyledText } from '../components';
@@ -17,11 +17,43 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StackParams } from '../navigation/NavigationTypes';
 import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
+import { axiosSender } from '../utils';
+import { Endpoints } from '../constants';
+import { ResponseMessages } from '../../../backend/src/constants';
+import bcrypt from 'react-native-bcrypt'
+import { AxiosResponse } from 'axios';
 
 export const SignInScreen = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
+
+  const handleSignIn = async () => {
+    const payload = {
+      email: email
+    };
+    const response :AxiosResponse<any, any> | undefined= await axiosSender(payload, Endpoints.signIn)
+      if (!response) {
+        Alert.alert('Network error.')
+        return;
+      }
+    
+    if (response.status === 200 && response.data.message === ResponseMessages.SUCCESS) {
+      const dbPassword = response.data.data.password;
+      const passwordMatch = bcrypt.compareSync(dbPassword, password);
+      if (passwordMatch) {
+        navigation.navigate({
+          name: ShopNCopStackNavigation.search,
+        } as never);
+      } else {
+        Alert.alert('Incorrect password. Please try again');
+      }
+    } else if (response.status === 503 && response.data.message === ResponseMessages.NO_USER) {
+      Alert.alert('User not found');
+    } else {
+      Alert.alert('Something went wrong')
+    }
+  }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -50,11 +82,7 @@ export const SignInScreen = () => {
             placeholder='Password'
           />
           <TouchableOpacity
-            onPress={() => {
-              navigation.replace(ShopNCopStackNavigation.search, {
-                userId: 'test',
-              });
-            }}
+            onPress={() => {handleSignIn}}
           >
             <View style={styles.signInButtonContainer}>
               <StyledText
