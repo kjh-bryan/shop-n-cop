@@ -4,7 +4,17 @@ import {
   postLinksController,
   registerController,
   signInController,
+  uploadingFileController
 } from '../config/controllers';
+import Multer from 'multer';
+
+
+const multer = Multer({
+  storage: Multer.memoryStorage(),
+  limits: {
+      fileSize: 5 * 1024 * 1024, // no larger than 5mb
+  },
+});
 
 export const routes = (app: Express) => {
   app.get('/healthcheck', (req, res) =>
@@ -18,4 +28,6 @@ export const routes = (app: Express) => {
   app.post('/api/register', registerController);
 
   app.get('/api/sign-in', signInController);
+
+  app.post('/api/upload', multer.single('file'), uploadingFileController)
 };

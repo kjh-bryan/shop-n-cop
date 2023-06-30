@@ -24,6 +24,8 @@ import { darkGreen, lightGreen, white } from '../constants';
 import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
 import { StackParams } from '../navigation/NavigationTypes';
 import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
+
 
 const { StatusBarManager } = NativeModules;
 const iOSStatusBarHeight = Constants.statusBarHeight;
@@ -97,6 +99,67 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
       setImage(getImage.assets[0].uri);
     }
   };
+
+  const uuidv4 = (): string => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+      const r = (Math.random() * 16) | 0;
+      const v = c === 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
+  };
+  
+
+  const sendImgToCloud = async () => {
+    console.log('sending.....');
+    const postid = uuidv4();
+    const blob = image.slice(0, image.size, 'image/jpeg');
+    const newFile = new File([blob], `${postid}_post.jpeg`, { type: 'image/jpeg' });
+    const formData = new FormData();
+    formData.append('file', newFile);
+    console.log(newFile);
+  
+    try {
+      const response = await axios({
+        url:'http://10.0.0.2:9090/api/upload',
+        method:'POST',
+        data: formData,
+        headers:{
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        },
+      });    
+        
+        // console.log(response)
+  
+      if (response.status !== 200) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const result = response.data;
+      console.log(response.status);
+      console.log('sent image: ', formData);
+      navigation.navigate(ShopNCopStackNavigation.results);
+    } catch (error: any) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        // error.request is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+    }
+  };
+  
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -187,15 +250,14 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
             </View>
           </View>
           <View style={styles.searchImageContainer}>
+            {/* Need to change here for front end sending of image to google cloud! */}
             {image && (
               <Image source={{ uri: image }} style={styles.searchImage} />
             )}
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
-              onPress={() => {
-                navigation.navigate(ShopNCopStackNavigation.results as never);
-              }}
+              onPress={sendImgToCloud}
               style={styles.button}
             >
               <StyledText
