@@ -13,9 +13,17 @@ import {
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
 import { StyledText } from "../components";
-import { darkGreen } from "../constants";
+import { darkGreen, Endpoints } from "../constants";
+import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackParams } from '../navigation/NavigationTypes';
+import { Alert } from 'react-native';
+import { ResponseMessages } from "../../../backend/src/constants";
+import { AxiosResponse } from "axios";
+import bcrypt from 'react-native-bcrypt'
+import { axiosSender } from "../utils";
 
 export const RegisterScreen = () => {
   const [email, setEmail] = useState<string>("");
@@ -23,7 +31,69 @@ export const RegisterScreen = () => {
   const [repassword, setRepassword] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
+  const handleRegistration = async (
+    email: string,
+    plaintextPassword: string,
+    plaintextRepassword: string,
+    firstName: string,
+    lastName: string
+  ) => {
+
+    if (firstName === '') {
+      Alert.alert('Please fill in your first name.');
+      return;
+    } 
+    if (lastName === '') {
+      Alert.alert('Please fill in your last name.');
+      return;
+    } 
+    if (email === '') {
+      Alert.alert('Please fill in your email.');
+      return;
+    }
+
+    const emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if(!email.match(emailFormat)) {
+      Alert.alert('Please entire a valid email address.');
+      return;
+    }
+    if (password === '' || repassword === '') {
+      Alert.alert('Please fill in your password.')
+      return;
+    }
+    if (plaintextPassword !== plaintextRepassword) {
+      Alert.alert('Your passwords do not match. Please try again.');
+      return;
+    }
+   
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(plaintextPassword, salt);
+    const payload = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: hashedPassword,
+    };
+    const response: AxiosResponse<any, any> | undefined = await axiosSender(payload, Endpoints.register);
+    if (!response) {
+      Alert.alert('Network error.')
+      return;
+    }
+    if (response.status === 200) {
+      if (response.data.message === ResponseMessages.SUCCESS) {
+        navigation.navigate({
+          name: ShopNCopStackNavigation.search,
+        } as never);
+      } else if (response.data.message === ResponseMessages.USER_ALREADY_EXISTS) {
+        Alert.alert('User already exists! Please sign in.')
+      } else {
+        Alert.alert('Something went wrong.')
+      }
+    } else if (response.status === 503) {
+      Alert.alert('Something went wrong.')
+    }
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -83,7 +153,7 @@ export const RegisterScreen = () => {
             placeholder="Re-enter Password"
           />
           <TouchableOpacity
-            onPress={() => console.log("register button pressed")}
+            onPress={() => handleRegistration(email, password, repassword, firstName, lastName)}
           >
             <View style={styles.registerButtonContainer}>
               <StyledText
