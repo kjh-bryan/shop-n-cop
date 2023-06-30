@@ -1,0 +1,40 @@
+{
+	"info": {
+		"_postman_id": "ffd3f6fa-9a15-4b0e-a112-03c4fd202c22",
+		"name": "Google Cloud Upload collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18177961"
+	},
+	"item": [
+		{
+			"name": "http://localhost:1337/api/upload",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/shiri/Downloads/nike shoess.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:1337/api/upload",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"api",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

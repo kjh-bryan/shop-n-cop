@@ -4,6 +4,7 @@ import { loadFonts } from './utils';
 import * as SplashScreen from 'expo-splash-screen';
 import { View } from 'react-native';
 import { Navigation } from './navigation/StackNavigator';
+import React from 'react';
 
 SplashScreen.preventAutoHideAsync();
 
