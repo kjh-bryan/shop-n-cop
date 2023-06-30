@@ -70,13 +70,14 @@ export const signInController = asyncHandler(
         email: payload.email,
       });
       if (!userDoc) {
-        res.status(200).json({ message: ResponseMessages.NO_USER });
-      } else if (userDoc && userDoc.password !== payload.password) {
-        res.status(200).json({ message: ResponseMessages.INCORRECT_PASSWORD });
-      } else if (userDoc && userDoc.password === payload.password) {
-        res.status(200).json({ message: ResponseMessages.SUCCESS });
+        res.status(503).json({
+          message: ResponseMessages.NO_USER,
+        });
       } else {
-        res.status(503).json({ message: ResponseMessages.BAD_REQUEST });
+        res.status(200).json({
+          message: ResponseMessages.SUCCESS,
+          data: { password: userDoc.password },
+        });
       }
     } catch (error) {
       logger.error('[signInController]', error);
