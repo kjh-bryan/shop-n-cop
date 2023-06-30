@@ -31,7 +31,7 @@ export const registerController = asyncHandler(
       });
 
       if (existingUser) {
-        res.status(503).json({ message: ResponseMessages.USER_ALREADY_EXISTS });
+        res.status(200).json({ message: ResponseMessages.USER_ALREADY_EXISTS });
         return;
       }
 
