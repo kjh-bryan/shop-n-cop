@@ -4,11 +4,31 @@ import { loadFonts } from './utils';
 import * as SplashScreen from 'expo-splash-screen';
 import { View } from 'react-native';
 import { Navigation } from './navigation/StackNavigator';
+import { ShopNCopStackNavigation } from './navigation/NavigationConstants';
+import * as SecureStore from 'expo-secure-store';
+import { kUserEmail } from './constants';
 
 SplashScreen.preventAutoHideAsync();
 
 const EntryPoint = () => {
   const [appIsReady, setAppIsReady] = useState(false);
+
+  const [initialRoute, setInitialRoute] = useState<string>(ShopNCopStackNavigation.signIn);
+  useEffect( () => {
+    const handleLogInStatus = async () => {
+      try {
+      const userId = await SecureStore.getItemAsync(kUserEmail);
+      if (userId !== null) {
+        setInitialRoute(ShopNCopStackNavigation.search);
+      } else {
+        setInitialRoute(ShopNCopStackNavigation.signIn);
+      }
+    } catch(error) {
+      console.error('handleLogInStatus]', error);
+    }
+    }
+    handleLogInStatus();
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -35,7 +55,7 @@ const EntryPoint = () => {
 
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <Navigation />
+      <Navigation initialRoute={initialRoute}/>
     </View>
   );
 };

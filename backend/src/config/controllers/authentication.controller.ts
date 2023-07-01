@@ -31,17 +31,24 @@ export const registerController = asyncHandler(
       });
 
       if (existingUser) {
-        res.status(503).json({ message: ResponseMessages.USER_ALREADY_EXISTS });
+        res
+          .status(200)
+          .json({ message: ResponseMessages.USER_ALREADY_EXISTS, data: {} });
         return;
       }
 
       const p = await collection.insertOne(userDocument);
       if (p) {
-        res.status(200).json({ message: ResponseMessages.SUCCESS });
+        res
+          .status(200)
+          .json({
+            message: ResponseMessages.SUCCESS,
+            data: { ...userDocument },
+          });
       } else {
         res
           .status(503)
-          .json({ message: ResponseMessages.ERROR_INSERTING_RECORD });
+          .json({ message: ResponseMessages.ERROR_INSERTING_RECORD, data: {} });
       }
     } catch (error) {
       logger.error('[registerController]', error);
@@ -69,18 +76,22 @@ export const signInController = asyncHandler(
       const userDoc = await collection.findOne({
         email: payload.email,
       });
+
+      console.log('userDoc', userDoc);
       if (!userDoc) {
-        res.status(200).json({ message: ResponseMessages.NO_USER });
-      } else if (userDoc && userDoc.password !== payload.password) {
-        res.status(200).json({ message: ResponseMessages.INCORRECT_PASSWORD });
-      } else if (userDoc && userDoc.password === payload.password) {
-        res.status(200).json({ message: ResponseMessages.SUCCESS });
+        res.status(200).json({
+          message: ResponseMessages.NO_USER,
+          data: {},
+        });
       } else {
-        res.status(503).json({ message: ResponseMessages.BAD_REQUEST });
+        res.status(200).json({
+          message: ResponseMessages.SUCCESS,
+          data: { ...userDoc },
+        });
       }
     } catch (error) {
       logger.error('[signInController]', error);
-      res.status(503).json({ message: ResponseMessages.BAD_REQUEST });
+      res.status(503).json({ message: ResponseMessages.BAD_REQUEST, data: {} });
       next(error);
     } finally {
       await MongoDBConnection.closeConnection();
