@@ -17,5 +17,5 @@ export const routes = (app: Express) => {
 
   app.post('/api/register', registerController);
 
-  app.get('/api/sign-in', signInController);
+  app.post('/api/sign-in', signInController);
 };
