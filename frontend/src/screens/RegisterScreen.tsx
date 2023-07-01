@@ -14,7 +14,7 @@ import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StyledText } from "../components";
-import { darkGreen, Endpoints } from "../constants";
+import { darkGreen, Endpoints, kUserEmail } from "../constants";
 import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -23,7 +23,8 @@ import { Alert } from 'react-native';
 import { ResponseMessages } from "../../../backend/src/constants";
 import { AxiosResponse } from "axios";
 import bcrypt from 'react-native-bcrypt'
-import { axiosSender } from "../utils";
+import { axiosSender, testEmailRegex } from "../utils";
+import * as SecureStore from 'expo-secure-store';
 
 export const RegisterScreen = () => {
   const [email, setEmail] = useState<string>("");
@@ -33,13 +34,8 @@ export const RegisterScreen = () => {
   const [lastName, setLastName] = useState<string>("");
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
   const handleRegistration = async (
-    email: string,
-    plaintextPassword: string,
-    plaintextRepassword: string,
-    firstName: string,
-    lastName: string
   ) => {
-
+    try {
     if (firstName === '') {
       Alert.alert('Please fill in your first name.');
       return;
@@ -52,9 +48,7 @@ export const RegisterScreen = () => {
       Alert.alert('Please fill in your email.');
       return;
     }
-
-    const emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if(!email.match(emailFormat)) {
+    if(!testEmailRegex(email)) {
       Alert.alert('Please entire a valid email address.');
       return;
     }
@@ -62,26 +56,26 @@ export const RegisterScreen = () => {
       Alert.alert('Please fill in your password.')
       return;
     }
-    if (plaintextPassword !== plaintextRepassword) {
+    if (password !== repassword) {
       Alert.alert('Your passwords do not match. Please try again.');
       return;
     }
-   
     const salt = bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(plaintextPassword, salt);
+    const hashedPassword = bcrypt.hashSync(password, salt);
     const payload = {
       firstName: firstName,
       lastName: lastName,
       email: email,
       password: hashedPassword,
     };
-    const response: AxiosResponse<any, any> | undefined = await axiosSender(payload, Endpoints.register);
+    const response: AxiosResponse<any, any> | undefined = await axiosSender(payload, Endpoints.register.uri, Endpoints.register.method);
     if (!response) {
       Alert.alert('Network error.')
       return;
     }
     if (response.status === 200) {
       if (response.data.message === ResponseMessages.SUCCESS) {
+        await SecureStore.setItemAsync(kUserEmail, response.data.data.email);
         navigation.navigate({
           name: ShopNCopStackNavigation.search,
         } as never);
@@ -93,6 +87,10 @@ export const RegisterScreen = () => {
     } else if (response.status === 503) {
       Alert.alert('Something went wrong.')
     }
+  } catch (error) {
+    console.log('[handleRegistration]', error);
+    Alert.alert('Sorry! Something went wrong.');
+  }
   };
 
   return (
@@ -134,6 +132,7 @@ export const RegisterScreen = () => {
           </View>
           <TextInput
             style={styles.emailAndPasswordTextBox}
+            autoCapitalize="none"
             onChangeText={setEmail}
             value={email}
             placeholder="Email"
@@ -141,6 +140,7 @@ export const RegisterScreen = () => {
           <TextInput
             secureTextEntry={true}
             style={styles.emailAndPasswordTextBox}
+            autoCapitalize="none"
             onChangeText={setPassword}
             value={password}
             placeholder="Password"
@@ -148,12 +148,13 @@ export const RegisterScreen = () => {
           <TextInput
             secureTextEntry={true}
             style={styles.emailAndPasswordTextBox}
+            autoCapitalize="none"
             onChangeText={setRepassword}
             value={repassword}
             placeholder="Re-enter Password"
           />
           <TouchableOpacity
-            onPress={() => handleRegistration(email, password, repassword, firstName, lastName)}
+            onPress={() => handleRegistration()}
           >
             <View style={styles.registerButtonContainer}>
               <StyledText
