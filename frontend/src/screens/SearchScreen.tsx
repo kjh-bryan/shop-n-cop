@@ -20,10 +20,11 @@ import {
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 import Constants from 'expo-constants';
-import { darkGreen, lightGreen, white } from '../constants';
+import { darkGreen, lightGreen, white, kUserEmail } from '../constants';
 import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
 import { StackParams } from '../navigation/NavigationTypes';
 import * as ImagePicker from 'expo-image-picker';
+import * as SecureStore from 'expo-secure-store';
 
 const { StatusBarManager } = NativeModules;
 const iOSStatusBarHeight = Constants.statusBarHeight;
@@ -38,8 +39,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
   const [searchPhrase, setSearchPhrase] = useState('');
   const [clicked, setClicked] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
-  const userId = route.params?.userId; // getting user id passed from sign in.
-
+  const [userId, setUserId] = useState<string | null>(null);
   const [hasCameraPermission, setHasCameraPermission] = useState(false);
   const [hasGalleryPermission, setHasGalleryPermission] = useState(false);
   const [image, setImage] = useState<any>();
@@ -52,6 +52,8 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       setHasCameraPermission(cameraPermission.status === 'granted');
       setHasGalleryPermission(galleryPermission.status === 'granted');
+      const userId = await SecureStore.getItemAsync(kUserEmail);
+      setUserId(userId);
     })();
   }, []);
 
@@ -101,11 +103,13 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
   return (
     <SafeAreaView style={styles.container}>
       <SimpleLineIcons
-        name='logout'
+        name="logout"
         size={30}
         color={darkGreen}
         style={styles.logoutIcon}
-        onPress={() => {
+        onPress={async () => {
+          await SecureStore.deleteItemAsync(kUserEmail);
+          setUserId(null);
           navigation.replace(ShopNCopStackNavigation.signIn);
         }}
       />
@@ -113,7 +117,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         <Image source={logo} style={styles.imageStyle}></Image>
       </View>
       <MaterialIcons
-        name='history'
+        name="history"
         size={30}
         color={darkGreen}
         style={styles.historyIcon}
@@ -125,20 +129,20 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         <View style={styles.topBody}>
           <View style={styles.titleContainer}>
             <StyledText
-              title='What are you'
+              title="What are you"
               style={styles.smallFont}
               isBold={false}
               isLight={true}
             />
             <Text>
               <StyledText
-                title='Shopping '
+                title="Shopping "
                 style={styles.mediumFont}
                 isBold={true}
                 isLight={false}
               />
               <StyledText
-                title='for today?'
+                title="for today?"
                 style={styles.mediumFont}
                 isBold={false}
                 isLight={true}
@@ -158,7 +162,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
           <View style={styles.dividerContainer}>
             <View style={styles.divider} />
             <StyledText
-              title='or'
+              title="or"
               isBold={true}
               isLight={false}
               style={styles.dividerText}
@@ -170,7 +174,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
           <View style={styles.iconRowContainer}>
             <View style={styles.iconsContainer}>
               <MaterialIcons
-                name='image-search'
+                name="image-search"
                 size={30}
                 color={darkGreen}
                 style={styles.icons}
@@ -178,7 +182,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
               />
               <View style={styles.verticleLine} />
               <MaterialIcons
-                name='camera-alt'
+                name="camera-alt"
                 size={30}
                 color={darkGreen}
                 style={styles.icons}
@@ -199,7 +203,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
               style={styles.button}
             >
               <StyledText
-                title='Search'
+                title="Search"
                 isBold={false}
                 isLight={false}
                 style={styles.buttonText}
