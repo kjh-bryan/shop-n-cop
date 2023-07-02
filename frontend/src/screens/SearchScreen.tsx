@@ -12,16 +12,19 @@ import {
 } from 'react-native';
 import { StyledText } from '../components/StyledText';
 import { SearchBar } from '../components/SearchBar';
-import { MaterialIcons } from '@expo/vector-icons';
+import {
+  MaterialIcons,
+  MaterialCommunityIcons,
+  SimpleLineIcons,
+} from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { SimpleLineIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   NativeStackNavigationProp,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 import Constants from 'expo-constants';
-import { darkGreen, lightGreen, white, kUserEmail } from '../constants';
+import { darkGreen, lightGreen, white, kUserEmail, green } from '../constants';
 import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
 import { StackParams } from '../navigation/NavigationTypes';
 import * as ImagePicker from 'expo-image-picker';
@@ -51,9 +54,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
   const [galleryPermissionModal, setGalleryPermissionModal] = useState(false);
 
   useEffect(() => {
-    console.log('in Useeffect');
     (async () => {
-      console.log('in Useeffect > async');
       const cameraPermission =
         await ImagePicker.requestCameraPermissionsAsync();
       const galleryPermission =
@@ -267,7 +268,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
               <MaterialIcons
                 name="image-search"
                 size={30}
-                color={darkGreen}
+                color={white}
                 style={styles.icons}
                 onPress={pickImage}
               />
@@ -275,7 +276,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
               <MaterialIcons
                 name="camera-alt"
                 size={30}
-                color={darkGreen}
+                color={white}
                 style={styles.icons}
                 onPress={takePicture}
               />
@@ -285,6 +286,14 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
             {/* Need to change here for front end sending of image to google cloud! */}
             {image && (
               <Image source={{ uri: image }} style={styles.searchImage} />
+            )}
+
+            {!image && (
+              <MaterialCommunityIcons
+                name="image-filter-hdr"
+                size={80}
+                color={darkGreen}
+              />
             )}
           </View>
           <View style={styles.buttonContainer}>
@@ -343,14 +352,23 @@ const styles = StyleSheet.create({
   },
   icons: {
     flex: 2,
+    backgroundColor: darkGreen,
+    borderRadius: 12,
+    borderColor: darkGreen,
+    borderWidth: 1,
+    marginHorizontal: 5,
     textAlign: 'center',
   },
   verticleLine: {
-    width: 2,
+    width: 1,
     backgroundColor: darkGreen,
   },
   searchImageContainer: {
     flex: 3,
+    borderColor: darkGreen,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   searchImage: {
     width: '100%',
