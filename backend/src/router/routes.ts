@@ -4,15 +4,15 @@ import {
   postLinksController,
   registerController,
   signInController,
-  uploadingFileController
-} from '../config/controllers';
+  uploadingFileController,
+} from '../controllers';
 import Multer from 'multer';
-
+import { processFile } from '../middleware';
 
 const multer = Multer({
   storage: Multer.memoryStorage(),
   limits: {
-      fileSize: 5 * 1024 * 1024, // no larger than 5mb
+    fileSize: 5 * 1024 * 1024, // no larger than 5mb
   },
 });
 
@@ -29,5 +29,5 @@ export const routes = (app: Express) => {
 
   app.get('/api/sign-in', signInController);
 
-  app.post('/api/upload', multer.single('file'), uploadingFileController)
+  app.post('/api/upload', processFile, uploadingFileController);
 };
