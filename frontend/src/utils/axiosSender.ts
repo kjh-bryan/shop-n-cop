@@ -1,17 +1,24 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
 export const axiosSender = async (
-  payload: any,
   endpoint: string,
-  method: string
+  method: string,
+  params?: string,
+  payload?: any
 ): Promise<AxiosResponse<any, any> | undefined> => {
   try {
-    const response = await axios({
-      method: method,
-      baseURL: 'http://localhost:9090/api', // for android, 'http://10.0.0.2:9090/api'
-      url: endpoint,
-      data: payload,
-    });
+    const response = payload
+      ? await axios({
+          method: method,
+          baseURL: 'http://localhost:9090/api', // for android, 'http://10.0.0.2:9090/api'
+          url: `${endpoint}/${params}`,
+          data: payload,
+        })
+      : await axios({
+          method: method,
+          baseURL: 'http://localhost:9090/api', // for android, 'http://10.0.0.2:9090/api'
+          url: `${endpoint}/${params}`,
+        });
     return response;
   } catch (error) {
     if (error instanceof AxiosError) {
