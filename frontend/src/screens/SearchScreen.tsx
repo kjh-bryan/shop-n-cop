@@ -24,6 +24,7 @@ import { darkGreen, lightGreen, white, kUserEmail } from '../constants';
 import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
 import { StackParams } from '../navigation/NavigationTypes';
 import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 import * as SecureStore from 'expo-secure-store';
 
 const { StatusBarManager } = NativeModules;
@@ -100,6 +101,48 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
     }
   };
 
+  const sendImgToCloud = async () => {
+    console.log('sending.....');
+
+    try {
+      if (!image) {
+        console.log('no image');
+        return;
+      }
+
+      const uploadResult = await FileSystem.uploadAsync(
+        'http://192.168.68.51:9090/api/upload',
+        image,
+        {
+          httpMethod: 'POST',
+          uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+          fieldName: 'newFile',
+        }
+      );
+
+      if (uploadResult.status !== 200) {
+        throw new Error('Network response was not ok');
+      }
+      navigation.navigate(ShopNCopStackNavigation.results);
+    } catch (error: any) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        // error.request is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <SimpleLineIcons
@@ -191,17 +234,13 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
             </View>
           </View>
           <View style={styles.searchImageContainer}>
+            {/* Need to change here for front end sending of image to google cloud! */}
             {image && (
               <Image source={{ uri: image }} style={styles.searchImage} />
             )}
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate(ShopNCopStackNavigation.results as never);
-              }}
-              style={styles.button}
-            >
+            <TouchableOpacity onPress={sendImgToCloud} style={styles.button}>
               <StyledText
                 title="Search"
                 isBold={false}
