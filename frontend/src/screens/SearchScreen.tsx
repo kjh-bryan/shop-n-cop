@@ -183,8 +183,12 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
 
       if (uploadResult.status !== 200) {
         throw new Error('Network response was not ok');
+      } else {
+        const responseBody = await uploadResult.body;
+        const jsonData = JSON.parse(responseBody);
+        const imageUrl = jsonData.data.url;
+        getResultWithSerpapi('IMAGE', imageUrl);
       }
-      // navigation.navigate(ShopNCopStackNavigation.results);
     } catch (error: any) {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -204,7 +208,50 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
       console.log(error.config);
     }
   };
-
+  const getResultWithSerpapi = async (
+    type: string,
+    url?: string,
+    query?: string
+  ) => {
+    console.log('getresult');
+    if (type === 'IMAGE') {
+      const params = `?type=IMAGE&imageURL=${url}}`;
+      try {
+        const response: AxiosResponse<any, any> | undefined = await axiosSender(
+          Endpoints.search.uri,
+          Endpoints.search.method,
+          params,
+          null
+        );
+        if (!response) {
+          return;
+        }
+        navigation.navigate(ShopNCopStackNavigation.results, {
+          data: response.data,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        const params = `?type=TEXT&query=${query}}`;
+        const response: AxiosResponse<any, any> | undefined = await axiosSender(
+          Endpoints.search.uri,
+          Endpoints.search.method,
+          params,
+          null
+        );
+        if (!response) {
+          return;
+        }
+        navigation.navigate(ShopNCopStackNavigation.results, {
+          data: response.data,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <SimpleLineIcons

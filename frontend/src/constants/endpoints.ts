@@ -7,4 +7,8 @@ export const Endpoints = {
     uri: '/sign-in',
     method: 'GET',
   },
+  search: {
+    uri: '/search',
+    method: 'GET',
+  },
 };
