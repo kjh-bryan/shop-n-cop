@@ -5,6 +5,6 @@ export const Endpoints = {
   },
   signIn: {
     uri: '/sign-in',
-    method: 'POST',
+    method: 'GET',
   },
 };
