@@ -4,7 +4,7 @@ import asyncHandler from 'express-async-handler';
 import { Request, Response, NextFunction } from 'express';
 import { ResponseMessages } from '../constants';
 import { format } from 'util';
-import { logger } from '../utils/logger';
+import { logger } from '../utils';
 
 const projectId = 'atlas-hackathon-390302';
 const keyFileName = 'googleCloudKey.json';
@@ -46,16 +46,21 @@ export const uploadingFileController = asyncHandler(
             res.status(500).json({
               message:
                 ResponseMessages.UPLOADED_SUCCESSFULLY_PUBLIC_ACCESS_DENIED,
-              fileName: req.file?.originalname,
-              url: publicUrl,
+              data: {
+                fileName: req.file?.originalname,
+                url: publicUrl,
+              },
             });
             return;
           }
 
           res.status(200).json({
-            message: ResponseMessages.UPLOADED_SUCCESSFULLY,
-            fileName: req.file?.originalname,
-            url: publicUrl,
+            message:
+              ResponseMessages.UPLOADED_SUCCESSFULLY_PUBLIC_ACCESS_DENIED,
+            data: {
+              fileName: req.file?.originalname,
+              url: publicUrl,
+            },
           });
         });
 
