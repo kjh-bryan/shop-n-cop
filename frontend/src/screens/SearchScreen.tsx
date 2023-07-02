@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   NativeModules,
   Platform,
+  Linking,
 } from 'react-native';
 import { StyledText } from '../components/StyledText';
 import { SearchBar } from '../components/SearchBar';
@@ -26,6 +27,7 @@ import { StackParams } from '../navigation/NavigationTypes';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import * as SecureStore from 'expo-secure-store';
+import { CustomModal, CustomModalProps } from '../components/CustomModal';
 
 const { StatusBarManager } = NativeModules;
 const iOSStatusBarHeight = Constants.statusBarHeight;
@@ -44,36 +46,78 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
   const [hasCameraPermission, setHasCameraPermission] = useState(false);
   const [hasGalleryPermission, setHasGalleryPermission] = useState(false);
   const [image, setImage] = useState<any>();
+  const [cameraPermissionModal, setCameraPermissionModal] =
+    useState<boolean>(false);
+  const [galleryPermissionModal, setGalleryPermissionModal] = useState(false);
 
   useEffect(() => {
+    console.log('in Useeffect');
     (async () => {
+      console.log('in Useeffect > async');
       const cameraPermission =
         await ImagePicker.requestCameraPermissionsAsync();
       const galleryPermission =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
-      setHasCameraPermission(cameraPermission.status === 'granted');
-      setHasGalleryPermission(galleryPermission.status === 'granted');
+
+      setHasCameraPermission(cameraPermission.granted);
+      setHasGalleryPermission(galleryPermission.granted);
+
       const userId = await SecureStore.getItemAsync(kUserEmail);
+      if (!hasCameraPermission) setCameraPermissionModal(true);
+      if (!hasGalleryPermission) setGalleryPermissionModal(true);
       setUserId(userId);
     })();
   }, []);
 
-  if (hasCameraPermission === undefined) {
-    return <Text>Requesting permissions..</Text>;
-  } else if (!hasCameraPermission) {
-    return (
-      <Text>
-        Permission for camera not granted. Please change this in settings.
-      </Text>
-    );
-  }
+  const cameraPermissionModalProps: CustomModalProps = {
+    openModal: cameraPermissionModal,
+    title: 'Camera Permission required',
+    body: 'Shop N Cop requires your camera permission to send your photos to search',
+    button1Text: 'Settings',
+    button1: () => {
+      setCameraPermissionModal(false);
+      Linking.openSettings();
+    },
+    button2Text: 'OK',
+    button2: () => {
+      setCameraPermissionModal(false);
+    },
+  };
 
-  if (hasGalleryPermission === false) {
-    return <Text>Permission to Internal Storage not granted.</Text>;
-  }
+  const galleryPermissionModalProps: CustomModalProps = {
+    openModal: galleryPermissionModal,
+    title: 'Gallery Permission required',
+    body: 'Shop N Cop requires your access to your gallery to pick images',
+    button1Text: 'Settings',
+    button1: () => {
+      setGalleryPermissionModal(false);
+      Linking.openSettings();
+    },
+    button2Text: 'OK',
+    button2: () => {
+      setGalleryPermissionModal(false);
+    },
+  };
+
+  const recheckPermissions = async (type: string) => {
+    if (type === 'GALLERY') {
+      const galleryPermission =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      setHasGalleryPermission(galleryPermission.status === 'granted');
+    } else {
+      const cameraPermission =
+        await ImagePicker.requestCameraPermissionsAsync();
+      setHasCameraPermission(cameraPermission.status === 'granted');
+    }
+  };
 
   const takePicture = async () => {
-    console.log('take picture');
+    await recheckPermissions('CAMERA');
+    if (!hasCameraPermission) {
+      setCameraPermissionModal(true);
+      return;
+    }
+
     const cameraResponse = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -89,7 +133,11 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
   };
 
   const pickImage = async () => {
-    console.log('pick picture');
+    await recheckPermissions('GALLERY');
+    if (!hasGalleryPermission) {
+      setGalleryPermissionModal(true);
+      return;
+    }
     const getImage = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -252,6 +300,8 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         </View>
       </View>
       <View style={styles.footerContainer}></View>
+      {cameraPermissionModal && CustomModal(cameraPermissionModalProps)}
+      {galleryPermissionModal && CustomModal(galleryPermissionModalProps)}
     </SafeAreaView>
   );
 };
