@@ -16,6 +16,7 @@ import {
   MaterialIcons,
   MaterialCommunityIcons,
   SimpleLineIcons,
+  Entypo,
 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -31,6 +32,7 @@ import {
   kUserEmail,
   green,
   Endpoints,
+  red,
 } from '../constants';
 import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
 import { StackParams } from '../navigation/NavigationTypes';
@@ -305,6 +307,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
               setSearchPhrase={setSearchPhrase}
               clicked={clicked}
               setClicked={setClicked}
+              isDisabled={image}
             />
           </View>
         </View>
@@ -326,23 +329,51 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
               <MaterialIcons
                 name="image-search"
                 size={30}
-                color={white}
-                style={styles.icons}
-                onPress={pickImage}
+                color={searchPhrase.length === 0 ? white : '#eee'}
+                style={
+                  searchPhrase.length === 0
+                    ? styles.icons
+                    : styles.disabledIcons
+                }
+                onPress={() => {
+                  if (searchPhrase.length === 0) {
+                    pickImage();
+                  }
+                }}
               />
               <View style={styles.verticleLine} />
               <MaterialIcons
                 name="camera-alt"
                 size={30}
-                color={white}
-                style={styles.icons}
-                onPress={takePicture}
+                color={searchPhrase.length === 0 ? white : '#eee'}
+                style={
+                  searchPhrase.length === 0
+                    ? styles.icons
+                    : styles.disabledIcons
+                }
+                onPress={() => {
+                  if (searchPhrase.length === 0) {
+                    takePicture();
+                  }
+                }}
               />
             </View>
           </View>
           <View style={styles.searchImageContainer}>
             {image && (
-              <Image source={{ uri: image }} style={styles.searchImage} />
+              <>
+                <Entypo
+                  name="cross"
+                  size={27}
+                  color={darkGreen}
+                  style={styles.crossIcon}
+                  onPress={() => {
+                    console.log('cancel image');
+                    setImage(null);
+                  }}
+                />
+                <Image source={{ uri: image }} style={styles.searchImage} />
+              </>
             )}
 
             {!image && (
@@ -354,7 +385,18 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
             )}
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={sendImgToCloud} style={styles.button}>
+            <TouchableOpacity
+              onPress={() => {
+                if (searchPhrase.length !== 0) {
+                  getResultWithSerpapi('TEXT', searchPhrase);
+                } else {
+                  sendImgToCloud();
+                }
+
+                console.log(searchPhrase.length);
+              }}
+              style={styles.button}
+            >
               <StyledText
                 title="Search"
                 isBold={false}
@@ -413,6 +455,13 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderColor: darkGreen,
     borderWidth: 1,
+    marginHorizontal: 5,
+    textAlign: 'center',
+  },
+  disabledIcons: {
+    flex: 2,
+    backgroundColor: red,
+    borderRadius: 12,
     marginHorizontal: 5,
     textAlign: 'center',
   },
@@ -500,6 +549,12 @@ const styles = StyleSheet.create({
   mediumFont: {
     fontSize: 24,
     color: darkGreen,
+  },
+  crossIcon: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    zIndex: 1,
   },
   footerContainer: {
     flex: 1,
