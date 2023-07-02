@@ -1,9 +1,9 @@
-import { MongoDBConnection } from '../../mongodb/mongodb-connection';
+import { MongoDBConnection } from '../mongodb/mongodb-connection';
 import asyncHandler from 'express-async-handler';
 import { Request, Response, NextFunction } from 'express';
-import { logger } from '../../utils/logger';
-import { IUser, ICredentials } from '../../types';
-import { ResponseMessages } from '../../constants';
+import { logger } from '../utils/logger';
+import { IUser, ICredentials } from '../types';
+import { ResponseMessages } from '../constants';
 
 export const registerController = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {

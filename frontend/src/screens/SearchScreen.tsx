@@ -24,8 +24,7 @@ import { darkGreen, lightGreen, white } from '../constants';
 import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
 import { StackParams } from '../navigation/NavigationTypes';
 import * as ImagePicker from 'expo-image-picker';
-import axios from 'axios';
-
+import * as FileSystem from 'expo-file-system';
 
 const { StatusBarManager } = NativeModules;
 const iOSStatusBarHeight = Constants.statusBarHeight;
@@ -100,44 +99,28 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
     }
   };
 
-  const uuidv4 = (): string => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-      const r = (Math.random() * 16) | 0;
-      const v = c === 'x' ? r : (r & 0x3) | 0x8;
-      return v.toString(16);
-    });
-  };
-  
-
   const sendImgToCloud = async () => {
     console.log('sending.....');
-    const postid = uuidv4();
-    const blob = image.slice(0, image.size, 'image/jpeg');
-    const newFile = new File([blob], `${postid}_post.jpeg`, { type: 'image/jpeg' });
-    const formData = new FormData();
-    formData.append('file', newFile);
-    console.log(newFile);
-  
+
     try {
-      const response = await axios({
-        url:'http://10.0.0.2:9090/api/upload',
-        method:'POST',
-        data: formData,
-        headers:{
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        },
-      });    
-        
-        // console.log(response)
-  
-      if (response.status !== 200) {
+      if (!image) {
+        console.log('no image');
+        return;
+      }
+
+      const uploadResult = await FileSystem.uploadAsync(
+        'http://192.168.68.51:9090/api/upload',
+        image,
+        {
+          httpMethod: 'POST',
+          uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+          fieldName: 'newFile',
+        }
+      );
+
+      if (uploadResult.status !== 200) {
         throw new Error('Network response was not ok');
       }
-  
-      const result = response.data;
-      console.log(response.status);
-      console.log('sent image: ', formData);
       navigation.navigate(ShopNCopStackNavigation.results);
     } catch (error: any) {
       if (error.response) {
@@ -158,13 +141,10 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
       console.log(error.config);
     }
   };
-  
-  
-
   return (
     <SafeAreaView style={styles.container}>
       <SimpleLineIcons
-        name='logout'
+        name="logout"
         size={30}
         color={darkGreen}
         style={styles.logoutIcon}
@@ -176,7 +156,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         <Image source={logo} style={styles.imageStyle}></Image>
       </View>
       <MaterialIcons
-        name='history'
+        name="history"
         size={30}
         color={darkGreen}
         style={styles.historyIcon}
@@ -188,20 +168,20 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         <View style={styles.topBody}>
           <View style={styles.titleContainer}>
             <StyledText
-              title='What are you'
+              title="What are you"
               style={styles.smallFont}
               isBold={false}
               isLight={true}
             />
             <Text>
               <StyledText
-                title='Shopping '
+                title="Shopping "
                 style={styles.mediumFont}
                 isBold={true}
                 isLight={false}
               />
               <StyledText
-                title='for today?'
+                title="for today?"
                 style={styles.mediumFont}
                 isBold={false}
                 isLight={true}
@@ -221,7 +201,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
           <View style={styles.dividerContainer}>
             <View style={styles.divider} />
             <StyledText
-              title='or'
+              title="or"
               isBold={true}
               isLight={false}
               style={styles.dividerText}
@@ -233,7 +213,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
           <View style={styles.iconRowContainer}>
             <View style={styles.iconsContainer}>
               <MaterialIcons
-                name='image-search'
+                name="image-search"
                 size={30}
                 color={darkGreen}
                 style={styles.icons}
@@ -241,7 +221,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
               />
               <View style={styles.verticleLine} />
               <MaterialIcons
-                name='camera-alt'
+                name="camera-alt"
                 size={30}
                 color={darkGreen}
                 style={styles.icons}
@@ -256,12 +236,9 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
             )}
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              onPress={sendImgToCloud}
-              style={styles.button}
-            >
+            <TouchableOpacity onPress={sendImgToCloud} style={styles.button}>
               <StyledText
-                title='Search'
+                title="Search"
                 isBold={false}
                 isLight={false}
                 style={styles.buttonText}
