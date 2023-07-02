@@ -11,13 +11,13 @@ export const axiosSender = async (
       ? await axios({
           method: method,
           baseURL: 'http://localhost:9090/api', // for android, 'http://10.0.0.2:9090/api'
-          url: `${endpoint}/${params}`,
+          url: `${endpoint}${params}`,
           data: payload,
         })
       : await axios({
           method: method,
           baseURL: 'http://localhost:9090/api', // for android, 'http://10.0.0.2:9090/api'
-          url: `${endpoint}/${params}`,
+          url: `${endpoint}${params}`,
         });
     return response;
   } catch (error) {
