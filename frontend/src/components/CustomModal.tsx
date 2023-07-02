@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderWidth: 1,
     borderRadius: 10,
-    width: WIDTH * 0.3,
+    width: WIDTH * 0.35,
     alignItems: 'center',
   },
   primaryButton: {
