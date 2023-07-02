@@ -20,11 +20,12 @@ import {
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 import Constants from 'expo-constants';
-import { darkGreen, lightGreen, white } from '../constants';
+import { darkGreen, lightGreen, white, kUserEmail } from '../constants';
 import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
 import { StackParams } from '../navigation/NavigationTypes';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
+import * as SecureStore from 'expo-secure-store';
 
 const { StatusBarManager } = NativeModules;
 const iOSStatusBarHeight = Constants.statusBarHeight;
@@ -39,8 +40,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
   const [searchPhrase, setSearchPhrase] = useState('');
   const [clicked, setClicked] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
-  const userId = route.params?.userId; // getting user id passed from sign in.
-
+  const [userId, setUserId] = useState<string | null>(null);
   const [hasCameraPermission, setHasCameraPermission] = useState(false);
   const [hasGalleryPermission, setHasGalleryPermission] = useState(false);
   const [image, setImage] = useState<any>();
@@ -53,6 +53,8 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       setHasCameraPermission(cameraPermission.status === 'granted');
       setHasGalleryPermission(galleryPermission.status === 'granted');
+      const userId = await SecureStore.getItemAsync(kUserEmail);
+      setUserId(userId);
     })();
   }, []);
 
@@ -148,7 +150,9 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         size={30}
         color={darkGreen}
         style={styles.logoutIcon}
-        onPress={() => {
+        onPress={async () => {
+          await SecureStore.deleteItemAsync(kUserEmail);
+          setUserId(null);
           navigation.replace(ShopNCopStackNavigation.signIn);
         }}
       />

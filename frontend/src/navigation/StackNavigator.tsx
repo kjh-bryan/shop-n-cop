@@ -12,10 +12,10 @@ import { StackParams } from "./NavigationTypes";
 
 const Stack = createNativeStackNavigator<StackParams>();
 
-export const Navigation = () => {
+export const Navigation = ({initialRoute}: any) => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={ShopNCopStackNavigation.signIn}>
+      <Stack.Navigator initialRouteName={initialRoute}>
         <Stack.Screen
           name={ShopNCopStackNavigation.signIn}
           component={SignInScreen}
