@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import { logger } from '../../utils/logger';
-import { MongoDBConnection } from '../../mongodb/mongodb-connection';
-import { config } from '../config';
+import { logger } from '../utils/logger';
+import { MongoDBConnection } from '../mongodb/mongodb-connection';
+import { config } from '../config/config';
 import type { GoogleShoppingParameters } from 'serpapi';
 import { getJson } from 'serpapi';
 import asyncHandler from 'express-async-handler';
-import { ResponseMessages } from '../../constants';
+import { ResponseMessages } from '../constants';
 
 export const postLinksController = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
