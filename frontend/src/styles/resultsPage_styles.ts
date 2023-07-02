@@ -1,5 +1,5 @@
-import { StyleSheet, TextStyle } from "react-native";
-import { lightGreen, historyText } from "../constants";
+import { StyleSheet, TextStyle } from 'react-native';
+import { lightGreen, green } from '../constants';
 
 export const styles = StyleSheet.create({
   container: {
@@ -7,16 +7,16 @@ export const styles = StyleSheet.create({
     backgroundColor: lightGreen,
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: lightGreen,
     height: 98,
   },
   text: {
     fontSize: 28,
-    textAlign: "center",
-    color: historyText,
+    textAlign: 'center',
+    color: green,
   },
   search: {
     top: 0,
@@ -28,9 +28,9 @@ export const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
     paddingHorizontal: 16,
     marginTop: 10, // Adjust the spacing as needed
   },
