@@ -1,4 +1,4 @@
-import { ShopNCopStackNavigation } from "./NavigationConstants";
+import { ShopNCopStackNavigation } from './NavigationConstants';
 
 export type StackParams = {
   [ShopNCopStackNavigation.signIn]: undefined;
@@ -6,6 +6,8 @@ export type StackParams = {
   [ShopNCopStackNavigation.search]: {
     userId?: string;
   };
-  [ShopNCopStackNavigation.results]: undefined;
+  [ShopNCopStackNavigation.results]: {
+    data?: object;
+  };
   [ShopNCopStackNavigation.history]: undefined;
 };
