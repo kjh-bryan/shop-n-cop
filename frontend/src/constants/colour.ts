@@ -7,6 +7,7 @@ const white = '#FFFFFF';
 const historyShadow = '#000';
 const historyCardBG = '#f9ffeb';
 const green = '#C4D7B2';
+const red = '#9D304A';
 
 export {
   darkGreen,
@@ -18,4 +19,5 @@ export {
   historyShadow,
   historyCardBG,
   green,
+  red,
 };
