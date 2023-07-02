@@ -1,10 +1,11 @@
 import express from 'express';
-import http from 'http';
+import cors from 'cors';
 import { config } from './config';
 import { routes } from './router';
 import { logger } from './utils/logger';
 
 const app = express();
+app.use(cors({ origin: '*' }));
 
 app.use(express.json());
 

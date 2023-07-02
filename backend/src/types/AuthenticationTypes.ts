@@ -7,5 +7,4 @@ export interface IUser {
 
 export interface ICredentials {
   email: string;
-  password: string;
 }
