@@ -41,7 +41,7 @@ export const SignInScreen = () => {
     if (password === '') {
       Alert.alert('Please enter your password.');
     }
-    const response :AxiosResponse<any, any> | undefined= await axiosSender(Endpoints.signIn.uri, Endpoints.signIn.method, email);
+    const response :AxiosResponse<any, any> | undefined= await axiosSender(Endpoints.signIn.uri, Endpoints.signIn.method, `/${email}`, null);
       if (!response) {
         Alert.alert('Network error.')
         return;
