@@ -24,13 +24,22 @@ import {
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 import Constants from 'expo-constants';
-import { darkGreen, lightGreen, white, kUserEmail, green } from '../constants';
+import {
+  darkGreen,
+  lightGreen,
+  white,
+  kUserEmail,
+  green,
+  Endpoints,
+} from '../constants';
 import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
 import { StackParams } from '../navigation/NavigationTypes';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import * as SecureStore from 'expo-secure-store';
 import { CustomModal, CustomModalProps } from '../components/CustomModal';
+import { AxiosResponse } from 'axios';
+import { axiosSender } from '../utils';
 
 const { StatusBarManager } = NativeModules;
 const iOSStatusBarHeight = Constants.statusBarHeight;
@@ -63,9 +72,10 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
       setHasCameraPermission(cameraPermission.granted);
       setHasGalleryPermission(galleryPermission.granted);
 
+      if (!cameraPermission.granted) setCameraPermissionModal(true);
+      if (!galleryPermission.granted) setGalleryPermissionModal(true);
+
       const userId = await SecureStore.getItemAsync(kUserEmail);
-      if (!hasCameraPermission) setCameraPermissionModal(true);
-      if (!hasGalleryPermission) setGalleryPermissionModal(true);
       setUserId(userId);
     })();
   }, []);
@@ -104,11 +114,11 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
     if (type === 'GALLERY') {
       const galleryPermission =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
-      setHasGalleryPermission(galleryPermission.status === 'granted');
+      setHasCameraPermission(galleryPermission.granted);
     } else {
       const cameraPermission =
         await ImagePicker.requestCameraPermissionsAsync();
-      setHasCameraPermission(cameraPermission.status === 'granted');
+      setHasCameraPermission(cameraPermission.granted);
     }
   };
 
@@ -172,7 +182,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
       if (uploadResult.status !== 200) {
         throw new Error('Network response was not ok');
       }
-      navigation.navigate(ShopNCopStackNavigation.results);
+      // navigation.navigate(ShopNCopStackNavigation.results);
     } catch (error: any) {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -192,6 +202,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
       console.log(error.config);
     }
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <SimpleLineIcons
@@ -283,7 +294,6 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
             </View>
           </View>
           <View style={styles.searchImageContainer}>
-            {/* Need to change here for front end sending of image to google cloud! */}
             {image && (
               <Image source={{ uri: image }} style={styles.searchImage} />
             )}
