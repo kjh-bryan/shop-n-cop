@@ -68,7 +68,7 @@ export const RegisterScreen = () => {
       email: email,
       password: hashedPassword,
     };
-    const response: AxiosResponse<any, any> | undefined = await axiosSender(payload, Endpoints.register.uri, Endpoints.register.method);
+    const response: AxiosResponse<any, any> | undefined = await axiosSender(Endpoints.register.uri, Endpoints.register.method, '', payload);
     if (!response) {
       Alert.alert('Network error.')
       return;

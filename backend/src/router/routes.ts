@@ -26,7 +26,8 @@ export const routes = (app: Express) => {
   app.get('/api/textsearch', getSearchResultByTextController);
 
   app.post('/api/register', registerController);
-  
+
+  app.get('/api/sign-in/:email', signInController);
+
   app.post('/api/upload', processFile, uploadingFileController);
-  app.post('/api/sign-in', signInController);
 };

@@ -39,12 +39,10 @@ export const registerController = asyncHandler(
 
       const p = await collection.insertOne(userDocument);
       if (p) {
-        res
-          .status(200)
-          .json({
-            message: ResponseMessages.SUCCESS,
-            data: { ...userDocument },
-          });
+        res.status(200).json({
+          message: ResponseMessages.SUCCESS,
+          data: { ...userDocument },
+        });
       } else {
         res
           .status(503)
@@ -61,8 +59,9 @@ export const registerController = asyncHandler(
 
 export const signInController = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const payload: ICredentials = req.body;
     try {
+      console.log('hello!');
+      const email = req.params.email;
       await MongoDBConnection.connect();
       const mongoDBClient = MongoDBConnection.getClient();
       if (!mongoDBClient) {
@@ -74,7 +73,7 @@ export const signInController = asyncHandler(
       const db = mongoDBClient.db(dbName);
       const collection = db.collection('users');
       const userDoc = await collection.findOne({
-        email: payload.email,
+        email: email,
       });
 
       console.log('userDoc', userDoc);
