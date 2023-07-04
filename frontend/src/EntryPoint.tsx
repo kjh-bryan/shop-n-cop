@@ -18,6 +18,17 @@ const EntryPoint = () => {
     ShopNCopStackNavigation.signIn
   );
   useEffect(() => {
+    (async () => {
+      try {
+        await loadFonts();
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      } catch (e) {
+        console.error('Cannot load custom fonts. Using default fonts...');
+      } finally {
+        setAppIsReady(true);
+      }
+    })();
+
     const handleLogInStatus = async () => {
       try {
         const userId = await SecureStore.getItemAsync(kUserEmail);
@@ -31,19 +42,6 @@ const EntryPoint = () => {
       }
     };
     handleLogInStatus();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        await loadFonts();
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-      } catch (e) {
-        console.error('Cannot load custom fonts. Using default fonts...');
-      } finally {
-        setAppIsReady(true);
-      }
-    })();
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
