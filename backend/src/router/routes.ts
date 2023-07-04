@@ -21,7 +21,7 @@ export const routes = (app: Express) => {
     res.status(200).json({ message: 'Routers are working.' })
   );
 
-  app.post('/api/links', postLinksController);
+  app.post('/api/link', postLinksController);
 
   app.get('/api/search', getSearchResultController);
 
