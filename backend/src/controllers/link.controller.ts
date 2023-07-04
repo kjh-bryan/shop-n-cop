@@ -40,6 +40,47 @@ export const postLinksController = asyncHandler(
   }
 );
 
+export const getLinksController = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const client = MongoDBConnection.getClient();
+      if (!client) {
+        logger.error('Cannot get mongoDBClient');
+        res.status(503).json({ message: ResponseMessages.MONGODB_CLIENT_FAIL });
+        return;
+      }
+
+      await MongoDBConnection.connect();
+      const db = await client.db('authentication');
+      const email = req.query.email;
+      console.log(email);
+      const linkCollections = db.collection('links');
+      const allLinksCursor = linkCollections.find({
+        userEmail: email,
+      });
+
+      const allLinks = await allLinksCursor.toArray();
+
+      if (!allLinks) {
+        res.status(200).json({
+          message: ResponseMessages.NO_LINK,
+          data: {},
+        });
+      } else {
+        res.status(200).json({
+          message: ResponseMessages.SUCCESS,
+          data: { ...allLinks },
+        });
+      }
+    } catch (e) {
+      logger.error(e);
+      res.status(503).json({ message: ResponseMessages.BAD_REQUEST });
+    } finally {
+      await MongoDBConnection.closeConnection();
+    }
+  }
+);
+
 export const getSearchResultController = asyncHandler(
   async (req: Request, res: Response) => {
     const { serpapiApiKey } = config.server;

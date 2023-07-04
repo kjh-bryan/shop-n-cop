@@ -1,5 +1,6 @@
 import { Express } from 'express';
 import {
+  getLinksController,
   getSearchResultController,
   postLinksController,
   registerController,
@@ -22,6 +23,8 @@ export const routes = (app: Express) => {
   );
 
   app.post('/api/link', postLinksController);
+
+  app.get('/api/link', getLinksController);
 
   app.get('/api/search', getSearchResultController);
 
