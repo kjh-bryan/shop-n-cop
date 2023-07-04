@@ -16,9 +16,9 @@ export const postLinksController = asyncHandler(
         res.status(503).json({ message: ResponseMessages.MONGODB_CLIENT_FAIL });
         return;
       }
-      const conn = await MongoDBConnection.connect();
-      const db = client.db('test');
 
+      await MongoDBConnection.connect();
+      const db = await client.db('authentication');
       const linkCollections = await db.collection('links');
       const link = req.body;
       const result = await linkCollections.insertOne(link);
@@ -51,15 +51,15 @@ export const getSearchResultController = asyncHandler(
         api_key: serpapiApiKey,
         url: imageURL,
       } satisfies GoogleLensParameters;
-      console.log('in image');
-      console.log(params);
       try {
         const response = await getJson('google_lens', params);
         console.log(response);
         if (response) {
           res.status(200).json({
             message: ResponseMessages.SUCCESS,
-            ...response.visual_matches,
+            data: {
+              ...response.visual_matches,
+            },
           });
         } else {
           res.status(503).json({ message: ResponseMessages.FETCH_ERROR });
@@ -80,10 +80,13 @@ export const getSearchResultController = asyncHandler(
       } satisfies GoogleShoppingParameters;
       try {
         const response = await getJson('google_shopping', params);
+        console.log('in text, print response');
+        console.log(response);
         if (response) {
-          res
-            .status(200)
-            .json({ message: ResponseMessages.SUCCESS, data: { ...response } });
+          res.status(200).json({
+            message: ResponseMessages.SUCCESS,
+            data: response.shopping_results,
+          });
         } else {
           res.status(503).json({ message: ResponseMessages.FETCH_ERROR });
         }

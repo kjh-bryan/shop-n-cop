@@ -1,49 +1,76 @@
-import React from "react";
+import React from 'react';
 import {
   View,
-  Text,
   Image,
   ImageSourcePropType,
   TouchableOpacity,
-} from "react-native";
-import { styles } from "../styles/resultsCard_styles";
-import { StyledText } from "./StyledText";
-
-interface ResultsCardProps {
+  Alert,
+  Linking,
+} from 'react-native';
+import { styles } from '../styles/resultsCard_styles';
+import { StyledText } from './StyledText';
+import * as SecureStore from 'expo-secure-store';
+import { Endpoints, kUserEmail } from './../constants';
+import { AxiosResponse } from 'axios';
+import { axiosSender } from '../utils';
+import { openBrowserAsync } from 'expo-web-browser';
+export interface ResultsCardProps {
+  fullTitle: string;
   title: string;
-  content: string;
-  price: string;
-  image: ImageSourcePropType;
+  link: string;
+  source: string;
+  price: PriceInterface;
+  extracted_price?: number;
+  thumbnail: string;
 }
 
-const ResultsCard: React.FC<ResultsCardProps> = ({
+export interface PriceInterface {
+  value: string;
+  extracted_value: number;
+  currency: string;
+}
+
+export const ResultsCard: React.FC<ResultsCardProps> = ({
+  fullTitle,
   title,
-  content,
-  image,
+  link,
+  source,
   price,
+  thumbnail,
 }) => {
-  const handlePressed = () => {
+  const handlePressed = async () => {
+    const userEmail = await SecureStore.getItemAsync(kUserEmail);
     const data = {
-      title,
-      content,
-      image,
+      fullTitle,
+      link,
+      source,
       price,
+      thumbnail,
+      userEmail,
     };
-    console.log(data);
+
+    const response: AxiosResponse<any, any> | undefined = await axiosSender(
+      Endpoints.postLinks.uri,
+      Endpoints.postLinks.method,
+      '',
+      data
+    );
+    if (!response) {
+      console.log('Error submitting links');
+      Alert.alert('Unable to save links to user profile');
+    }
+
+    openBrowserAsync(link);
   };
 
   return (
     <TouchableOpacity activeOpacity={0.9} onPress={() => handlePressed()}>
       <View style={styles.cardContainer}>
-        {/* for image url purpose */}
-        {/* <Image source={{ uri: image }} /> */}
-        <Image source={image} />
+        <Image source={{ uri: thumbnail }} style={styles.productImage} />
         <StyledText title={title} style={styles.productTitle} />
-        <StyledText title={content} style={styles.productShop} />
-        <StyledText title={price} isBold style={styles.productPrice} />
+        <StyledText title={source} style={styles.productShop} />
+        <StyledText title={price.value} isBold style={styles.productPrice} />
       </View>
     </TouchableOpacity>
   );
 };
-
-export default ResultsCard;

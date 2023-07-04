@@ -8,6 +8,7 @@ export type StackParams = {
   };
   [ShopNCopStackNavigation.results]: {
     data?: object;
+    query?: string;
   };
   [ShopNCopStackNavigation.history]: undefined;
 };

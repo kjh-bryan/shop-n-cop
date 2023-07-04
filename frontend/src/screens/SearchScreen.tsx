@@ -9,6 +9,7 @@ import {
   NativeModules,
   Platform,
   Linking,
+  Alert,
 } from 'react-native';
 import { StyledText } from '../components/StyledText';
 import { SearchBar } from '../components/SearchBar';
@@ -41,7 +42,7 @@ import * as FileSystem from 'expo-file-system';
 import * as SecureStore from 'expo-secure-store';
 import { CustomModal, CustomModalProps } from '../components/CustomModal';
 import { AxiosResponse } from 'axios';
-import { axiosSender } from '../utils';
+import { axiosSender, localUrl } from '../utils';
 
 const { StatusBarManager } = NativeModules;
 const iOSStatusBarHeight = Constants.statusBarHeight;
@@ -112,21 +113,25 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
     },
   };
 
-  const recheckPermissions = async (type: string) => {
+  const recheckPermissions = async (type: string): Promise<boolean> => {
+    console.log('RecheckPermissions');
     if (type === 'GALLERY') {
       const galleryPermission =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       setHasCameraPermission(galleryPermission.granted);
+
+      return galleryPermission.granted;
     } else {
       const cameraPermission =
         await ImagePicker.requestCameraPermissionsAsync();
       setHasCameraPermission(cameraPermission.granted);
+      return cameraPermission.granted;
     }
   };
 
   const takePicture = async () => {
-    await recheckPermissions('CAMERA');
-    if (!hasCameraPermission) {
+    const permission = await recheckPermissions('CAMERA');
+    if (!permission) {
       setCameraPermissionModal(true);
       return;
     }
@@ -146,8 +151,8 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
   };
 
   const pickImage = async () => {
-    await recheckPermissions('GALLERY');
-    if (!hasGalleryPermission) {
+    const permission = await recheckPermissions('GALLERY');
+    if (!permission) {
       setGalleryPermissionModal(true);
       return;
     }
@@ -164,15 +169,15 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
 
   const sendImgToCloud = async () => {
     console.log('sending.....');
-
     try {
       if (!image) {
-        console.log('no image');
+        Alert.alert('Image could not be taken, please upload again.');
         return;
       }
 
+      const local = await localUrl();
       const uploadResult = await FileSystem.uploadAsync(
-        'http://192.168.68.51:9090/api/upload',
+        `http://${local}:9090/api/upload`,
         image,
         {
           httpMethod: 'POST',
@@ -181,6 +186,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         }
       );
 
+      console.log('uploadResult status ', uploadResult.status);
       if (uploadResult.status !== 200) {
         throw new Error('Network response was not ok');
       } else {
@@ -213,9 +219,9 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
     url?: string,
     query?: string
   ) => {
-    console.log('getresult');
+    console.log('getResultWithSerpapi');
     if (type === 'IMAGE') {
-      const params = `?type=IMAGE&imageURL=${url}}`;
+      const params = `?type=IMAGE&imageURL=${url}`;
       try {
         const response: AxiosResponse<any, any> | undefined = await axiosSender(
           Endpoints.search.uri,
@@ -226,26 +232,34 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         if (!response) {
           return;
         }
+        if (response.data === undefined) {
+          Alert.alert(
+            'No results has been found with this image. Please try another image.'
+          );
+          return;
+        }
         navigation.navigate(ShopNCopStackNavigation.results, {
-          data: response.data,
+          data: response.data.data,
         });
       } catch (error) {
         console.log(error);
       }
     } else {
       try {
-        const params = `?type=TEXT&query=${query}}`;
+        const params = `?type=TEXT&query=${query}`;
         const response: AxiosResponse<any, any> | undefined = await axiosSender(
           Endpoints.search.uri,
           Endpoints.search.method,
           params,
           null
         );
+
         if (!response) {
           return;
         }
         navigation.navigate(ShopNCopStackNavigation.results, {
-          data: response.data,
+          data: response.data.data,
+          query,
         });
       } catch (error) {
         console.log(error);
@@ -388,7 +402,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
             <TouchableOpacity
               onPress={() => {
                 if (searchPhrase.length !== 0) {
-                  getResultWithSerpapi('TEXT', searchPhrase);
+                  getResultWithSerpapi('TEXT', '', searchPhrase);
                 } else {
                   sendImgToCloud();
                 }
