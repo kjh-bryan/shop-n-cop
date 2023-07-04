@@ -1,12 +1,22 @@
 import { Dimensions, StyleSheet, TextStyle } from 'react-native';
-import { green } from '../constants';
+import { darkGreen, green } from '../constants';
 
 const windowWidth = Dimensions.get('window').width;
 
 export const styles = StyleSheet.create({
   cardContainer: {
     width: (windowWidth - 48) / 2, // Adjust the width to fit two cards in a row with spacing
+    height: 200,
     alignItems: 'center',
+    marginVertical: 30,
+  },
+  productImage: {
+    width: 160,
+    height: 160,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: darkGreen,
+    resizeMode: 'contain',
   },
   productTitle: {
     fontSize: 16,

@@ -11,4 +11,12 @@ export const Endpoints = {
     uri: '/search',
     method: 'GET',
   },
+  postLinks: {
+    uri: 'link',
+    method: 'POST',
+  },
+  getLinks: {
+    uri: 'link',
+    method: 'GET',
+  },
 };
