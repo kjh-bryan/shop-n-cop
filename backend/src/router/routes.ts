@@ -1,20 +1,14 @@
 import { Express } from 'express';
 import {
+  getLinksController,
   getSearchResultController,
   postLinksController,
   registerController,
   signInController,
+  updateLinkController,
   uploadingFileController,
 } from '../controllers';
-import Multer from 'multer';
 import { processFile } from '../middleware';
-
-const multer = Multer({
-  storage: Multer.memoryStorage(),
-  limits: {
-    fileSize: 5 * 1024 * 1024, // no larger than 5mb
-  },
-});
 
 export const routes = (app: Express) => {
   app.get('/healthcheck', (req, res) =>
@@ -22,6 +16,10 @@ export const routes = (app: Express) => {
   );
 
   app.post('/api/link', postLinksController);
+
+  app.get('/api/link', getLinksController);
+
+  app.put('/api/link', updateLinkController);
 
   app.get('/api/search', getSearchResultController);
 

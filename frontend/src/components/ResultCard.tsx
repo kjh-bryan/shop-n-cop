@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Image,
-  ImageSourcePropType,
-  TouchableOpacity,
-  Alert,
-  Linking,
-} from 'react-native';
+import { View, Image, TouchableOpacity, Alert } from 'react-native';
 import { styles } from '../styles/resultsCard_styles';
 import { StyledText } from './StyledText';
 import * as SecureStore from 'expo-secure-store';
@@ -40,6 +33,9 @@ export const ResultsCard: React.FC<ResultsCardProps> = ({
 }) => {
   const handlePressed = async () => {
     const userEmail = await SecureStore.getItemAsync(kUserEmail);
+
+    const createdAt = new Date();
+
     const data = {
       fullTitle,
       link,
@@ -47,6 +43,7 @@ export const ResultsCard: React.FC<ResultsCardProps> = ({
       price,
       thumbnail,
       userEmail,
+      createdAt,
     };
 
     const response: AxiosResponse<any, any> | undefined = await axiosSender(
