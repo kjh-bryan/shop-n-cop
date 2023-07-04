@@ -1,5 +1,5 @@
 import { StyleSheet, TextStyle } from 'react-native';
-import { lightGreen, green } from '../constants';
+import { lightGreen, green, darkGreen } from '../constants';
 
 export const styles = StyleSheet.create({
   container: {
@@ -12,6 +12,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: lightGreen,
     height: 98,
+    borderBottomWidth: 1,
+    borderBottomColor: darkGreen,
   },
   text: {
     fontSize: 28,

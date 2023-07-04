@@ -1,4 +1,5 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
+import { localUrl } from './loadUrl';
 
 export const axiosSender = async (
   endpoint: string,
@@ -7,18 +8,18 @@ export const axiosSender = async (
   payload?: any
 ): Promise<AxiosResponse<any, any> | undefined> => {
   try {
-    const localhost = 'localhost';
-    const bryanUrl = '192.168.68.51';
+    const local = await localUrl();
+    const port = ':9090';
     const response = payload
       ? await axios({
           method: method,
-          baseURL: `http://${bryanUrl}:9090/api`, // for android, 'http://10.0.0.2:9090/api'
+          baseURL: `http://${local}${port}/api`, // for android, 'http://10.0.0.2:9090/api'
           url: `${endpoint}${params}`,
           data: payload,
         })
       : await axios({
           method: method,
-          baseURL: `http://${bryanUrl}:9090/api`, // for android, 'http://10.0.0.2:9090/api'
+          baseURL: `http://${local}${port}/api`, // for android, 'http://10.0.0.2:9090/api'
           url: `${endpoint}${params}`,
         });
     return response;
