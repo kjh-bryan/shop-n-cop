@@ -7,6 +7,7 @@ export enum ResponseMessages {
   USER_ALREADY_EXISTS = 'User already exists',
   INCORRECT_PASSWORD = 'Incorrect password',
   NO_USER = "User doesn't exist in the database",
+  NO_LINK = 'User does not have any links in the database',
   UPLOAD_IMAGE_FAIL = 'Please upload a file.',
   UPLOADED_SUCCESSFULLY_PUBLIC_ACCESS_DENIED = `Uploaded the file successfully, but public access is denied!`,
   UPLOADED_SUCCESSFULLY = `Uploaded the file successfully.`,
