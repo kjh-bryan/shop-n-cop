@@ -6,6 +6,7 @@ import type { GoogleLensParameters, GoogleShoppingParameters } from 'serpapi';
 import { getJson } from 'serpapi';
 import asyncHandler from 'express-async-handler';
 import { ResponseMessages } from '../constants';
+import { ObjectId } from 'mongodb';
 
 export const postLinksController = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -70,6 +71,47 @@ export const getLinksController = asyncHandler(
         res.status(200).json({
           message: ResponseMessages.SUCCESS,
           data: { ...allLinks },
+        });
+      }
+    } catch (e) {
+      logger.error(e);
+      res.status(503).json({ message: ResponseMessages.BAD_REQUEST });
+    } finally {
+      await MongoDBConnection.closeConnection();
+    }
+  }
+);
+
+export const updateLinkController = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const client = MongoDBConnection.getClient();
+      if (!client) {
+        logger.error('Cannot get mongoDBClient');
+        res.status(503).json({ message: ResponseMessages.MONGODB_CLIENT_FAIL });
+        return;
+      }
+      await MongoDBConnection.connect();
+      const db = await client.db('authentication');
+
+      const { newDate } = req.body;
+      const payload = req.query;
+      const { id } = payload as any;
+      const filter = { _id: new ObjectId(id) };
+      const update = { $set: { createdAt: newDate } };
+
+      const linkCollections = db.collection('links');
+      const updateLink = await linkCollections.findOneAndUpdate(filter, update);
+
+      if (!updateLink) {
+        res.status(503).json({
+          message: ResponseMessages.FAILED_UPDATE_LINK,
+          data: {},
+        });
+      } else {
+        res.status(200).json({
+          message: ResponseMessages.SUCCESS,
+          data: updateLink.value,
         });
       }
     } catch (e) {
