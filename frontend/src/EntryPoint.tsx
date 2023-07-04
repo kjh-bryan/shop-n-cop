@@ -14,23 +14,9 @@ SplashScreen.preventAutoHideAsync();
 const EntryPoint = () => {
   const [appIsReady, setAppIsReady] = useState(false);
 
-  const [initialRoute, setInitialRoute] = useState<string>(ShopNCopStackNavigation.signIn);
-  useEffect( () => {
-    const handleLogInStatus = async () => {
-      try {
-      const userId = await SecureStore.getItemAsync(kUserEmail);
-      if (userId !== null) {
-        setInitialRoute(ShopNCopStackNavigation.search);
-      } else {
-        setInitialRoute(ShopNCopStackNavigation.signIn);
-      }
-    } catch(error) {
-      console.error('handleLogInStatus]', error);
-    }
-    }
-    handleLogInStatus();
-  }, []);
-
+  const [initialRoute, setInitialRoute] = useState<string>(
+    ShopNCopStackNavigation.signIn
+  );
   useEffect(() => {
     (async () => {
       try {
@@ -42,6 +28,20 @@ const EntryPoint = () => {
         setAppIsReady(true);
       }
     })();
+
+    const handleLogInStatus = async () => {
+      try {
+        const userId = await SecureStore.getItemAsync(kUserEmail);
+        if (userId !== null) {
+          setInitialRoute(ShopNCopStackNavigation.search);
+        } else {
+          setInitialRoute(ShopNCopStackNavigation.signIn);
+        }
+      } catch (error) {
+        console.error('handleLogInStatus]', error);
+      }
+    };
+    handleLogInStatus();
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
@@ -56,7 +56,7 @@ const EntryPoint = () => {
 
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <Navigation initialRoute={initialRoute}/>
+      <Navigation initialRoute={initialRoute} />
     </View>
   );
 };
