@@ -12,11 +12,15 @@ export const Endpoints = {
     method: 'GET',
   },
   postLinks: {
-    uri: 'link',
+    uri: '/link',
     method: 'POST',
   },
   getLinks: {
-    uri: 'link',
+    uri: '/link',
     method: 'GET',
+  },
+  updateLink: {
+    uri: '/link',
+    method: 'PUT',
   },
 };

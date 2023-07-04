@@ -23,10 +23,23 @@ export const styles = StyleSheet.create({
   search: {
     top: 0,
     right: 5, // Adjust the spacing as needed
+    opacity: 0,
   },
   back: {
     top: 0,
     left: 0, // Adjust the spacing as needed
+  },
+  noLinkTextContainer: {
+    marginTop: 100,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: darkGreen,
+    borderRadius: 20,
+    marginHorizontal: 20,
+  },
+  noLinkText: {
+    fontSize: 30,
+    color: green,
   },
   body: {
     flex: 1,
