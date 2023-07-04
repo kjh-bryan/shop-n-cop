@@ -86,7 +86,7 @@ export const ResultsPageScreen = ({ route }: ResultScreenProps) => {
           name="search"
           size={30}
           color={darkGreen}
-          nPress={() => {
+          onPress={() => {
             console.log('on search click');
           }}
           style={styles.search}
@@ -98,17 +98,27 @@ export const ResultsPageScreen = ({ route }: ResultScreenProps) => {
         style={styles.container}
       >
         <View style={styles.body}>
-          {filteredResultArray.map((item, index) => (
-            <ResultsCard
-              key={index}
-              fullTitle={item.fullTitle}
-              link={item.link}
-              title={item.title}
-              source={item.source}
-              price={item.price}
-              thumbnail={item.thumbnail}
-            />
-          ))}
+          {filteredResultArray.length > 0 &&
+            filteredResultArray.map((item, index) => (
+              <ResultsCard
+                key={index}
+                fullTitle={item.fullTitle}
+                link={item.link}
+                title={item.title}
+                source={item.source}
+                price={item.price}
+                thumbnail={item.thumbnail}
+              />
+            ))}
+          {filteredResultArray.length === 0 && (
+            <View style={styles.noLinkTextContainer}>
+              <StyledText
+                title={'No results'}
+                style={styles.noLinkText}
+                isLight
+              />
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
