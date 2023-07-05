@@ -4,7 +4,11 @@ import { Request, Response, NextFunction } from 'express';
 import { logger } from '../utils/logger';
 import { IUser, ICredentials } from '../types';
 import { ResponseMessages } from '../constants';
+import { sign, SignOptions } from 'jsonwebtoken';
+import { config } from '../config';
+import bcrypt from 'bcrypt';
 
+const accessTokenSecret = config.server.accessTokenSecret;
 export const registerController = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -32,7 +36,7 @@ export const registerController = asyncHandler(
 
       if (existingUser) {
         res
-          .status(200)
+          .status(400)
           .json({ message: ResponseMessages.USER_ALREADY_EXISTS, data: {} });
         return;
       }
@@ -60,7 +64,7 @@ export const registerController = asyncHandler(
 export const signInController = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const email = req.params.email;
+      const { email, password } = req.body;
       await MongoDBConnection.connect();
       const mongoDBClient = MongoDBConnection.getClient();
       if (!mongoDBClient) {
@@ -75,16 +79,42 @@ export const signInController = asyncHandler(
         email: email,
       });
 
-      console.log('userDoc', userDoc);
       if (!userDoc) {
-        res.status(200).json({
-          message: ResponseMessages.NO_USER,
+        res.status(400).json({
+          message: ResponseMessages.INCORRECT_CREDENTIALS,
           data: {},
         });
+        return;
+      }
+
+      if (userDoc && (await bcrypt.compare(password, userDoc.password))) {
+        if (accessTokenSecret) {
+          const token = sign(
+            {
+              user: {
+                email,
+              },
+            },
+            accessTokenSecret,
+            {
+              expiresIn: '1hr',
+            }
+          );
+          userDoc.token = token;
+          res.status(200).json({
+            message: ResponseMessages.SUCCESS,
+            data: { ...userDoc, token },
+          });
+        } else {
+          res.status(400).json({
+            message: ResponseMessages.ERROR_LOGIN,
+            data: {},
+          });
+        }
       } else {
-        res.status(200).json({
-          message: ResponseMessages.SUCCESS,
-          data: { ...userDoc },
+        res.status(401).json({
+          message: ResponseMessages.INCORRECT_CREDENTIALS,
+          data: {},
         });
       }
     } catch (error) {
