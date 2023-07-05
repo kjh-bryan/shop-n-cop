@@ -1,0 +1,12 @@
+services:
+  shopncop:
+    container_name: shop-n-cop
+    hostname: shop-n-cop
+    image: backend-shopncop:latest
+    build: .
+    command: npm run dev
+    ports:
+      - '9090:9090'
+    expose:
+      - '9090'
+    restart: always
