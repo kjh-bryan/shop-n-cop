@@ -9,7 +9,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
-  TouchableWithoutFeedback, Alert
+  TouchableWithoutFeedback,
+  Alert,
 } from 'react-native';
 import React, { useState } from 'react';
 import { StyledText } from '../components';
@@ -17,13 +18,11 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StackParams } from '../navigation/NavigationTypes';
 import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
-import { axiosSender,  testEmailRegex } from '../utils';
-import { Endpoints, kUserEmail } from '../constants';
-import { ResponseMessages } from '../../../backend/src/constants';
-import bcrypt from 'react-native-bcrypt'
+import { axiosSender, testEmailRegex } from '../utils';
+import { Endpoints, kJWTToken, kUserEmail } from '../constants';
+import { ResponseMessages } from '../constants';
 import { AxiosResponse } from 'axios';
 import * as SecureStore from 'expo-secure-store';
-
 
 export const SignInScreen = () => {
   const [email, setEmail] = useState<string>('');
@@ -32,42 +31,58 @@ export const SignInScreen = () => {
 
   const handleSignIn = async () => {
     try {
-    if (email === '') {
-      Alert.alert('Please enter your email.')
-    }
-    if (!testEmailRegex) {
-      Alert.alert('Please enter a valid email.');
-    }
-    if (password === '') {
-      Alert.alert('Please enter your password.');
-    }
-    const response :AxiosResponse<any, any> | undefined= await axiosSender(Endpoints.signIn.uri, Endpoints.signIn.method, `/${email}`, null);
+      if (email === '') {
+        Alert.alert('Please enter your email.');
+      }
+      if (!testEmailRegex) {
+        Alert.alert('Please enter a valid email.');
+      }
+      if (password === '') {
+        Alert.alert('Please enter your password.');
+      }
+
+      const payload = {
+        email,
+        password,
+      };
+
+      const response: AxiosResponse<any, any> | undefined = await axiosSender(
+        Endpoints.signIn.uri,
+        Endpoints.signIn.method,
+        '',
+        payload
+      );
+
+      console.log('print response');
+      console.log(response);
+
       if (!response) {
-        Alert.alert('Network error.')
+        Alert.alert('Network error.');
         return;
       }
-  
-    if (response.status === 200 && response.data.message === ResponseMessages.SUCCESS) {
-      const dbPassword = response.data.data.password;
-      const passwordMatch = bcrypt.compareSync(password, dbPassword);
-      if (passwordMatch) {
+
+      if (
+        response.status === 200 &&
+        response.data.message === ResponseMessages.SUCCESS
+      ) {
         await SecureStore.setItemAsync(kUserEmail, response.data.data.email);
+        await SecureStore.setItemAsync(kJWTToken, response.data.data.token);
         navigation.navigate({
           name: ShopNCopStackNavigation.search,
         } as never);
+      } else if (
+        response.status === 200 &&
+        response.data.message === ResponseMessages.INCORRECT_CREDENTIALS
+      ) {
+        Alert.alert('Invalid username or password');
       } else {
-        Alert.alert('Incorrect password. Please try again');
+        Alert.alert('Something went wrong');
       }
-    } else if (response.status === 200 && response.data.message === ResponseMessages.NO_USER) {
-      Alert.alert('User not found');
-    } else {
-      Alert.alert('Something went wrong')
+    } catch (error) {
+      console.error('[handleSignIn]', error);
+      Alert.alert('Sorry! Something went wrong.');
     }
-  } catch (error) {
-    console.error('[handleSignIn]', error);
-    Alert.alert('Sorry! Something went wrong.');
-  }
-  }
+  };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -77,7 +92,7 @@ export const SignInScreen = () => {
         >
           <Image source={require('../../assets/logo/logo.png')} />
           <StyledText
-            title='Sign In'
+            title="Sign In"
             style={styles.signInHeaderText}
             isBold={true}
             isLight={false}
@@ -87,7 +102,7 @@ export const SignInScreen = () => {
             autoCapitalize="none"
             onChangeText={setEmail}
             value={email}
-            placeholder='Email'
+            placeholder="Email"
           />
           <TextInput
             secureTextEntry={true}
@@ -95,14 +110,12 @@ export const SignInScreen = () => {
             autoCapitalize="none"
             onChangeText={setPassword}
             value={password}
-            placeholder='Password'
+            placeholder="Password"
           />
-          <TouchableOpacity
-            onPress={handleSignIn}
-          >
+          <TouchableOpacity onPress={handleSignIn}>
             <View style={styles.signInButtonContainer}>
               <StyledText
-                title='Sign In'
+                title="Sign In"
                 style={styles.signInButtonText}
                 isBold={false}
                 isLight={false}

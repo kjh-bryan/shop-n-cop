@@ -5,7 +5,7 @@ export const Endpoints = {
   },
   signIn: {
     uri: '/sign-in',
-    method: 'GET',
+    method: 'POST',
   },
   search: {
     uri: '/search',

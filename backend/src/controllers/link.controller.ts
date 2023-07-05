@@ -54,7 +54,6 @@ export const getLinksController = asyncHandler(
       await MongoDBConnection.connect();
       const db = await client.db('authentication');
       const email = req.query.email;
-      console.log(email);
       const linkCollections = db.collection('links');
       const allLinksCursor = linkCollections.find({
         userEmail: email,
@@ -136,7 +135,6 @@ export const getSearchResultController = asyncHandler(
       } satisfies GoogleLensParameters;
       try {
         const response = await getJson('google_lens', params);
-        console.log(response);
         if (response) {
           res.status(200).json({
             message: ResponseMessages.SUCCESS,
@@ -163,8 +161,6 @@ export const getSearchResultController = asyncHandler(
       } satisfies GoogleShoppingParameters;
       try {
         const response = await getJson('google_shopping', params);
-        console.log('in text, print response');
-        console.log(response);
         if (response) {
           res.status(200).json({
             message: ResponseMessages.SUCCESS,

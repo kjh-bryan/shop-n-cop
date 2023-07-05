@@ -8,24 +8,24 @@ import {
   updateLinkController,
   uploadingFileController,
 } from '../controllers';
-import { processFile } from '../middleware';
+import { processFile, validateToken } from '../middleware';
 
 export const routes = (app: Express) => {
   app.get('/healthcheck', (req, res) =>
     res.status(200).json({ message: 'Routers are working.' })
   );
 
-  app.post('/api/link', postLinksController);
+  app.post('/api/link', validateToken, postLinksController);
 
-  app.get('/api/link', getLinksController);
+  app.get('/api/link', validateToken, getLinksController);
 
-  app.put('/api/link', updateLinkController);
+  app.put('/api/link', validateToken, updateLinkController);
 
-  app.get('/api/search', getSearchResultController);
+  app.get('/api/search', validateToken, getSearchResultController);
 
   app.post('/api/register', registerController);
 
-  app.get('/api/sign-in/:email', signInController);
+  app.post('/api/sign-in/', signInController);
 
-  app.post('/api/upload', processFile, uploadingFileController);
+  app.post('/api/upload', processFile, validateToken, uploadingFileController);
 };

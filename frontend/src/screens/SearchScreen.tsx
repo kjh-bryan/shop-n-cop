@@ -34,6 +34,7 @@ import {
   green,
   Endpoints,
   red,
+  kJWTToken,
 } from '../constants';
 import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
 import { StackParams } from '../navigation/NavigationTypes';
@@ -176,6 +177,10 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
       }
 
       const local = await localUrl();
+      const token = await SecureStore.getItemAsync(kJWTToken);
+      const headers = {
+        Authorization: 'Bearer ' + token,
+      };
       const uploadResult = await FileSystem.uploadAsync(
         `http://${local}:9090/api/upload`,
         image,
@@ -183,10 +188,10 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
           httpMethod: 'POST',
           uploadType: FileSystem.FileSystemUploadType.MULTIPART,
           fieldName: 'newFile',
+          headers,
         }
       );
 
-      console.log('uploadResult status ', uploadResult.status);
       if (uploadResult.status !== 200) {
         throw new Error('Network response was not ok');
       } else {
@@ -275,6 +280,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         style={styles.logoutIcon}
         onPress={async () => {
           await SecureStore.deleteItemAsync(kUserEmail);
+          await SecureStore.deleteItemAsync(kJWTToken);
           setUserId(null);
           navigation.replace(ShopNCopStackNavigation.signIn);
         }}
