@@ -1,5 +1,7 @@
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import axios, { AxiosResponse, AxiosError, AxiosHeaders } from 'axios';
 import { localUrl } from './loadUrl';
+import * as SecureStore from 'expo-secure-store';
+import { kJWTToken } from '../constants';
 
 export const axiosSender = async (
   endpoint: string,
@@ -10,17 +12,23 @@ export const axiosSender = async (
   try {
     const local = await localUrl();
     const port = ':9090';
+    const token = await SecureStore.getItemAsync(kJWTToken);
+    const headers = {
+      Authorization: 'Bearer ' + token,
+    };
     const response = payload
       ? await axios({
           method: method,
           baseURL: `http://${local}${port}/api`, // for android, 'http://10.0.0.2:9090/api'
           url: `${endpoint}${params}`,
           data: payload,
+          headers,
         })
       : await axios({
           method: method,
           baseURL: `http://${local}${port}/api`, // for android, 'http://10.0.0.2:9090/api'
           url: `${endpoint}${params}`,
+          headers,
         });
     return response;
   } catch (error) {
