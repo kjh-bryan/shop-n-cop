@@ -6,7 +6,6 @@ const uri = process.env.MONGODB_URI;
 
 export class MongoDBConnection {
   private static client: MongoClient;
-
   public static getClient = () => {
     try {
       if (MongoDBConnection.client) {
