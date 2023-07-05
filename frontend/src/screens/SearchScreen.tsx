@@ -193,9 +193,10 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
       );
 
       if (uploadResult.status !== 200) {
+        Alert.alert('Could not upload image to cloud.')
         throw new Error('Network response was not ok');
       } else {
-        const responseBody = await uploadResult.body;
+        const responseBody = uploadResult.body;
         const jsonData = JSON.parse(responseBody);
         const imageUrl = jsonData.data.url;
         getResultWithSerpapi('IMAGE', imageUrl);
