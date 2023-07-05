@@ -24,3 +24,5 @@ export const Endpoints = {
     method: 'PUT',
   },
 };
+
+export const deployedIPAddress = '34.126.99.205';
