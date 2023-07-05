@@ -60,7 +60,6 @@ export const registerController = asyncHandler(
 export const signInController = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log('hello!');
       const email = req.params.email;
       await MongoDBConnection.connect();
       const mongoDBClient = MongoDBConnection.getClient();
