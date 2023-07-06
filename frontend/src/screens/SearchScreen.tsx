@@ -35,6 +35,7 @@ import {
   Endpoints,
   red,
   kJWTToken,
+  historyShadow,
 } from '../constants';
 import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
 import { StackParams } from '../navigation/NavigationTypes';
@@ -44,6 +45,7 @@ import * as SecureStore from 'expo-secure-store';
 import { CustomModal, CustomModalProps } from '../components/CustomModal';
 import { AxiosResponse } from 'axios';
 import { axiosSender, localUrl } from '../utils';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 
 const { StatusBarManager } = NativeModules;
 const iOSStatusBarHeight = Constants.statusBarHeight;
@@ -65,6 +67,8 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
   const [cameraPermissionModal, setCameraPermissionModal] =
     useState<boolean>(false);
   const [galleryPermissionModal, setGalleryPermissionModal] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -170,9 +174,11 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
 
   const sendImgToCloud = async () => {
     console.log('sending.....');
+    setLoading(true);
     try {
       if (!image) {
         Alert.alert('Image could not be taken, please upload again.');
+        setLoading(false);
         return;
       }
 
@@ -192,8 +198,11 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         }
       );
 
+      console.log('uploadResult');
+      console.log(uploadResult);
       if (uploadResult.status !== 200) {
-        Alert.alert('Could not upload image to cloud.')
+        Alert.alert('Could not upload image to cloud.');
+        setLoading(false);
         throw new Error('Network response was not ok');
       } else {
         const responseBody = uploadResult.body;
@@ -218,8 +227,10 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         console.log('Error', error.message);
       }
       console.log(error.config);
+      setLoading(false);
     }
   };
+
   const getResultWithSerpapi = async (
     type: string,
     url?: string,
@@ -236,22 +247,28 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
           null
         );
         if (!response) {
+          console.error('Error in axiosSender with getResultWithSerpapi');
+          setLoading(false);
           return;
         }
         if (response.data === undefined) {
+          setLoading(false);
           Alert.alert(
             'No results has been found with this image. Please try another image.'
           );
           return;
         }
+        setLoading(false);
         navigation.navigate(ShopNCopStackNavigation.results, {
           data: response.data.data,
         });
       } catch (error) {
+        setLoading(false);
         console.log(error);
       }
     } else {
       try {
+        setLoading(true);
         const params = `?type=TEXT&query=${query}`;
         const response: AxiosResponse<any, any> | undefined = await axiosSender(
           Endpoints.search.uri,
@@ -261,19 +278,23 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         );
 
         if (!response) {
+          setLoading(false);
           return;
         }
+        setLoading(false);
         navigation.navigate(ShopNCopStackNavigation.results, {
           data: response.data.data,
           query,
         });
       } catch (error) {
+        setLoading(false);
         console.log(error);
       }
     }
   };
   return (
     <SafeAreaView style={styles.container}>
+      {loading && <LoadingSpinner />}
       <SimpleLineIcons
         name="logout"
         size={30}
@@ -350,7 +371,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
               <MaterialIcons
                 name="image-search"
                 size={30}
-                color={searchPhrase.length === 0 ? white : '#eee'}
+                color={searchPhrase.length === 0 ? white : '#ECECEC'}
                 style={
                   searchPhrase.length === 0
                     ? styles.icons
@@ -366,7 +387,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
               <MaterialIcons
                 name="camera-alt"
                 size={30}
-                color={searchPhrase.length === 0 ? white : '#eee'}
+                color={searchPhrase.length === 0 ? white : '#ECECEC'}
                 style={
                   searchPhrase.length === 0
                     ? styles.icons
@@ -397,11 +418,17 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
               </>
             )}
 
-            {!image && (
+            {!image && searchPhrase.length === 0 ? (
               <MaterialCommunityIcons
                 name="image-filter-hdr"
                 size={80}
                 color={darkGreen}
+              />
+            ) : (
+              <MaterialIcons
+                name="image-not-supported"
+                size={80}
+                color="#B1C2AA"
               />
             )}
           </View>
@@ -413,8 +440,6 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
                 } else {
                   sendImgToCloud();
                 }
-
-                console.log(searchPhrase.length);
               }}
               style={styles.button}
             >
@@ -478,13 +503,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginHorizontal: 5,
     textAlign: 'center',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowColor: historyShadow,
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 5,
+    textAlignVertical: 'center',
   },
   disabledIcons: {
     flex: 2,
-    backgroundColor: red,
+    backgroundColor: '#B1C2AA',
     borderRadius: 12,
     marginHorizontal: 5,
     textAlign: 'center',
+    textAlignVertical: 'center',
   },
   verticleLine: {
     width: 1,
@@ -513,7 +548,7 @@ const styles = StyleSheet.create({
     width: screenWidth - 100,
   },
   topBody: {
-    flex: 0.4,
+    flex: 0.35,
   },
   titleContainer: {
     justifyContent: 'flex-start',
