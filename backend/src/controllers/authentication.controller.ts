@@ -16,7 +16,7 @@ export const registerController = asyncHandler(
       const mongoDBClient = MongoDBConnection.getClient();
       if (!mongoDBClient) {
         logger.error('Cannot get mongoDBClient');
-        res.status(503).json({ message: ResponseMessages.MONGODB_CLIENT_FAIL });
+        res.status(200).json({ message: ResponseMessages.MONGODB_CLIENT_FAIL });
         return;
       }
       const payload = req.body;
@@ -36,7 +36,7 @@ export const registerController = asyncHandler(
 
       if (existingUser) {
         res
-          .status(400)
+          .status(200)
           .json({ message: ResponseMessages.USER_ALREADY_EXISTS, data: {} });
         return;
       }
@@ -78,17 +78,21 @@ export const signInController = asyncHandler(
       const userDoc = await collection.findOne({
         email: email,
       });
-
+      logger.info('in signInController');
       if (!userDoc) {
-        res.status(400).json({
+        logger.info('!userDock');
+        res.status(200).json({
           message: ResponseMessages.INCORRECT_CREDENTIALS,
           data: {},
         });
         return;
       }
 
+      logger.info('userDoc has something');
       if (userDoc && (await bcrypt.compare(password, userDoc.password))) {
+        logger.info('userDoc exist and compare password');
         if (accessTokenSecret) {
+          logger.info('in accessToken is legit');
           const token = sign(
             {
               user: {
@@ -105,17 +109,22 @@ export const signInController = asyncHandler(
             message: ResponseMessages.SUCCESS,
             data: { ...userDoc, token },
           });
+          logger.info('after response success');
         } else {
-          res.status(400).json({
+          logger.info('in token is not legit');
+          res.status(200).json({
             message: ResponseMessages.ERROR_LOGIN,
             data: {},
           });
+          logger.info('after error login response message');
         }
       } else {
-        res.status(401).json({
+        logger.info('in wrong password man');
+        res.status(200).json({
           message: ResponseMessages.INCORRECT_CREDENTIALS,
           data: {},
         });
+        logger.info('after incorrect crendtial');
       }
     } catch (error) {
       logger.error('[signInController]', error);
