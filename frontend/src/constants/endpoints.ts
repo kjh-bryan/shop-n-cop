@@ -25,4 +25,4 @@ export const Endpoints = {
   },
 };
 
-export const deployedIPAddress = '34.126.99.205';
+export const deployedIPAddress = '35.198.207.187';
