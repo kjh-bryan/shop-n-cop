@@ -45,6 +45,7 @@ import * as SecureStore from 'expo-secure-store';
 import { CustomModal, CustomModalProps } from '../components/CustomModal';
 import { AxiosResponse } from 'axios';
 import { axiosSender, localUrl } from '../utils';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 
 const { StatusBarManager } = NativeModules;
 const iOSStatusBarHeight = Constants.statusBarHeight;
@@ -66,6 +67,8 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
   const [cameraPermissionModal, setCameraPermissionModal] =
     useState<boolean>(false);
   const [galleryPermissionModal, setGalleryPermissionModal] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -171,9 +174,11 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
 
   const sendImgToCloud = async () => {
     console.log('sending.....');
+    setLoading(true);
     try {
       if (!image) {
         Alert.alert('Image could not be taken, please upload again.');
+        setLoading(false);
         return;
       }
 
@@ -189,7 +194,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
           httpMethod: 'POST',
           uploadType: FileSystem.FileSystemUploadType.MULTIPART,
           fieldName: 'newFile',
-          // headers,
+          headers,
         }
       );
 
@@ -197,6 +202,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
       console.log(uploadResult);
       if (uploadResult.status !== 200) {
         Alert.alert('Could not upload image to cloud.');
+        setLoading(false);
         throw new Error('Network response was not ok');
       } else {
         const responseBody = uploadResult.body;
@@ -221,8 +227,10 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         console.log('Error', error.message);
       }
       console.log(error.config);
+      setLoading(false);
     }
   };
+
   const getResultWithSerpapi = async (
     type: string,
     url?: string,
@@ -240,22 +248,27 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         );
         if (!response) {
           console.error('Error in axiosSender with getResultWithSerpapi');
+          setLoading(false);
           return;
         }
         if (response.data === undefined) {
+          setLoading(false);
           Alert.alert(
             'No results has been found with this image. Please try another image.'
           );
           return;
         }
+        setLoading(false);
         navigation.navigate(ShopNCopStackNavigation.results, {
           data: response.data.data,
         });
       } catch (error) {
+        setLoading(false);
         console.log(error);
       }
     } else {
       try {
+        setLoading(true);
         const params = `?type=TEXT&query=${query}`;
         const response: AxiosResponse<any, any> | undefined = await axiosSender(
           Endpoints.search.uri,
@@ -265,19 +278,23 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
         );
 
         if (!response) {
+          setLoading(false);
           return;
         }
+        setLoading(false);
         navigation.navigate(ShopNCopStackNavigation.results, {
           data: response.data.data,
           query,
         });
       } catch (error) {
+        setLoading(false);
         console.log(error);
       }
     }
   };
   return (
     <SafeAreaView style={styles.container}>
+      {loading && <LoadingSpinner />}
       <SimpleLineIcons
         name="logout"
         size={30}
@@ -417,8 +434,6 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
                 } else {
                   sendImgToCloud();
                 }
-
-                console.log(searchPhrase.length);
               }}
               style={styles.button}
             >
