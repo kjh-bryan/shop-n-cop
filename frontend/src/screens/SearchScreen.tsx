@@ -35,6 +35,7 @@ import {
   Endpoints,
   red,
   kJWTToken,
+  historyShadow,
 } from '../constants';
 import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
 import { StackParams } from '../navigation/NavigationTypes';
@@ -188,12 +189,14 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
           httpMethod: 'POST',
           uploadType: FileSystem.FileSystemUploadType.MULTIPART,
           fieldName: 'newFile',
-          headers,
+          // headers,
         }
       );
 
+      console.log('uploadResult');
+      console.log(uploadResult);
       if (uploadResult.status !== 200) {
-        Alert.alert('Could not upload image to cloud.')
+        Alert.alert('Could not upload image to cloud.');
         throw new Error('Network response was not ok');
       } else {
         const responseBody = uploadResult.body;
@@ -236,6 +239,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
           null
         );
         if (!response) {
+          console.error('Error in axiosSender with getResultWithSerpapi');
           return;
         }
         if (response.data === undefined) {
@@ -350,7 +354,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
               <MaterialIcons
                 name="image-search"
                 size={30}
-                color={searchPhrase.length === 0 ? white : '#eee'}
+                color={searchPhrase.length === 0 ? white : '#ECECEC'}
                 style={
                   searchPhrase.length === 0
                     ? styles.icons
@@ -366,7 +370,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
               <MaterialIcons
                 name="camera-alt"
                 size={30}
-                color={searchPhrase.length === 0 ? white : '#eee'}
+                color={searchPhrase.length === 0 ? white : '#ECECEC'}
                 style={
                   searchPhrase.length === 0
                     ? styles.icons
@@ -478,10 +482,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginHorizontal: 5,
     textAlign: 'center',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowColor: historyShadow,
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 5,
   },
   disabledIcons: {
     flex: 2,
-    backgroundColor: red,
+    backgroundColor: '#B1C2AA',
     borderRadius: 12,
     marginHorizontal: 5,
     textAlign: 'center',
@@ -513,7 +525,7 @@ const styles = StyleSheet.create({
     width: screenWidth - 100,
   },
   topBody: {
-    flex: 0.4,
+    flex: 0.35,
   },
   titleContainer: {
     justifyContent: 'flex-start',
