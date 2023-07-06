@@ -418,11 +418,17 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
               </>
             )}
 
-            {!image && (
+            {!image && searchPhrase.length === 0 ? (
               <MaterialCommunityIcons
                 name="image-filter-hdr"
                 size={80}
                 color={darkGreen}
+              />
+            ) : (
+              <MaterialIcons
+                name="image-not-supported"
+                size={80}
+                color="#B1C2AA"
               />
             )}
           </View>
@@ -505,6 +511,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 2,
     elevation: 5,
+    textAlignVertical: 'center',
   },
   disabledIcons: {
     flex: 2,
@@ -512,6 +519,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginHorizontal: 5,
     textAlign: 'center',
+    textAlignVertical: 'center',
   },
   verticleLine: {
     width: 1,
