@@ -16,10 +16,12 @@ import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StackParams } from '../navigation/NavigationTypes';
 import ContentLoader, { Rect } from 'react-content-loader/native';
+import { Dimensions } from 'react-native';
 
 type Screen = typeof ShopNCopStackNavigation.results;
 type ResultScreenProps = NativeStackScreenProps<StackParams, Screen>;
 
+const width = Dimensions.get('window').width;
 export const ResultsPageScreen = ({ route }: ResultScreenProps) => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
@@ -75,7 +77,7 @@ export const ResultsPageScreen = ({ route }: ResultScreenProps) => {
     return (
       <ContentLoader
         speed={2}
-        width={411}
+        width={width}
         height={730}
         viewBox="0 0 411 730"
         backgroundColor="#C4D7B2"
