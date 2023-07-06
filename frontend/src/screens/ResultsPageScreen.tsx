@@ -78,7 +78,7 @@ export const ResultsPageScreen = ({ route }: ResultScreenProps) => {
         width={411}
         height={730}
         viewBox="0 0 411 730"
-        backgroundColor="#a0c49d"
+        backgroundColor="#C4D7B2"
         foregroundColor="#f7ffe5"
       >
         <Rect x="29" y="29" rx="10" ry="10" width="160" height="160" />
