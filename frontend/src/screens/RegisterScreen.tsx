@@ -192,7 +192,7 @@ export const RegisterScreen = () => {
           </TouchableOpacity>
         </KeyboardAvoidingView>
         <View style={styles.bottomHalf}>
-          <Text style={styles.registerWithText}>Register with</Text>
+          {/* <Text style={styles.registerWithText}>Register with</Text>
           <View style={styles.registerWithAppsContainer}>
             <TouchableOpacity
               onPress={() => console.log('apple button pressed')}
@@ -218,7 +218,7 @@ export const RegisterScreen = () => {
                 style={styles.brandImage}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
