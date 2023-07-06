@@ -1,5 +1,5 @@
 import React, { SetStateAction, useEffect, useState } from 'react';
-import { View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert, Dimensions } from 'react-native';
 import { styles } from '../styles/historyPage_style';
 import HistoryCard, {
   HistoryCardProps,
@@ -15,6 +15,7 @@ import { AxiosResponse } from 'axios';
 import { axiosSender } from '../utils';
 import ContentLoader, { Rect } from 'react-content-loader/native';
 
+const width = Dimensions.get('window').width;
 export const HistoryPageScreen: React.FC = () => {
   const navigation = useNavigation();
   const [links, setLinks] = useState<HistoryCardProps[]>([]);
@@ -80,6 +81,7 @@ export const HistoryPageScreen: React.FC = () => {
     }));
     setLinks(resultArray);
     setLoading(false);
+    console.log(resultArray);
   };
 
   const handleOnClick = async () => {
@@ -90,7 +92,7 @@ export const HistoryPageScreen: React.FC = () => {
     return (
       <ContentLoader
         speed={2}
-        width={411}
+        width={width}
         height={730}
         viewBox="0 0 411 730"
         backgroundColor="#C4D7B2"
