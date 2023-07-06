@@ -1,5 +1,5 @@
 import React, { SetStateAction, useEffect, useState } from 'react';
-import { View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert, Dimensions } from 'react-native';
 import { styles } from '../styles/historyPage_style';
 import HistoryCard, {
   HistoryCardProps,
@@ -13,18 +13,22 @@ import { darkGreen, Endpoints, kUserEmail } from '../constants';
 import * as SecureStore from 'expo-secure-store';
 import { AxiosResponse } from 'axios';
 import { axiosSender } from '../utils';
+import ContentLoader, { Rect } from 'react-content-loader/native';
 
+const width = Dimensions.get('window').width;
 export const HistoryPageScreen: React.FC = () => {
   const navigation = useNavigation();
   const [links, setLinks] = useState<HistoryCardProps[]>([]);
   const [userEmail, setUserEmail] =
     useState<SetStateAction<string | null>>(null);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     (async () => {
       const userEmailValue = await SecureStore.getItemAsync(kUserEmail);
       setUserEmail(userEmailValue);
-
+      await new Promise((resolve) => setTimeout(resolve, 1500));
       await getSetLinks();
     })();
   }, [userEmail]);
@@ -76,10 +80,38 @@ export const HistoryPageScreen: React.FC = () => {
       onClick: handleOnClick,
     }));
     setLinks(resultArray);
+    setLoading(false);
+    console.log(resultArray);
   };
 
   const handleOnClick = async () => {
     await getSetLinks();
+  };
+
+  const Loader = () => {
+    return (
+      <ContentLoader
+        speed={2}
+        width={width}
+        height={730}
+        viewBox="0 0 411 730"
+        backgroundColor="#C4D7B2"
+        foregroundColor="#f7ffe5"
+      >
+        <Rect x="45" y="757" rx="11" ry="11" width="135" height="21" />
+        <Rect x="52" y="813" rx="11" ry="11" width="120" height="18" />
+        <Rect x="61" y="787" rx="11" ry="11" width="100" height="15" />
+        <Rect x="237" y="758" rx="11" ry="11" width="135" height="21" />
+        <Rect x="244" y="814" rx="11" ry="11" width="120" height="18" />
+        <Rect x="253" y="788" rx="11" ry="11" width="100" height="15" />
+        <Rect x="20" y="20" rx="20" ry="20" width="370" height="115" />
+        <Rect x="20" y="155" rx="20" ry="20" width="370" height="115" />
+        <Rect x="20" y="290" rx="20" ry="20" width="370" height="115" />
+        <Rect x="20" y="425" rx="20" ry="20" width="370" height="115" />
+        <Rect x="20" y="560" rx="20" ry="20" width="370" height="115" />
+        <Rect x="20" y="695" rx="20" ry="20" width="370" height="115" />
+      </ContentLoader>
+    );
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -101,25 +133,29 @@ export const HistoryPageScreen: React.FC = () => {
         />
         <StyledText title="History" isBold style={styles.text} />
       </View>
-      <ScrollView
-      // stickyHeaderIndices={[0]} // Specify the index of the sticky header
-      // showsVerticalScrollIndicator={false}
-      // style={styles.container}
-      >
-        <View style={styles.body}>
-          {links.length > 0 &&
-            links.map((item, index) => <HistoryCard key={index} {...item} />)}
-          {links.length === 0 && (
-            <View style={styles.noLinkTextContainer}>
-              <StyledText
-                title={'No links visited yet'}
-                style={styles.noLinkText}
-                isLight
-              />
-            </View>
-          )}
-        </View>
-      </ScrollView>
+      {loading ? (
+        Loader()
+      ) : (
+        <ScrollView
+        // stickyHeaderIndices={[0]} // Specify the index of the sticky header
+        // showsVerticalScrollIndicator={false}
+        // style={styles.container}
+        >
+          <View style={styles.body}>
+            {links.length > 0 &&
+              links.map((item, index) => <HistoryCard key={index} {...item} />)}
+            {links.length === 0 && (
+              <View style={styles.noLinkTextContainer}>
+                <StyledText
+                  title={'No links visited yet'}
+                  style={styles.noLinkText}
+                  isLight
+                />
+              </View>
+            )}
+          </View>
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 };
