@@ -142,7 +142,7 @@ export const SignInScreen = () => {
           </TouchableOpacity>
         </KeyboardAvoidingView>
         <View style={styles.bottomHalf}>
-          <Text style={styles.signInWithText}>Sign in with</Text>
+          {/* <Text style={styles.signInWithText}>Sign in with</Text>
 
           <View style={styles.signInWithAppsContainer}>
             <TouchableOpacity
@@ -169,7 +169,7 @@ export const SignInScreen = () => {
                 style={styles.brandImage}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
           <View style={styles.notMemberContainer}>
             <Text style={styles.notMemberText}>Not a member?</Text>
 
