@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { registerRootComponent } from 'expo';
 import { loadFonts } from './utils';
 import * as SplashScreen from 'expo-splash-screen';
-import { View } from 'react-native';
+import { LogBox, View } from 'react-native';
 import { Navigation } from './navigation/StackNavigator';
 import React from 'react';
 import { ShopNCopStackNavigation } from './navigation/NavigationConstants';
@@ -10,6 +10,8 @@ import * as SecureStore from 'expo-secure-store';
 import { kUserEmail } from './constants';
 
 SplashScreen.preventAutoHideAsync();
+
+LogBox.ignoreAllLogs();
 
 const EntryPoint = () => {
   const [appIsReady, setAppIsReady] = useState(false);

@@ -25,6 +25,7 @@ import { AxiosResponse } from 'axios';
 import bcrypt from 'react-native-bcrypt';
 import { axiosSender, testEmailRegex } from '../utils';
 import * as SecureStore from 'expo-secure-store';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 
 export const RegisterScreen = () => {
   const [email, setEmail] = useState<string>('');
@@ -33,29 +34,38 @@ export const RegisterScreen = () => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
+
+  const [loading, setLoading] = useState(false);
   const handleRegistration = async () => {
+    setLoading(true);
     try {
       if (firstName === '') {
+        setLoading(false);
         Alert.alert('Please fill in your first name.');
         return;
       }
       if (lastName === '') {
+        setLoading(false);
         Alert.alert('Please fill in your last name.');
         return;
       }
       if (email === '') {
+        setLoading(false);
         Alert.alert('Please fill in your email.');
         return;
       }
       if (!testEmailRegex(email)) {
+        setLoading(false);
         Alert.alert('Please entire a valid email address.');
         return;
       }
       if (password === '' || repassword === '') {
+        setLoading(false);
         Alert.alert('Please fill in your password.');
         return;
       }
       if (password !== repassword) {
+        setLoading(false);
         Alert.alert('Your passwords do not match. Please try again.');
         return;
       }
@@ -74,34 +84,45 @@ export const RegisterScreen = () => {
         payload
       );
       if (!response) {
+        setLoading(false);
         Alert.alert('Network error.');
         return;
       }
       if (response.status === 200) {
         if (response.data.message === ResponseMessages.SUCCESS) {
           await SecureStore.setItemAsync(kUserEmail, response.data.data.email);
+          setLoading(false);
           navigation.navigate({
             name: ShopNCopStackNavigation.search,
           } as never);
         } else if (
           response.data.message === ResponseMessages.USER_ALREADY_EXISTS
         ) {
+          setLoading(false);
           Alert.alert('User already exists! Please sign in.');
+          return;
         } else {
+          setLoading(false);
           Alert.alert('Something went wrong.');
+          return;
         }
       } else if (response.status === 503) {
+        setLoading(false);
         Alert.alert('Something went wrong.');
+        return;
       }
     } catch (error) {
+      setLoading(false);
       console.log('[handleRegistration]', error);
       Alert.alert('Sorry! Something went wrong.');
+      return;
     }
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
+        {loading && <LoadingSpinner />}
         <KeyboardAvoidingView
           style={styles.topHalf}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -171,7 +192,7 @@ export const RegisterScreen = () => {
           </TouchableOpacity>
         </KeyboardAvoidingView>
         <View style={styles.bottomHalf}>
-          <Text style={styles.registerWithText}>Register with</Text>
+          {/* <Text style={styles.registerWithText}>Register with</Text>
           <View style={styles.registerWithAppsContainer}>
             <TouchableOpacity
               onPress={() => console.log('apple button pressed')}
@@ -197,7 +218,7 @@ export const RegisterScreen = () => {
                 style={styles.brandImage}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
