@@ -23,22 +23,33 @@ import { Endpoints, kJWTToken, kUserEmail } from '../constants';
 import { ResponseMessages } from '../constants';
 import { AxiosResponse } from 'axios';
 import * as SecureStore from 'expo-secure-store';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 
 export const SignInScreen = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
 
+  const [loading, setLoading] = useState(false);
+
   const handleSignIn = async () => {
+    console.log('handleSignIn');
+    setLoading(true);
     try {
       if (email === '') {
         Alert.alert('Please enter your email.');
+        setLoading(false);
+        return;
       }
       if (!testEmailRegex) {
         Alert.alert('Please enter a valid email.');
+        setLoading(false);
+        return;
       }
       if (password === '') {
         Alert.alert('Please enter your password.');
+        setLoading(false);
+        return;
       }
 
       const payload = {
@@ -53,11 +64,9 @@ export const SignInScreen = () => {
         payload
       );
 
-      console.log('print response');
-      console.log(response);
-
       if (!response) {
         Alert.alert('Network error.');
+        setLoading(false);
         return;
       }
 
@@ -67,6 +76,7 @@ export const SignInScreen = () => {
       ) {
         await SecureStore.setItemAsync(kUserEmail, response.data.data.email);
         await SecureStore.setItemAsync(kJWTToken, response.data.data.token);
+        setLoading(false);
         navigation.navigate({
           name: ShopNCopStackNavigation.search,
         } as never);
@@ -74,11 +84,18 @@ export const SignInScreen = () => {
         response.status === 200 &&
         response.data.message === ResponseMessages.INCORRECT_CREDENTIALS
       ) {
-        Alert.alert('Invalid username or password');
+        setLoading(false);
+        Alert.alert(ResponseMessages.INCORRECT_CREDENTIALS);
+
+        return;
       } else {
+        setLoading(false);
+
         Alert.alert('Something went wrong');
+        return;
       }
     } catch (error) {
+      setLoading(false);
       console.error('[handleSignIn]', error);
       Alert.alert('Sorry! Something went wrong.');
     }
@@ -86,6 +103,7 @@ export const SignInScreen = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
+        {loading && <LoadingSpinner />}
         <KeyboardAvoidingView
           style={styles.topHalf}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -124,7 +142,7 @@ export const SignInScreen = () => {
           </TouchableOpacity>
         </KeyboardAvoidingView>
         <View style={styles.bottomHalf}>
-          <Text style={styles.signInWithText}>Sign in with</Text>
+          {/* <Text style={styles.signInWithText}>Sign in with</Text>
 
           <View style={styles.signInWithAppsContainer}>
             <TouchableOpacity
@@ -151,7 +169,7 @@ export const SignInScreen = () => {
                 style={styles.brandImage}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
           <View style={styles.notMemberContainer}>
             <Text style={styles.notMemberText}>Not a member?</Text>
 

@@ -55,8 +55,7 @@ export const uploadingFileController = asyncHandler(
           }
 
           res.status(200).json({
-            message:
-              ResponseMessages.UPLOADED_SUCCESSFULLY_PUBLIC_ACCESS_DENIED,
+            message: ResponseMessages.UPLOADED_SUCCESSFULLY,
             data: {
               fileName: req.file?.originalname,
               url: publicUrl,
