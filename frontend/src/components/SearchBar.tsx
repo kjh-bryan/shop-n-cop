@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
     fontFamily: 'OpenSans-Regular',
     borderRadius: 15,
     paddingLeft: 20,
+    opacity: 0.4,
     backgroundColor: '#eee',
   },
 });
