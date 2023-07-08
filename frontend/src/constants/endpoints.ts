@@ -25,4 +25,4 @@ export const Endpoints = {
   },
 };
 
-export const deployedIPAddress = '35.198.207.187';
+export const deployedIPAddress = 'https://shop-n-cop-backend.onrender.com';
