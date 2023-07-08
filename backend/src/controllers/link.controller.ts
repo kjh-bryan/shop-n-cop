@@ -128,32 +128,24 @@ export const getSearchResultController = asyncHandler(
     const payload = req.query;
     const { type, imageURL, query } = payload as any;
 
-    logger.info('Print payload');
-    logger.info(payload);
-
-    logger.info('Print sconfig');
-    logger.info(config);
-    logger.info('Print serpapi api key');
-    logger.info(serpapiApiKey);
-
     const search = new SerpApi.GoogleSearch(serpapiApiKey);
     if (type === 'IMAGE') {
       const params = {
         api_key: serpapiApiKey,
         url: imageURL,
       } satisfies GoogleLensParameters;
-      logger.info('print googleLensParamters');
-      logger.info(params);
       try {
         let response;
         const callback = (data: any) => {
           console.log(data);
           response = data;
         };
-        // const response = await getJson('google_lens', params);
-        console.log(response);
-        await search.json(params, callback);
-        console.log(response);
+        await new Promise((resolve) => {
+          search.json(params, (data) => {
+            callback(data);
+            resolve();
+          });
+        });
         if (response) {
           res.status(200).json({
             message: ResponseMessages.SUCCESS,
@@ -178,26 +170,18 @@ export const getSearchResultController = asyncHandler(
         location: 'Singapore',
         device: 'mobile',
       } satisfies GoogleShoppingParameters;
-      logger.info('print GoogleShoppingParameters');
-      logger.info(params);
       try {
-        // const response = await getJson('google_shopping', params);
         let response;
         const callback = (data: any) => {
           console.log(data);
           response = data;
         };
-        // const response = await getJson('google_lens', params);
         await new Promise((resolve) => {
-          console.log('in new promise');
           search.json(params, (data) => {
-            console.log('in search.json');
             callback(data);
             resolve();
           });
         });
-        console.log('printing response');
-        console.log(response);
         if (response) {
           res.status(200).json({
             message: ResponseMessages.SUCCESS,
