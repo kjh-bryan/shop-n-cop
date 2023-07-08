@@ -11,12 +11,10 @@ export interface CustomRequest extends Request {
 export const validateToken = expressAsyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const token = req.header('Authorization')?.replace('Bearer ', '');
+      const authorization =
+        req.header('authorization') || req.header('Authorization');
 
-      logger.info('Printing req');
-      logger.info(req);
-      logger.info('Printing req.header');
-      logger.info(req.header);
+      const token = authorization.replace('Bearer ', '');
 
       if (!token) {
         logger.error('token is undefined or null');
