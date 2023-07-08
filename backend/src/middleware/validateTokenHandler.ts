@@ -24,6 +24,8 @@ export const validateToken = expressAsyncHandler(
         return;
       }
 
+      logger.info('Print config');
+      logger.info(config.server.accessTokenSecret);
       const decoded = jwt.verify(
         token,
         config.server.accessTokenSecret as string
@@ -35,6 +37,8 @@ export const validateToken = expressAsyncHandler(
       next();
     } catch (err) {
       logger.error('Exception at validateToken');
+      logger.error(err);
+      logger.error(err.message);
       res
         .status(401)
         .json({ message: ResponseMessages.UNAUTHORIZED, data: {} });
