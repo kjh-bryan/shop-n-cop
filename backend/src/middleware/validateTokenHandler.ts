@@ -13,6 +13,9 @@ export const validateToken = expressAsyncHandler(
     try {
       const token = req.header('Authorization')?.replace('Bearer ', '');
 
+      logger.info('Printing req.header');
+      logger.info(req.header);
+
       if (!token) {
         logger.error('token is undefined or null');
         res
