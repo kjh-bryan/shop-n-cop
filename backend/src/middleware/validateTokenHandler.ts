@@ -3,6 +3,7 @@ import expressAsyncHandler from 'express-async-handler';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { config } from '../config';
 import { ResponseMessages } from '../constants';
+import { logger } from '../utils/logger';
 export interface CustomRequest extends Request {
   token: string | JwtPayload;
 }
