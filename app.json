@@ -20,27 +20,41 @@
         }
       ]
     ],
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "config": {
         "usesNonExemptEncryption": false
       },
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.activate.shopncop",
+      "runtimeVersion": {
+        "policy": "sdkVersion"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./frontend/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.kjhbryan.shopncop"
+      "package": "com.kjhbryan.shopncop",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "favicon": "./frontend/assets/images/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "71f9bb6f-d277-4e8c-9600-06bbc3189a81"
+        "projectId": "340bbf9f-a5da-4181-835c-676e997d0670"
       }
+    },
+    "owner": "shop-n-cop",
+    "updates": {
+      "url": "https://u.expo.dev/340bbf9f-a5da-4181-835c-676e997d0670"
     }
   }
 }
