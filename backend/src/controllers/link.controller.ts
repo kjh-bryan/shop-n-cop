@@ -50,7 +50,6 @@ export const getLinksController = asyncHandler(
         res.status(503).json({ message: ResponseMessages.MONGODB_CLIENT_FAIL });
         return;
       }
-
       await MongoDBConnection.connect();
       const db = await client.db('authentication');
       const email = req.query.email;
@@ -128,11 +127,20 @@ export const getSearchResultController = asyncHandler(
     const payload = req.query;
     const { type, imageURL, query } = payload as any;
 
+    logger.info('Print payload');
+    logger.info(payload);
+
+    logger.info('Print sconfig');
+    logger.info(config);
+    logger.info('Print serpapi api key');
+    logger.info(serpapiApiKey);
     if (type === 'IMAGE') {
       const params = {
         api_key: serpapiApiKey,
         url: imageURL,
       } satisfies GoogleLensParameters;
+      logger.info('print googleLensParamters');
+      logger.info(params);
       try {
         const response = await getJson('google_lens', params);
         if (response) {
@@ -159,6 +167,8 @@ export const getSearchResultController = asyncHandler(
         location: 'Singapore',
         device: 'mobile',
       } satisfies GoogleShoppingParameters;
+      logger.info('print GoogleShoppingParameters');
+      logger.info(params);
       try {
         const response = await getJson('google_shopping', params);
         if (response) {
