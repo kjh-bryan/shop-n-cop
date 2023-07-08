@@ -187,8 +187,11 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
       const headers = {
         Authorization: 'Bearer ' + token,
       };
+
+      console.log('Printing headers');
+      console.log(headers);
       const uploadResult = await FileSystem.uploadAsync(
-        `http://${local}:9090/api/upload`,
+        `https://${local}/api/upload`,
         image,
         {
           httpMethod: 'POST',
