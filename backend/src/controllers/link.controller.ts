@@ -3,10 +3,11 @@ import { logger } from '../utils/logger';
 import { MongoDBConnection } from '../mongodb/mongodb-connection';
 import { config } from '../config/config';
 import type { GoogleLensParameters, GoogleShoppingParameters } from 'serpapi';
-import { getJson } from 'serpapi';
 import asyncHandler from 'express-async-handler';
 import { ResponseMessages } from '../constants';
 import { ObjectId } from 'mongodb';
+
+const SerpApi = require('google-search-results-nodejs');
 
 export const postLinksController = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -134,6 +135,8 @@ export const getSearchResultController = asyncHandler(
     logger.info(config);
     logger.info('Print serpapi api key');
     logger.info(serpapiApiKey);
+
+    const search = new SerpApi.GoogleSearch(serpapiApiKey);
     if (type === 'IMAGE') {
       const params = {
         api_key: serpapiApiKey,
@@ -142,12 +145,19 @@ export const getSearchResultController = asyncHandler(
       logger.info('print googleLensParamters');
       logger.info(params);
       try {
-        const response = await getJson('google_lens', params);
+        let response;
+        const callback = (data: any) => {
+          response = data;
+        };
+        // const response = await getJson('google_lens', params);
+        console.log(response);
+        await search.json(params, callback);
+        console.log(response);
         if (response) {
           res.status(200).json({
             message: ResponseMessages.SUCCESS,
             data: {
-              ...response.visual_matches,
+              ...response?.visual_matches,
             },
           });
         } else {
@@ -170,7 +180,15 @@ export const getSearchResultController = asyncHandler(
       logger.info('print GoogleShoppingParameters');
       logger.info(params);
       try {
-        const response = await getJson('google_shopping', params);
+        // const response = await getJson('google_shopping', params);
+        let response;
+        const callback = (data: any) => {
+          response = data;
+        };
+        // const response = await getJson('google_lens', params);
+        console.log(response);
+        await search.json(params, callback);
+        console.log(response);
         if (response) {
           res.status(200).json({
             message: ResponseMessages.SUCCESS,
