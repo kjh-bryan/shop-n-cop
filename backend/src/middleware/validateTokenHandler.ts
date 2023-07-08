@@ -16,11 +16,6 @@ export const validateToken = expressAsyncHandler(
 
       const token = authorization.replace('Bearer ', '');
 
-      logger.info('print authorization');
-      logger.info(authorization);
-      logger.info('print token');
-      logger.info(token);
-
       if (!token) {
         logger.error('token is undefined or null');
         res
@@ -33,7 +28,6 @@ export const validateToken = expressAsyncHandler(
         token,
         config.server.accessTokenSecret as string
       );
-      logger.info('logging decoded ');
       (req as CustomRequest).token = decoded;
 
       next();
