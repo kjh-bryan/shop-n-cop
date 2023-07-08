@@ -11,7 +11,7 @@ export const axiosSender = async (
 ): Promise<AxiosResponse<any, any> | undefined> => {
   try {
     const local = await localUrl();
-    const port = ':9090';
+    const port = '';
     const token = await SecureStore.getItemAsync(kJWTToken);
     const headers = {
       Authorization: 'Bearer ' + token,
@@ -19,14 +19,14 @@ export const axiosSender = async (
     const response = payload
       ? await axios({
           method: method,
-          baseURL: `http://${local}${port}/api`, // for android, 'http://10.0.0.2:9090/api'
+          baseURL: `https://${local}${port}/api`, // for android, 'http://10.0.0.2:9090/api'
           url: `${endpoint}${params}`,
           data: payload,
           headers,
         })
       : await axios({
           method: method,
-          baseURL: `http://${local}${port}/api`, // for android, 'http://10.0.0.2:9090/api'
+          baseURL: `https://${local}${port}/api`, // for android, 'http://10.0.0.2:9090/api'
           url: `${endpoint}${params}`,
           headers,
         });
