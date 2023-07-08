@@ -147,6 +147,7 @@ export const getSearchResultController = asyncHandler(
       try {
         let response;
         const callback = (data: any) => {
+          console.log(data);
           response = data;
         };
         // const response = await getJson('google_lens', params);
@@ -183,11 +184,19 @@ export const getSearchResultController = asyncHandler(
         // const response = await getJson('google_shopping', params);
         let response;
         const callback = (data: any) => {
+          console.log(data);
           response = data;
         };
         // const response = await getJson('google_lens', params);
-        console.log(response);
-        await search.json(params, callback);
+        await new Promise((resolve) => {
+          console.log('in new promise');
+          search.json(params, (data) => {
+            console.log('in search.json');
+            callback(data);
+            resolve();
+          });
+        });
+        console.log('printing response');
         console.log(response);
         if (response) {
           res.status(200).json({
