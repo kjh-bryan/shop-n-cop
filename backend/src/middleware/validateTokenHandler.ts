@@ -13,6 +13,8 @@ export const validateToken = expressAsyncHandler(
     try {
       const token = req.header('Authorization')?.replace('Bearer ', '');
 
+      logger.info('Printing req');
+      logger.info(req);
       logger.info('Printing req.header');
       logger.info(req.header);
 
