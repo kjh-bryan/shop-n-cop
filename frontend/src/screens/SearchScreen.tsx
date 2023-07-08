@@ -425,11 +425,13 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
                 color={darkGreen}
               />
             ) : (
-              <MaterialIcons
-                name="image-not-supported"
-                size={80}
-                color="#B1C2AA"
-              />
+              !image && (
+                <MaterialIcons
+                  name="image-not-supported"
+                  size={80}
+                  color="#B1C2AA"
+                />
+              )
             )}
           </View>
           <View style={styles.buttonContainer}>
