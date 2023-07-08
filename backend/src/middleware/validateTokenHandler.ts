@@ -13,6 +13,7 @@ export const validateToken = expressAsyncHandler(
       const token = req.header('Authorization')?.replace('Bearer ', '');
 
       if (!token) {
+        logger.error('token is undefined or null');
         res
           .status(401)
           .json({ message: ResponseMessages.UNAUTHORIZED, data: {} });
@@ -23,11 +24,13 @@ export const validateToken = expressAsyncHandler(
         token,
         config.server.accessTokenSecret as string
       );
-
+      logger.info('logging decoded ');
+      logger.info(decoded);
       (req as CustomRequest).token = decoded;
 
       next();
     } catch (err) {
+      logger.error('Exception at validateToken');
       res
         .status(401)
         .json({ message: ResponseMessages.UNAUTHORIZED, data: {} });
