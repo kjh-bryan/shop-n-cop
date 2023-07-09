@@ -10,7 +10,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyledText } from '../components';
@@ -33,11 +33,12 @@ export const RegisterScreen = () => {
   const [repassword, setRepassword] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
+  const [registered, setRegistered] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
 
   const [loading, setLoading] = useState(false);
+
   const handleRegistration = async () => {
-    setLoading(true);
     try {
       if (firstName === '') {
         setLoading(false);
@@ -91,26 +92,22 @@ export const RegisterScreen = () => {
       if (response.status === 200) {
         if (response.data.message === ResponseMessages.SUCCESS) {
           await SecureStore.setItemAsync(kUserEmail, response.data.data.email);
-          setLoading(false);
-          navigation.navigate({
-            name: ShopNCopStackNavigation.search,
-          } as never);
+          setRegistered(true);
+          navigation.replace(ShopNCopStackNavigation.signIn, {
+            registeredEmail: response.data.data.email,
+            registeredPassword: password,
+          });
         } else if (
           response.data.message === ResponseMessages.USER_ALREADY_EXISTS
         ) {
-          setLoading(false);
           Alert.alert('User already exists! Please sign in.');
-          return;
         } else {
-          setLoading(false);
           Alert.alert('Something went wrong.');
-          return;
         }
       } else if (response.status === 503) {
-        setLoading(false);
         Alert.alert('Something went wrong.');
-        return;
       }
+      setLoading(false);
     } catch (error) {
       setLoading(false);
       console.log('[handleRegistration]', error);
@@ -119,6 +116,15 @@ export const RegisterScreen = () => {
     }
   };
 
+  useEffect(() => {
+    if (registered) {
+      setEmail('');
+      setFirstName('');
+      setLastName('');
+      setPassword('');
+      setRegistered(false);
+    }
+  }, [registered]);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -180,7 +186,12 @@ export const RegisterScreen = () => {
             value={repassword}
             placeholder="Re-enter Password"
           />
-          <TouchableOpacity onPress={() => handleRegistration()}>
+          <TouchableOpacity
+            onPress={() => {
+              setLoading(true);
+              handleRegistration();
+            }}
+          >
             <View style={styles.registerButtonContainer}>
               <StyledText
                 title="Register"
