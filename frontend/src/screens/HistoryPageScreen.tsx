@@ -34,54 +34,60 @@ export const HistoryPageScreen: React.FC = () => {
   }, [userEmail]);
 
   const getSetLinks = async () => {
-    if (!userEmail) return;
-    const params = `?email=${userEmail}`;
-    const response: AxiosResponse<any, any> | undefined = await axiosSender(
-      Endpoints.getLinks.uri,
-      Endpoints.getLinks.method,
-      params,
-      null
-    );
-    if (!response) {
-      console.log('Error submitting links');
-      Alert.alert('Unable to fetch visited links');
-      return;
-    }
+    try {
+      if (!userEmail) return;
+      const params = `?email=${userEmail}`;
+      const response: AxiosResponse<any, any> | undefined = await axiosSender(
+        Endpoints.getLinks.uri,
+        Endpoints.getLinks.method,
+        params,
+        null
+      );
+      if (!response) {
+        setLoading(false);
+        console.log('Error submitting links');
+        Alert.alert('Unable to fetch visited links');
+        return;
+      }
 
-    const resultFromResponse = response.data.data as {
-      [key: string]: HistoryCardProps;
-    };
-    const resultArray: HistoryCardProps[] = Object.values(
-      resultFromResponse
-    ).map((result) => ({
-      _id: result._id,
-      fullTitle: result.fullTitle,
-      title:
-        result.fullTitle.length > 16
-          ? result.fullTitle.slice(0, 16) + '...'
-          : result.fullTitle,
-      link: result.link,
-      source: result.source,
-      price:
-        typeof result.price !== 'string'
-          ? result.price
-          : ({
-              extracted_value: result.extracted_price,
-              value: result.price,
-              currency: 'SGD',
-            } as PriceInterface),
-      extracted_price: result.extracted_price,
-      thumbnail: result.thumbnail,
-      createdAt: new Date(result.createdAt).toLocaleDateString('en-SG', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      }),
-      onClick: handleOnClick,
-    }));
-    setLinks(resultArray);
-    setLoading(false);
-    console.log(resultArray);
+      const resultFromResponse = response.data.data as {
+        [key: string]: HistoryCardProps;
+      };
+      const resultArray: HistoryCardProps[] = Object.values(
+        resultFromResponse
+      ).map((result) => ({
+        _id: result._id,
+        fullTitle: result.fullTitle,
+        title:
+          result.fullTitle.length > 16
+            ? result.fullTitle.slice(0, 16) + '...'
+            : result.fullTitle,
+        link: result.link,
+        source: result.source,
+        price:
+          typeof result.price !== 'string'
+            ? result.price
+            : ({
+                extracted_value: result.extracted_price,
+                value: result.price,
+                currency: 'SGD',
+              } as PriceInterface),
+        extracted_price: result.extracted_price,
+        thumbnail: result.thumbnail,
+        createdAt: new Date(result.createdAt).toLocaleDateString('en-SG', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        }),
+        onClick: handleOnClick,
+      }));
+      setLinks(resultArray);
+      setLoading(false);
+      console.log(resultArray);
+    } catch (err) {
+      console.log('Error in getSetLinks ', err);
+      setLoading(false);
+    }
   };
 
   const handleOnClick = async () => {
