@@ -307,7 +307,7 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
           await SecureStore.deleteItemAsync(kUserEmail);
           await SecureStore.deleteItemAsync(kJWTToken);
           setUserId(null);
-          navigation.replace(ShopNCopStackNavigation.signIn);
+          navigation.replace(ShopNCopStackNavigation.signIn, {});
         }}
       />
       <View style={styles.imageContainer}>
