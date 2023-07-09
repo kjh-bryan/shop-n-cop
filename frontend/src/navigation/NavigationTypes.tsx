@@ -1,7 +1,10 @@
 import { ShopNCopStackNavigation } from './NavigationConstants';
 
 export type StackParams = {
-  [ShopNCopStackNavigation.signIn]: undefined;
+  [ShopNCopStackNavigation.signIn]: {
+    registeredEmail?: string;
+    registeredPassword?: string;
+  };
   [ShopNCopStackNavigation.register]: undefined;
   [ShopNCopStackNavigation.search]: {
     userId?: string;
