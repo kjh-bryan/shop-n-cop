@@ -30,7 +30,8 @@ export const registerController = asyncHandler(
         email: payload.email,
         password: payload.password,
       };
-      logger.info('[registerController] [payload] ', payload);
+      logger.info('[registerController] [payload] ');
+      logger.info(payload);
 
       const existingUser = await collection.findOne({
         email: payload.email,
@@ -50,6 +51,10 @@ export const registerController = asyncHandler(
         logger.info(
           '[registerController] [insertOne] Successfully creating a user'
         );
+
+        logger.info('[registerController] [insertOne] [userDocument]');
+
+        logger.info(userDocument);
         res.status(200).json({
           message: ResponseMessages.SUCCESS,
           data: { ...userDocument },
@@ -57,6 +62,7 @@ export const registerController = asyncHandler(
         logger.info(
           '[registerController] [insertOne] Successfully inserted a record'
         );
+        logger.info(p);
       } else {
         logger.info(
           '[registerController] [insertOne] Error in inserting record'
@@ -66,7 +72,8 @@ export const registerController = asyncHandler(
           .json({ message: ResponseMessages.ERROR_INSERTING_RECORD, data: {} });
       }
     } catch (error) {
-      logger.error('[registerController] Exception occured', error);
+      logger.error('[registerController] Exception occured');
+      logger.error(error);
       next(error);
     } finally {
       await MongoDBConnection.closeConnection();
@@ -92,7 +99,8 @@ export const signInController = asyncHandler(
       const userDoc = await collection.findOne({
         email: email,
       });
-      logger.info('[signInController] [req.body] ', req.body);
+      logger.info('[signInController] [req.body] ');
+      logger.info(req.body);
       if (!userDoc) {
         logger.info('[signInController] [!userDoc] Incorrect credentials');
 
@@ -107,6 +115,7 @@ export const signInController = asyncHandler(
         logger.info(
           '[signInController] [userDoc] User existed and passed matched'
         );
+
         if (accessTokenSecret) {
           logger.info(
             '[signInController] [userDoc] [accessTokenSecret] accessTokenSecret is valid'
@@ -122,31 +131,28 @@ export const signInController = asyncHandler(
               expiresIn: '1hr',
             }
           );
-          userDoc.token = token;
           logger.info(
-            '[signInController] [userDoc] [accessTokenSecret] Success returning userDoc ',
-            userDoc
+            '[signInController] [userDoc] [accessTokenSecret] Success returning userDoc '
           );
+          logger.info(userDoc);
           res.status(200).json({
             message: ResponseMessages.SUCCESS,
-            data: { ...userDoc, token },
+            data: { email, token },
           });
           logger.info('after response success');
         } else {
           logger.info(
-            '[signInController] [userDoc] [accessTokenSecret] accessTokenSecret is invalid ',
-            userDoc
+            '[signInController] [userDoc] [accessTokenSecret] accessTokenSecret is invalid '
           );
+          logger.info(userDoc);
           res.status(200).json({
             message: ResponseMessages.ERROR_LOGIN,
             data: {},
           });
-          logger.info('after error login response message');
         }
       } else {
         logger.info(
-          '[signInController] [userDoc] Invalid username or password ',
-          userDoc
+          '[signInController] [userDoc] Invalid username or password '
         );
         res.status(200).json({
           message: ResponseMessages.INCORRECT_CREDENTIALS,
@@ -154,7 +160,8 @@ export const signInController = asyncHandler(
         });
       }
     } catch (error) {
-      logger.error('[signInController] Exception', error);
+      logger.error('[signInController] Exception');
+      logger.error(error);
       res.status(503).json({ message: ResponseMessages.BAD_REQUEST, data: {} });
       next(error);
     } finally {
