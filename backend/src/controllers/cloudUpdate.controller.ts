@@ -18,8 +18,10 @@ const bucket = storage.bucket('shop-n-cop'); // To be defined
 
 export const uploadingFileController = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
+    logger.info('[uploadingFileController] called');
     try {
       if (!req.file) {
+        logger.info('[uploadingFileController] No file from req.file');
         res.status(400).json({ message: ResponseMessages.UPLOAD_IMAGE_FAIL });
         return;
       } else {
@@ -29,11 +31,14 @@ export const uploadingFileController = asyncHandler(
         });
 
         blobStream.on('error', (err) => {
+          logger.error('[uploadingFileController] [blobSteam] [onError] ');
+          logger.error(err.message);
           res.status(500).json({ message: err.message });
           return;
         });
 
         blobStream.on('finish', async (data: any) => {
+          logger.info('[uploadingFileController] [bloblSteam] [onFinish] ');
           const publicUrl = format(
             `https://storage.googleapis.com/${bucket.name}/${blob.name}`
           );
@@ -43,6 +48,9 @@ export const uploadingFileController = asyncHandler(
               await bucket.file(req.file?.originalname).makePublic();
             }
           } catch {
+            logger.info(
+              '[uploadingFileController] [bloblSteam] [onFinish] Failed to make image public, uploaded successfully'
+            );
             res.status(500).json({
               message:
                 ResponseMessages.UPLOADED_SUCCESSFULLY_PUBLIC_ACCESS_DENIED,
@@ -53,6 +61,9 @@ export const uploadingFileController = asyncHandler(
             });
             return;
           }
+          logger.info(
+            '[uploadingFileController] [bloblSteam] [onFinish] Uploaded image to Google Cloud Successfully'
+          );
 
           res.status(200).json({
             message: ResponseMessages.UPLOADED_SUCCESSFULLY,
@@ -67,8 +78,10 @@ export const uploadingFileController = asyncHandler(
         return;
       }
     } catch (err: any) {
+      logger.error('[uploadingFileController] Exception occured');
       logger.error(err);
       if (err.code === 'LIMIT_FILE_SIZE') {
+        logger.error('[uploadingFileController] [Limit File Size] error');
         res.status(500).json({ message: ResponseMessages.FILE_SIZE_EXCEEDED });
         return;
       }
