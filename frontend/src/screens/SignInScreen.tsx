@@ -12,10 +12,13 @@ import {
   TouchableWithoutFeedback,
   Alert,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import { StyledText } from '../components';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { CommonActions, useNavigation } from '@react-navigation/native';
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
 import { StackParams } from '../navigation/NavigationTypes';
 import { ShopNCopStackNavigation } from '../navigation/NavigationConstants';
 import { axiosSender, testEmailRegex } from '../utils';
@@ -25,33 +28,36 @@ import { AxiosResponse } from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 
-export const SignInScreen = () => {
+type Screen = typeof ShopNCopStackNavigation.signIn;
+type SignInScreenProps = NativeStackScreenProps<StackParams, Screen>;
+
+export const SignInScreen = ({ route }: SignInScreenProps) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
-
   const [loading, setLoading] = useState(false);
 
-  const handleSignIn = async () => {
-    console.log('handleSignIn');
+  const handleSignIn = async (method = 'REGULAR') => {
     setLoading(true);
-    try {
-      if (email === '') {
-        Alert.alert('Please enter your email.');
-        setLoading(false);
-        return;
-      }
-      if (!testEmailRegex) {
-        Alert.alert('Please enter a valid email.');
-        setLoading(false);
-        return;
-      }
-      if (password === '') {
-        Alert.alert('Please enter your password.');
-        setLoading(false);
-        return;
-      }
 
+    try {
+      if (method === 'REGULAR') {
+        if (email === '') {
+          Alert.alert('Please enter your email.');
+          setLoading(false);
+          return;
+        }
+        if (!testEmailRegex) {
+          Alert.alert('Please enter a valid email.');
+          setLoading(false);
+          return;
+        }
+        if (password === '') {
+          Alert.alert('Please enter your password.');
+          setLoading(false);
+          return;
+        }
+      }
       const payload = {
         email,
         password,
@@ -77,9 +83,13 @@ export const SignInScreen = () => {
         await SecureStore.setItemAsync(kUserEmail, response.data.data.email);
         await SecureStore.setItemAsync(kJWTToken, response.data.data.token);
         setLoading(false);
-        navigation.navigate({
-          name: ShopNCopStackNavigation.search,
-        } as never);
+        // navigation.replace(ShopNCopStackNavigation.search, {});
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: ShopNCopStackNavigation.search }],
+          })
+        );
       } else if (
         response.status === 200 &&
         response.data.message === ResponseMessages.INCORRECT_CREDENTIALS
@@ -100,6 +110,15 @@ export const SignInScreen = () => {
       Alert.alert('Sorry! Something went wrong.');
     }
   };
+
+  useEffect(() => {
+    const registeredEmail = route.params?.registeredEmail;
+    const registeredPassword = route.params?.registeredPassword;
+    if (registeredEmail && registeredPassword) {
+      handleSignIn('REGISTER');
+    }
+  }, []);
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.container}>
@@ -130,7 +149,11 @@ export const SignInScreen = () => {
             value={password}
             placeholder="Password"
           />
-          <TouchableOpacity onPress={handleSignIn}>
+          <TouchableOpacity
+            onPress={() => {
+              handleSignIn('REGULAR');
+            }}
+          >
             <View style={styles.signInButtonContainer}>
               <StyledText
                 title="Sign In"
