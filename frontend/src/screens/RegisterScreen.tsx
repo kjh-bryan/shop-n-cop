@@ -91,7 +91,6 @@ export const RegisterScreen = () => {
       }
       if (response.status === 200) {
         if (response.data.message === ResponseMessages.SUCCESS) {
-          await SecureStore.setItemAsync(kUserEmail, response.data.data.email);
           setRegistered(true);
           navigation.replace(ShopNCopStackNavigation.signIn, {
             registeredEmail: response.data.data.email,

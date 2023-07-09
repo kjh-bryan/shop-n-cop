@@ -36,6 +36,9 @@ export const SignInScreen = ({ route }: SignInScreenProps) => {
   const [password, setPassword] = useState<string>('');
   const navigation = useNavigation<NativeStackNavigationProp<StackParams>>();
   const [loading, setLoading] = useState(false);
+  const [rEmail, setREmail] = useState<SetStateAction<string | undefined>>('');
+  const [rPassword, setRPassword] =
+    useState<SetStateAction<string | undefined>>('');
 
   const handleSignIn = async (method = 'REGULAR') => {
     setLoading(true);
@@ -58,10 +61,16 @@ export const SignInScreen = ({ route }: SignInScreenProps) => {
           return;
         }
       }
-      const payload = {
-        email,
-        password,
-      };
+      const payload =
+        method === 'REGULAR'
+          ? {
+              email,
+              password,
+            }
+          : {
+              email: rEmail,
+              password: rPassword,
+            };
 
       const response: AxiosResponse<any, any> | undefined = await axiosSender(
         Endpoints.signIn.uri,
@@ -75,15 +84,15 @@ export const SignInScreen = ({ route }: SignInScreenProps) => {
         setLoading(false);
         return;
       }
-
       if (
         response.status === 200 &&
         response.data.message === ResponseMessages.SUCCESS
       ) {
         await SecureStore.setItemAsync(kUserEmail, response.data.data.email);
         await SecureStore.setItemAsync(kJWTToken, response.data.data.token);
+
         setLoading(false);
-        // navigation.replace(ShopNCopStackNavigation.search, {});
+
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
@@ -94,6 +103,7 @@ export const SignInScreen = ({ route }: SignInScreenProps) => {
         response.status === 200 &&
         response.data.message === ResponseMessages.INCORRECT_CREDENTIALS
       ) {
+        console.log('[SignInScreen] [ResponseMessages.INCORRECT_CREDENTIALS] ');
         setLoading(false);
         Alert.alert(ResponseMessages.INCORRECT_CREDENTIALS);
 
@@ -114,10 +124,14 @@ export const SignInScreen = ({ route }: SignInScreenProps) => {
   useEffect(() => {
     const registeredEmail = route.params?.registeredEmail;
     const registeredPassword = route.params?.registeredPassword;
-    if (registeredEmail && registeredPassword) {
+    console.log('[SignInScreen] [registerEmail] : ', registeredEmail);
+    console.log('[SignInScreen] [registeredPassword] : ', registeredPassword);
+    setREmail(registeredEmail);
+    setRPassword(registeredPassword);
+    if (rEmail && rPassword) {
       handleSignIn('REGISTER');
     }
-  }, []);
+  }, [rEmail, rPassword]);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

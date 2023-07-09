@@ -84,6 +84,9 @@ export const SearchScreen = ({ route }: SearchScreenProps) => {
       if (!galleryPermission.granted) setGalleryPermissionModal(true);
 
       const userId = await SecureStore.getItemAsync(kUserEmail);
+
+      console.log('[SearchScreen] Print user Id');
+      console.log('[SearchScreen] ', userId);
       setUserId(userId);
     })();
   }, []);
