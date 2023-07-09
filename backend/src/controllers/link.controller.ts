@@ -131,13 +131,12 @@ export const getSearchResultController = asyncHandler(
     const search = new SerpApi.GoogleSearch(serpapiApiKey);
     if (type === 'IMAGE') {
       const params = {
-        api_key: serpapiApiKey,
+        engine: 'google_lens',
         url: imageURL,
       } satisfies GoogleLensParameters;
       try {
         let response;
         const callback = (data: any) => {
-          console.log(data);
           response = data;
         };
         await new Promise((resolve) => {
@@ -162,7 +161,7 @@ export const getSearchResultController = asyncHandler(
       }
     } else {
       const params = {
-        api_key: serpapiApiKey,
+        engine: 'google_shopping',
         google_domain: 'google.com.sg',
         q: query,
         hl: 'en',
@@ -173,7 +172,6 @@ export const getSearchResultController = asyncHandler(
       try {
         let response;
         const callback = (data: any) => {
-          console.log(data);
           response = data;
         };
         await new Promise((resolve) => {
