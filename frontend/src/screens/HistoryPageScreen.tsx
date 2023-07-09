@@ -9,7 +9,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StyledText } from '../components';
-import { darkGreen, Endpoints, kUserEmail } from '../constants';
+import {
+  darkGreen,
+  Endpoints,
+  kUserEmail,
+  ResponseMessages,
+} from '../constants';
 import * as SecureStore from 'expo-secure-store';
 import { AxiosResponse } from 'axios';
 import { axiosSender } from '../utils';
@@ -26,16 +31,28 @@ export const HistoryPageScreen: React.FC = () => {
 
   useEffect(() => {
     (async () => {
+      console.log('in useEffect async');
       const userEmailValue = await SecureStore.getItemAsync(kUserEmail);
       setUserEmail(userEmailValue);
+      console.log('setUserEmail : ', userEmail);
       await new Promise((resolve) => setTimeout(resolve, 1500));
       await getSetLinks();
+      if (links.length !== 0) {
+        setLoading(false);
+      }
     })();
   }, [userEmail]);
 
   const getSetLinks = async () => {
+    console.log('In getSetLinks : ');
+    console.log(userEmail);
     try {
-      if (!userEmail) return;
+      if (!userEmail) {
+        const userEmailValue = await SecureStore.getItemAsync(kUserEmail);
+        setUserEmail(userEmailValue);
+        return;
+      }
+
       const params = `?email=${userEmail}`;
       const response: AxiosResponse<any, any> | undefined = await axiosSender(
         Endpoints.getLinks.uri,
@@ -43,13 +60,21 @@ export const HistoryPageScreen: React.FC = () => {
         params,
         null
       );
+      console.log('Print out response');
+      console.log(response);
       if (!response) {
         setLoading(false);
         console.log('Error submitting links');
         Alert.alert('Unable to fetch visited links');
         return;
       }
-
+      if (
+        response.status === 200 &&
+        response.data.message === ResponseMessages.NO_LINK
+      ) {
+        setLoading(false);
+        return;
+      }
       const resultFromResponse = response.data.data as {
         [key: string]: HistoryCardProps;
       };
