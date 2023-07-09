@@ -1,6 +1,6 @@
 {
   "name": "shop-n-cop",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "./frontend/src/App.tsx",
   "scripts": {
     "start": "expo start --dev-client",
