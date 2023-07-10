@@ -12,7 +12,7 @@ web-build/
 .env
 backend/.env
 backend/.env.template
-backend/googleCloudKey.json
+backend/googleCloudKey.jsonx
 # macOS
 .DS_Store
 
