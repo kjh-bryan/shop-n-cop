@@ -35,9 +35,13 @@
 <img src="https://github.com/kjh-bryan/shop-n-cop/blob/master/images/flow.gif" alt="Logo" height="400">
 </div>
 
-ShopNCop is an application for Shopping goers to looking for the best deals across online stores 
+ShopNCop is a mobile application for buyers to look for the best deals across online stores.
 
-ShopNCop aims to enhance shopping experiences. Integrated with real time product data, users can easily search for products, view detailed information, and compare prices across different online retailers simply by uploading an image or typing in keywords!
+ShopNCop strives to improve the shopping experiences by integrating with real-time product data. With ShopNCop, users can easily search for products, view detailed information, and compare prices across different online retailers simply by
+
+1. Uploading an image
+2. Typing keywords
+
 <!-- Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
 -->
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -49,17 +53,15 @@ ShopNCop aims to enhance shopping experiences. Integrated with real time product
 - [![React Native][reactnative.dev]][reactnative-url]
 - [![NodeJS][node.dev]][node-url]
 
+### Frameworks
 
-
-### Frameworks 
 - [![Expo][expo.dev]][expo-url]
 - [![TSNode][ts-node.dev]][ts-node-url]
 
-
 ### Additional Features
+
 - [![GoogleCloud][googlecloud.dev]][googlecloud-url]
 - [![JWT][jwt.dev]][jwt-url]
-
 
 ### Linters
 
@@ -78,14 +80,16 @@ Required to download:
 
 - Setting Up React Native & Expo -> https://www.youtube.com/watch?v=VHZDqwr_AKs
 <!--
+
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
+
+- npm
   ```sh
   npm install npm@latest -g
   ```
--->
+  -->
 
 ### Installation
 
@@ -123,7 +127,6 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [x] Result Screen
 - [x] History Screen
 
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
@@ -160,16 +163,18 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Bryan Kang - [Github](https://github.com/kjh-bryan)  
 Germaine Lee - [Github](https://github.com/germainelee02)  
-Shirin Ruth - [Github](https://github.com/ShIrInRuTh)  
- 
+Shirin Ruth - [Github](https://github.com/ShIrInRuTh)
+
 Project Link: [https://github.com/kjh-bryan/shop-n-cop](https://github.com/kjh-bryan/shop-n-cop)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ACKNOWLEDGMENTS -->
+
 ## Acknowledgments
 
 This project is submitted to [![Devpost][devpost]][devpost-url] as part of a hackathon project for the Atlas Madness(Hack MongoDB Atlas on Google Cloud).
+
 <!--
 
 * []()
@@ -191,33 +196,23 @@ This project is submitted to [![Devpost][devpost]][devpost-url] as part of a hac
 [history]: images/history_screen.png
 [mongodb.dev]: https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white
 [mongodb-url]: https://www.mongodb.com/atlas/database
-
 [express.dev]: https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white
 [express-url]: https://expressjs.com/
-
 [reactnative.dev]: https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [reactnative-url]: https://reactnative.dev/
-
 [node.dev]: https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white
 [node-url]: https://nodejs.org/
-
 [googlecloud.dev]: https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white
 [googlecloud-url]: https://cloud.google.com/
-
 [jwt.dev]: https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white
 [jwt-url]: https://jwt.io/
-
 [devpost]: https://img.shields.io/badge/Devpost-003E54?style=for-the-badge&logo=Devpost&logoColor=white
 [devpost-url]: https://atlasmadness.devpost.com/
-
 [eslint.dev]: https://img.shields.io/badge/eslint-3A33D1?style=for-the-badge&logo=eslint&logoColor=white
 [eslint-url]: https://eslint.org/
-
 [prettier.dev]: https://img.shields.io/badge/prettier-1A2C34?style=for-the-badge&logo=prettier&logoColor=F7BA3E
 [prettier-url]: https://prettier.io/
-
 [ts-node.dev]: https://img.shields.io/badge/ts--node-3178C6?style=for-the-badge&logo=ts-node&logoColor=white
 [ts-node-url]: https://github.com/TypeStrong/ts-node
-
 [expo.dev]: https://img.shields.io/badge/Expo-1B1F23?style=for-the-badge&logo=expo&logoColor=white
 [expo-url]: https://expo.dev/
