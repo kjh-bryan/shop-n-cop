@@ -131,7 +131,7 @@ Project Link: [https://github.com/kjh-bryan/shop-n-cop](https://github.com/kjh-b
 
 ## Acknowledgments
 
-This project is submitted to [![Devpost][devpost]][devpost-url] as part of a hackathon project for the Atlas Madness(Hack MongoDB Atlas on Google Cloud).
+This project is submitted to [![Devpost][devpost]][devpost-url] as part of a hackathon project for the Atlas Madness (Hack MongoDB Atlas on Google Cloud).
 
 [splash]: images/splash.png
 [signin]: images/signin_screen.png
