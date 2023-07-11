@@ -7,7 +7,7 @@ import { format } from 'util';
 import { logger } from '../utils';
 
 const projectId = 'atlas-hackathon-390302';
-const keyFileName = 'googleCloudKey.json';
+const keyFileName = '/etc/secrets/googleCloudKey.json';
 
 const storage = new Storage({
   projectId,
