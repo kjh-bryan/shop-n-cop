@@ -29,11 +29,16 @@
 
 ## About The Project
 
-<div align="center">
-<!--[![Product Name Screen Shot][product-screenshot]](https://example.com)-->
- 
-<img src="images/flow.gif" alt="Logo" height="400">
-</div>
+### Screens 
+
+| Splash                                                | Register                                      | Sign In                                      |
+| ----------------------------------------------------- | --------------------------------------------- | --------------------------------------------- |
+| ![splash](gif/splash.gif 'title A') | ![register](gif/register_flow.gif 'title B') | ![signin](gif/signin_flow.gif 'title B') |
+
+
+| Search/Result/History via Text  |                                    | Search/Result/History  via Image                                   |
+| ----------------------------------------------------- | --------------------------------------------- | --------------------------------------------- |
+| ![searchtext](gif/text_search_result_history_flow.gif 'title A') || ![searchimage](gif/image_search_result_history_flow.gif 'title B') |
 
 ShopNCop is a mobile application for buyers to look for the best deals across online stores.
 
@@ -51,7 +56,7 @@ ShopNCop strives to improve the shopping experiences by integrating with real-ti
 
 <div align="center">
  
-<img src="./images/architecture-diagram.jpeg" alt="Architecture Diagram" height="400" width="300">
+<img src="./images/architecture-diagram.jpeg" alt="Architecture Diagram" width="700">
 </div>
 
 ### Built With
