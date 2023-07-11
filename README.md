@@ -32,19 +32,27 @@
 <div align="center">
 <!--[![Product Name Screen Shot][product-screenshot]](https://example.com)-->
  
-<img src="https://github.com/kjh-bryan/shop-n-cop/blob/master/images/flow.gif" alt="Logo" height="400">
+<img src="images/flow.gif" alt="Logo" height="400">
 </div>
 
 ShopNCop is a mobile application for buyers to look for the best deals across online stores.
 
-ShopNCop strives to improve the shopping experiences by integrating with real-time product data. With ShopNCop, users can easily search for products, view detailed information, and compare prices across different online retailers simply by
+ShopNCop strives to improve the shopping experiences by integrating with real-time product data. With ShopNCop, users can easily search for products, view detailed information, and compare prices across different online retailers using one of the approaches below:
 
-1. Uploading an image
-2. Typing keywords
+1. Uploading an existing image from your camera roll
+2. Taking a photo
+3. Entering keywords
 
 <!-- Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
 -->
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Architecture Diagram
+
+<div align="center">
+ 
+<img src="./images/architecture-diagram.jpeg" alt="Architecture Diagram" height="400" width="300">
+</div>
 
 ### Built With
 
