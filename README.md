@@ -43,6 +43,8 @@ ShopNCop strives to improve the shopping experiences by integrating with real-ti
 2. Taking a photo
 3. Entering keywords
 
+To have a better view of ShopNCop's functionalities, please view this [demo video](https://youtu.be/QZIVzDo5Lss).
+
 <!-- Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
 -->
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
